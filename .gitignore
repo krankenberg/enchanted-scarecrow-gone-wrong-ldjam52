@@ -1,0 +1,36 @@
+# Created by https://www.toptal.com/developers/gitignore/api/rider,godot
+# Edit at https://www.toptal.com/developers/gitignore?templates=rider,godot
+
+### Godot ###
+# Godot-specific ignores
+.import/
+export.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Godot 4+ specific ignores
+.godot/
+
+# Mono-specific ignores
+.mono/
+data_*/
+
+### Rider ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**
+
+# CMake
+cmake-build-*/
+
+# File-based project format
+*.iws
+
+# End of https://www.toptal.com/developers/gitignore/api/rider,godot
+
+bin/**
+
+Build/**
