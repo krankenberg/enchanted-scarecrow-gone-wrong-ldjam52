@@ -41,15 +41,14 @@ public partial class CrowSpawner : Node2D
     private void SpawnCrow()
     {
         var requestCropEvent = new RequestCropEvent();
-        requestCropEvent.Callback = cropPosition =>
+        requestCropEvent.Callback = crop =>
         {
             var crow = _crowScene.Instantiate<Crow>();
-            var spawnPosition = ChooseRandomSpawnPosition(cropPosition);
+            var spawnPosition = ChooseRandomSpawnPosition(crop.GlobalPosition);
 
-            crow.Target = cropPosition;
-            crow.StartPosition = spawnPosition;
             GetParent().AddChild(crow);
             crow.GlobalPosition = spawnPosition;
+            crow.GrabCrop(spawnPosition, crop);
         };
         requestCropEvent.Emit();
 

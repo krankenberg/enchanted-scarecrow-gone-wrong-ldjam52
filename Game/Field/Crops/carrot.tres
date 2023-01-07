@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cvhmmxx4lqywg"]
+
+[ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="1_o04ui"]
+[ext_resource type="Script" path="res://Game/Field/Crops/CropResource.cs" id="2_pc0g7"]
+
+[resource]
+script = ExtResource("2_pc0g7")
+SpriteTexture = ExtResource("1_o04ui")
+GrowthStageCount = 5

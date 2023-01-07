@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://q4uhputdpb36"]
+
+[ext_resource type="Script" path="res://Game/Field/Crop.cs" id="1_c7xs8"]
+[ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="2_gyyy8"]
+[ext_resource type="Resource" uid="uid://cvhmmxx4lqywg" path="res://Game/Field/Crops/carrot.tres" id="2_p48ix"]
+
+[node name="Crop" type="Node2D" node_paths=PackedStringArray("_growthTimer", "_sprite")]
+texture_filter = 1
+script = ExtResource("1_c7xs8")
+_cropResource = ExtResource("2_p48ix")
+_growthTimer = NodePath("GrowthTimer")
+_sprite = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_gyyy8")
+centered = false
+offset = Vector2(-12, -24)
+hframes = 5
+region_rect = Rect2(0, 0, 24, 24)
+
+[node name="GrowthTimer" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
