@@ -50,10 +50,10 @@ public partial class CrowSpawner : Node2D
             crow.StartPosition = spawnPosition;
             GetParent().AddChild(crow);
             crow.GlobalPosition = spawnPosition;
-
-            RestartSpawnTimer();
         };
         requestCropEvent.Emit();
+
+        RestartSpawnTimer();
     }
 
     private Vector2 ChooseRandomSpawnPosition(Vector2 target)
