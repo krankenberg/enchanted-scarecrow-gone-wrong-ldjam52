@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dlbys541gxfkf" path="res://Game/Crows/crow.png" id="1_ldpi3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ew1kn"]
-radius = 5
+radius = 5.0
 
 [node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea")]
 texture_filter = 1
