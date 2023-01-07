@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=6 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
+[ext_resource type="Script" path="res://Game/Field/CropManager.cs" id="2_nnck7"]
 [ext_resource type="PackedScene" uid="uid://cv1ulkvh1waol" path="res://Game/Scarecrow/scarecrow.tscn" id="2_on6s6"]
+[ext_resource type="Script" path="res://Game/Crows/CrowSpawner.cs" id="3_fjekh"]
+[ext_resource type="PackedScene" uid="uid://b16j15c7ixs17" path="res://Game/Crows/crow.tscn" id="4_xrtw1"]
 
 [node name="GameRoot" type="Node2D"]
 texture_filter = 1
@@ -15,10 +18,47 @@ points = PackedVector2Array(0, 170, 320, 170)
 width = 20.0
 default_color = Color(0.494118, 0.423529, 0.329412, 1)
 
+[node name="Field" type="Node2D" parent="Midground"]
+position = Vector2(162, 165)
+
+[node name="Line2D" type="Line2D" parent="Midground/Field"]
+points = PackedVector2Array(-120, 0, 120, 0)
+default_color = Color(0.32549, 0.223529, 0.227451, 1)
+
+[node name="CropPositions" type="Node2D" parent="Midground/Field"]
+script = ExtResource("2_nnck7")
+
+[node name="Marker2D" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(-88, -2)
+
+[node name="Marker2D2" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(-32, 0)
+
+[node name="Marker2D3" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(25, 0)
+
+[node name="Marker2D4" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(55, -1)
+
+[node name="Marker2D5" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(102, -1)
+
+[node name="Marker2D6" type="Marker2D" parent="Midground/Field/CropPositions"]
+position = Vector2(-59, -3)
+
 [node name="Foreground" type="Node2D" parent="."]
 
 [node name="Scarecrow" parent="Foreground" instance=ExtResource("2_on6s6")]
 position = Vector2(154, 163)
+
+[node name="CrowSpawner" type="Node2D" parent="Foreground"]
+position = Vector2(160, -11)
+script = ExtResource("3_fjekh")
+_crowScene = ExtResource("4_xrtw1")
+_spawnTimeMin = 1.0
+_spawnTimeMax = 2.0
+_spawnXOffsetMin = 160.0
+_spawnXOffsetMax = 200.0
 
 [node name="Camera" type="Camera2D" parent="."]
 anchor_mode = 0

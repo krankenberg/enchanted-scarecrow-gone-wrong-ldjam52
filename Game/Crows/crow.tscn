@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b16j15c7ixs17"]
+
+[ext_resource type="Script" path="res://Game/Crows/Crow.cs" id="1_4uxwo"]
+[ext_resource type="Texture2D" uid="uid://dlbys541gxfkf" path="res://Game/Crows/crow.png" id="1_ldpi3"]
+
+[node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite")]
+texture_filter = 1
+script = ExtResource("1_4uxwo")
+_speed = 60.0
+_sprite = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(-12, -11)
+texture = ExtResource("1_ldpi3")
+centered = false
