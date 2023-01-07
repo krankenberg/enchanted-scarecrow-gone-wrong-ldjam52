@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://devuwdeq374dw"]
 
 [ext_resource type="Script" path="res://Game/Field/CropManager.cs" id="1_dlh01"]
-[ext_resource type="PackedScene" uid="uid://q4uhputdpb36" path="res://Game/Field/crop.tscn" id="2_dmm0n"]
+[ext_resource type="PackedScene" uid="uid://chwx6yemtj3h5" path="res://Game/Field/Crops/crop.tscn" id="2_lvhl4"]
 
 [node name="Field" type="Node2D"]
 position = Vector2(162, 165)
@@ -12,7 +12,7 @@ default_color = Color(0.32549, 0.223529, 0.227451, 1)
 
 [node name="CropPositions" type="Node2D" parent="."]
 script = ExtResource("1_dlh01")
-_cropScene = ExtResource("2_dmm0n")
+_cropScene = ExtResource("2_lvhl4")
 
 [node name="Marker2D" type="Marker2D" parent="CropPositions"]
 position = Vector2(-88, -2)
