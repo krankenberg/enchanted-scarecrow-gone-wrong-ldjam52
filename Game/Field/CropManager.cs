@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using ldjam52.Game.UserInterface;
 using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Field;
@@ -59,6 +60,11 @@ public partial class CropManager : Node2D
         _crops.Remove(crop);
         _occupiedCropSlots.Remove(crop, out var freedSlot);
         _freeCropSlots.Add(freedSlot);
+
+        if (_crops.Count == 0)
+        {
+            new GameOverEvent().Emit();
+        }
     }
 
     private void OnRequestCropEvent(RequestCropEvent requestCropEvent)

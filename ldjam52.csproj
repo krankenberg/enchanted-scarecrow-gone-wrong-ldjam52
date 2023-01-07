@@ -7,5 +7,7 @@
     <Content Include="**\*.tscn" />
     <Content Include="**\*.tres" />
     <Content Include="**\*.godot" />
+    <Content Include="Game\UserInterface\Fonts\LICENSE.txt" />
+    <Content Include="Game\UserInterface\Fonts\octavius.ttf" />
   </ItemGroup>
 </Project>

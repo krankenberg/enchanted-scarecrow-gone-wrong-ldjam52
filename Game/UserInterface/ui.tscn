@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://ew14at3sglny"]
+
+[ext_resource type="Theme" uid="uid://eb5r46bxjdwp" path="res://Game/UserInterface/theme.tres" id="1_6pe3b"]
+[ext_resource type="Script" path="res://Game/UserInterface/GameOverPanelEnabler.cs" id="2_mnfo3"]
+[ext_resource type="PackedScene" uid="uid://w7quti5p5l28" path="res://Game/UserInterface/game_over_panel.tscn" id="3_yjawi"]
+
+[node name="UI" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_6pe3b")
+
+[node name="GameOverPanelEnabler" type="Node" parent="."]
+script = ExtResource("2_mnfo3")
+_gameOverPanelScene = ExtResource("3_yjawi")

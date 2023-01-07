@@ -1,7 +1,7 @@
-using System;
 using Godot;
 using ldjam52.Game.Input;
 using ldjam52.Game.Scarecrow.Spells;
+using ldjam52.Game.UserInterface;
 
 namespace ldjam52.Game.Scarecrow;
 
@@ -11,14 +11,36 @@ public partial class Scarecrow : Node2D
     private PackedScene _barrierScene;
 
     private Barrier _currentBarrier;
+    
+    private bool _gameOver;
+
+    public override void _Ready()
+    {
+        GameOverEvent.Listen(_ => _gameOver = true);
+    }
 
     public override void _Process(double delta)
     {
-        _currentBarrier?.EndPosition(GetGlobalMousePosition());
+        if (_currentBarrier != null)
+        {
+            if (_gameOver)
+            {
+                HandleInteractEnd();
+                return;
+            }
+
+            _currentBarrier.EndPosition(GetGlobalMousePosition());
+        }
+        
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
     {
+        if (_gameOver)
+        {
+            return;
+        }
+        
         if (inputEvent.IsActionPressed(InputConstants.Interact))
         {
             HandleInteractStart();

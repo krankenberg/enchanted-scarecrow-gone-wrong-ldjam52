@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=7 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
+[ext_resource type="PackedScene" uid="uid://ew14at3sglny" path="res://Game/UserInterface/ui.tscn" id="1_ydlmt"]
 [ext_resource type="PackedScene" uid="uid://devuwdeq374dw" path="res://Game/Field/field.tscn" id="2_77o7d"]
 [ext_resource type="PackedScene" uid="uid://cv1ulkvh1waol" path="res://Game/Scarecrow/scarecrow.tscn" id="2_on6s6"]
 [ext_resource type="Script" path="res://Game/Crows/CrowSpawner.cs" id="3_fjekh"]
@@ -8,6 +9,12 @@
 
 [node name="GameRoot" type="Node2D"]
 texture_filter = 1
+
+[node name="UI" parent="." instance=ExtResource("1_ydlmt")]
+z_index = 1000
+offset_right = 320.0
+offset_bottom = 180.0
+mouse_filter = 2
 
 [node name="Background" parent="." instance=ExtResource("1_dkqgp")]
 
