@@ -34,3 +34,6 @@ cmake-build-*/
 bin/**
 
 Build/**
+
+IDEA.md
+TODO.md

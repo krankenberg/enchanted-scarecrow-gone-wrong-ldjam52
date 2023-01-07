@@ -1,3 +1,27 @@
-[gd_scene format=3 uid="uid://w74gn8tpvpi0"]
+[gd_scene load_steps=3 format=3 uid="uid://dre51xu8o7h3"]
+
+[ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
+[ext_resource type="PackedScene" uid="uid://cv1ulkvh1waol" path="res://Game/Scarecrow/scarecrow.tscn" id="2_on6s6"]
 
 [node name="GameRoot" type="Node2D"]
+
+[node name="Background" parent="." instance=ExtResource("1_dkqgp")]
+
+[node name="Midground" type="Node2D" parent="."]
+
+[node name="Ground" type="Line2D" parent="Midground"]
+points = PackedVector2Array(0, 170, 320, 170)
+width = 20.0
+default_color = Color(0.494118, 0.423529, 0.329412, 1)
+
+[node name="Foreground" type="Node2D" parent="."]
+
+[node name="Scarecrow" parent="Foreground" instance=ExtResource("2_on6s6")]
+position = Vector2(154, 163)
+
+[node name="Camera" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+limit_top = 0
+limit_bottom = 180
+editor_draw_screen = false
