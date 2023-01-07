@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Game/Scarecrow/Spells/Barrier.cs" id="1_eumpt"]
 
 [node name="Barrier" type="Node2D" node_paths=PackedStringArray("_line", "_lifetimeTimer", "_collisionShape")]
-z_index = 1
+z_index = 5
 script = ExtResource("1_eumpt")
 _line = NodePath("Line")
 _lifetimeTimer = NodePath("LifetimeTimer")
