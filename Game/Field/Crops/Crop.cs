@@ -1,7 +1,6 @@
 using Godot;
-using ldjam52.Game.Field.Crops;
 
-namespace ldjam52.Game.Field;
+namespace ldjam52.Game.Field.Crops;
 
 public partial class Crop : Node2D
 {

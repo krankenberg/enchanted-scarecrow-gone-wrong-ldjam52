@@ -1,5 +1,6 @@
 using System;
 using ldjam52.Game.Events;
+using ldjam52.Game.Field.Crops;
 
 namespace ldjam52.Game.Field;
 

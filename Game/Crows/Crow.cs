@@ -1,5 +1,6 @@
 using Godot;
 using ldjam52.Game.Field;
+using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Scarecrow.Spells;
 
 namespace ldjam52.Game.Crows;
