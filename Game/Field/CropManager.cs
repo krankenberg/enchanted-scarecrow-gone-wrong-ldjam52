@@ -10,7 +10,7 @@ public partial class CropManager : Node2D
     private PackedScene _cropScene;
 
     private List<Vector2> _freeCropSlots;
-    private List<Vector2> _occupiedCropSlots;
+    private Dictionary<Crop, Vector2> _occupiedCropSlots;
 
     private List<Crop> _crops;
 
@@ -18,7 +18,7 @@ public partial class CropManager : Node2D
     {
         RequestCropEvent.Listen(OnRequestCropEvent);
         _freeCropSlots = new List<Vector2>();
-        _occupiedCropSlots = new List<Vector2>();
+        _occupiedCropSlots = new Dictionary<Crop, Vector2>();
         for (var i = 0; i < GetChildCount(); i++)
         {
             _freeCropSlots.Add(GetChild<Node2D>(i).GlobalPosition);
@@ -37,27 +37,28 @@ public partial class CropManager : Node2D
                 continue;
             }
 
-            var position = GetRandomCropSlot();
             var crop = _cropScene.Instantiate<Crop>();
             AddSibling(crop);
-            crop.GlobalPosition = position;
+            OccupyRandomCropSlot(crop);
             crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
             _crops.Add(crop);
         }
     }
 
-    private Vector2 GetRandomCropSlot()
+    private void OccupyRandomCropSlot(Crop crop)
     {
         var randomIndex = Random.Generator.RandiRange(0, _freeCropSlots.Count - 1);
         var position = _freeCropSlots[randomIndex];
         _freeCropSlots.RemoveAt(randomIndex);
-        _occupiedCropSlots.Add(position);
-        return position;
+        _occupiedCropSlots[crop] = position;
+        crop.GlobalPosition = position;
     }
 
     private void OnCropPickedUp(Crop crop)
     {
         _crops.Remove(crop);
+        _occupiedCropSlots.Remove(crop, out var freedSlot);
+        _freeCropSlots.Add(freedSlot);
     }
 
     private void OnRequestCropEvent(RequestCropEvent requestCropEvent)

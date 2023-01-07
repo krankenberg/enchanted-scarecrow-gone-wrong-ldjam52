@@ -8,7 +8,7 @@ public partial class Crop : Node2D
     [Signal]
     public delegate void CropPickedUpEventHandler(Crop crop);
 
-    public bool PickedUp => !Visible;
+    public bool PickedUp { private set; get; }
     
     [Export]
     private CropResource _cropResource;
@@ -43,6 +43,7 @@ public partial class Crop : Node2D
     public void PickUp()
     {
         EmitSignal(SignalName.CropPickedUp, this);
-        Visible = false;
+        _growthTimer.Stop();
+        PickedUp = true;
     }
 }

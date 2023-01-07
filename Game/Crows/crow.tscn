@@ -6,12 +6,13 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ew1kn"]
 radius = 5.0
 
-[node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea")]
+[node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea", "_slot")]
 texture_filter = 1
 script = ExtResource("1_4uxwo")
 _speed = 60.0
 _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
+_slot = NodePath("Slot")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(-12, -11)
@@ -25,3 +26,7 @@ monitorable = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("CircleShape2D_ew1kn")
+
+[node name="Slot" type="Marker2D" parent="."]
+position = Vector2(-1, 1)
+gizmo_extents = 2.0

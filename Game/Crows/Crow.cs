@@ -16,6 +16,9 @@ public partial class Crow : Node2D
 	[Export]
 	private Area2D _collisionArea;
 
+	[Export]
+	private Marker2D _slot;
+
 	private bool _flyingBackUp;
 
 	private Vector2 _startPosition;
@@ -83,6 +86,11 @@ public partial class Crow : Node2D
 			GlobalPosition = _targetPosition;
 			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			_target.PickUp();
+			_target.GetParent().RemoveChild(_target);
+			_slot.AddChild(_target);
+			_target.Position = Vector2.Zero;
+			_target.ZIndex = ZIndex - 1;
+			_target.Rotate(Mathf.DegToRad(180));
 			FlyBack(direction, Vector2.Up);
 		}
 		else
