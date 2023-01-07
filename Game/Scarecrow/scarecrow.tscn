@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://cv1ulkvh1waol"]
+[gd_scene load_steps=4 format=3 uid="uid://cv1ulkvh1waol"]
 
+[ext_resource type="Script" path="res://Game/Scarecrow/Scarecrow.cs" id="1_eictq"]
 [ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="1_o7b2i"]
+[ext_resource type="PackedScene" uid="uid://bcwr8dw8ola6j" path="res://Game/Scarecrow/Spells/barrier.tscn" id="2_ti0na"]
 
 [node name="Scarecrow" type="Node2D"]
 texture_filter = 1
+script = ExtResource("1_eictq")
+_barrierScene = ExtResource("2_ti0na")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_o7b2i")

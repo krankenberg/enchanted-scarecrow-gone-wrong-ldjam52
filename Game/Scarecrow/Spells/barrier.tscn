@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcwr8dw8ola6j"]
+
+[ext_resource type="Script" path="res://Game/Scarecrow/Spells/Barrier.cs" id="1_eumpt"]
+
+[node name="Barrier" type="Node2D" node_paths=PackedStringArray("_line", "_lifetimeTimer", "_collisionShape")]
+z_index = 1
+script = ExtResource("1_eumpt")
+_line = NodePath("Line")
+_lifetimeTimer = NodePath("LifetimeTimer")
+_maxLength = 50.0
+_collisionShape = NodePath("CollisionArea/SegmentShape")
+
+[node name="Line" type="Line2D" parent="."]
+points = PackedVector2Array(113, -32, 101, -29, 29, -7, 0, 0)
+width = 4.0
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="SegmentShape" type="CollisionShape2D" parent="CollisionArea"]
+disabled = true
+debug_color = Color(0.960784, 0, 0.505882, 0.419608)

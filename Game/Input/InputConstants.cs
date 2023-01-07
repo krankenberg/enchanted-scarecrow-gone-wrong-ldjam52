@@ -4,5 +4,5 @@ namespace ldjam52.Game.Input;
 
 public static class InputConstants
 {
-    public static readonly StringName Example = new("Example");
+    public static readonly StringName Interact = new("Interact");
 }
