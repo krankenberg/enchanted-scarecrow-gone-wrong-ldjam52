@@ -13,6 +13,9 @@ public partial class Scarecrow : Node2D
     [Export]
     private Node2D _minimumBarrierHeightMarker;
 
+    [Export]
+    private GPUParticles2D _barrierCursorParticles;
+
     private Barrier _currentBarrier;
     
     private bool _gameOver;
@@ -21,20 +24,29 @@ public partial class Scarecrow : Node2D
     public override void _Ready()
     {
         _maxBarrierY = _minimumBarrierHeightMarker.GlobalPosition.y;
+        _barrierCursorParticles.Emitting = false;
         GameOverEvent.Listen(_ => _gameOver = true);
     }
 
     public override void _Process(double delta)
     {
+        var mousePosition = GetGlobalMousePosition();
+        _barrierCursorParticles.GlobalPosition = mousePosition;
         if (_currentBarrier != null)
         {
+            _barrierCursorParticles.Emitting = false;
+            
             if (_gameOver)
             {
                 HandleInteractEnd();
                 return;
             }
 
-            _currentBarrier.EndPosition(GetGlobalMousePosition());
+            _currentBarrier.EndPosition(mousePosition);
+        }
+        else
+        {
+            _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY;
         }
         
     }

@@ -1,15 +1,41 @@
-[gd_scene load_steps=4 format=3 uid="uid://cv1ulkvh1waol"]
+[gd_scene load_steps=7 format=3 uid="uid://cv1ulkvh1waol"]
 
 [ext_resource type="Script" path="res://Game/Scarecrow/Scarecrow.cs" id="1_eictq"]
 [ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="1_o7b2i"]
 [ext_resource type="PackedScene" uid="uid://bcwr8dw8ola6j" path="res://Game/Scarecrow/Spells/barrier.tscn" id="2_ti0na"]
 
-[node name="Scarecrow" type="Node2D"]
+[sub_resource type="Gradient" id="Gradient_aa2qh"]
+offsets = PackedFloat32Array(0, 0.217617, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.823834, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mnpef"]
+gradient = SubResource("Gradient_aa2qh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ck35p"]
+emission_shape = 1
+emission_sphere_radius = 2.0
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+radial_accel_min = 15.0
+radial_accel_max = 15.0
+color_ramp = SubResource("GradientTexture1D_mnpef")
+attractor_interaction_enabled = false
+
+[node name="Scarecrow" type="Node2D" node_paths=PackedStringArray("_barrierCursorParticles")]
 texture_filter = 1
 script = ExtResource("1_eictq")
 _barrierScene = ExtResource("2_ti0na")
+_barrierCursorParticles = NodePath("BarrierCursorParticleSystem")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_o7b2i")
 centered = false
 offset = Vector2(-12, -24)
+
+[node name="BarrierCursorParticleSystem" type="GPUParticles2D" parent="."]
+position = Vector2(-1, -37)
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_ck35p")
+preprocess = 0.2
