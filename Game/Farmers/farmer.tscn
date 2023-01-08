@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://8iv6ny7v4nyh"]
+
+[ext_resource type="Script" path="res://Game/Farmers/Farmer.cs" id="1_72k08"]
+[ext_resource type="Texture2D" uid="uid://c270gp7p228ii" path="res://Game/Farmers/farmer_sprite.png" id="1_u6jf5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qykwp"]
+
+[node name="Farmer" type="Node2D" node_paths=PackedStringArray("_sprite")]
+texture_filter = 1
+script = ExtResource("1_72k08")
+_speedMin = 15.0
+_speedMax = 20.0
+_sprite = NodePath("Sprite")
+_cropLayerMask = 16
+_cropDetectorShape = SubResource("RectangleShape2D_qykwp")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -12)
+texture = ExtResource("1_u6jf5")

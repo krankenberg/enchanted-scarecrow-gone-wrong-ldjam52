@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://lp276f5antrm"]
+
+[ext_resource type="Script" path="res://Game/Farmers/FarmerSpawner.cs" id="1_cboc0"]
+[ext_resource type="PackedScene" uid="uid://8iv6ny7v4nyh" path="res://Game/Farmers/farmer.tscn" id="2_fldip"]
+
+[node name="FarmerSpawner" type="Marker2D"]
+script = ExtResource("1_cboc0")
+_farmerScene = ExtResource("2_fldip")
+_spawnTimeMin = 6.0
+_spawnTimeMax = 8.0

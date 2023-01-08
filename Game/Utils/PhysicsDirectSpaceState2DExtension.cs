@@ -15,6 +15,18 @@ public static class PhysicsDirectSpaceState2DExtension
 
         return RaycastHit.Of(dictionary);
     }
+    
+    public static ShapecastHit[] IntersectShapeEnhanced(this PhysicsDirectSpaceState2D state, PhysicsShapeQueryParameters2D parameters, int maxResults = 32)
+    {
+        var dictionaries = state.IntersectShape(parameters, maxResults);
+        var raycastHits = new ShapecastHit[dictionaries.Count];
+        for (var i = 0; i < dictionaries.Count; i++)
+        {
+            raycastHits[i] = ShapecastHit.Of(dictionaries[i]);
+        }
+
+        return raycastHits;
+    }
 
     public static RaycastHit? IntersectRay(this PhysicsDirectSpaceState2D state, Vector2 origin, Vector2 direction, float maxLength)
     {
@@ -42,6 +54,23 @@ public struct RaycastHit
         {
             Position = dictionary["position"].AsVector2(),
             Normal = dictionary["normal"].AsVector2(),
+        };
+    }
+}
+
+public struct ShapecastHit
+{
+    public Variant Collider;
+
+    public static ShapecastHit Of(Dictionary dictionary)
+    {
+        // collider: The colliding object.
+        // collider_id: The colliding object's ID.
+        // rid: The intersecting object's RID.
+        // shape: The shape index of the colliding shape.
+        return new ShapecastHit
+        {
+            Collider = dictionary["collider"],
         };
     }
 }

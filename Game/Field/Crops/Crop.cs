@@ -8,7 +8,8 @@ public partial class Crop : Node2D
     public delegate void CropPickedUpEventHandler(Crop crop);
 
     public bool PickedUp { private set; get; }
-    
+    public bool FullyGrown => _growthStage == _cropResource.GrowthStageCount - 1;
+
     [Export]
     private CropResource _cropResource;
 
@@ -36,7 +37,7 @@ public partial class Crop : Node2D
         _growthStage++;
         _sprite.Frame = _growthStage;
         
-        if (_growthStage == _cropResource.GrowthStageCount - 1)
+        if (FullyGrown)
         {
             _growthTimer.Stop();
         }

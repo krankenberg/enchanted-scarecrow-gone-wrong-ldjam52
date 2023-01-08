@@ -19,6 +19,7 @@ public partial class CropManager : Node2D
     public override void _Ready()
     {
         RequestCropEvent.Listen(OnRequestCropEvent);
+        RequestFullyGrownCropEvent.Listen(OnRequestFullyGrownCropEvent);
         _freeCropSlots = new List<Vector2>();
         _occupiedCropSlots = new Dictionary<Crop, Vector2>();
         for (var i = 0; i < GetChildCount(); i++)
@@ -27,6 +28,25 @@ public partial class CropManager : Node2D
         }
         _crops = new List<Crop>();
         CallDeferred(MethodName.SpawnCrops);
+    }
+
+    private void OnRequestFullyGrownCropEvent(RequestFullyGrownCropEvent requestFullyGrownCropEvent)
+    {
+        if (requestFullyGrownCropEvent.Consumed)
+        {
+            return;
+        }
+
+        requestFullyGrownCropEvent.Consumed = true;
+        for (var i = 0; i < _crops.Count; i++)
+        {
+            var crop = _crops[i];
+            if (crop.FullyGrown && !crop.PickedUp)
+            {
+                requestFullyGrownCropEvent.Callback?.Invoke(crop);
+                return;
+            }
+        }
     }
 
     private void SpawnCrops()
