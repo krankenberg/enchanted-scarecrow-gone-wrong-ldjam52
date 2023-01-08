@@ -15,25 +15,27 @@ public partial class Barrier : Node2D
 
     [Export]
     private CollisionShape2D _collisionShape;
-    
+
     private Vector2 _startPosition;
     private Vector2 _endPosition;
-    
+    private float _maxBarrierY;
+
     private SegmentShape2D _segmentShape;
 
     public override void _Ready()
     {
         _segmentShape = new SegmentShape2D();
         _collisionShape.Shape = _segmentShape;
-        
+
         _line.Visible = false;
         _line.Points = new Vector2[2];
 
         _lifetimeTimer.Timeout += QueueFree;
     }
 
-    public void Begin(Vector2 startPosition)
+    public void Begin(float maxBarrierY, Vector2 startPosition)
     {
+        _maxBarrierY = maxBarrierY;
         _line.Visible = true;
         UpdatePositions(startPosition, startPosition);
     }
@@ -49,6 +51,15 @@ public partial class Barrier : Node2D
         difference = difference.LimitLength(_maxLength);
         _startPosition = startPosition;
         _endPosition = startPosition + difference;
+        var intersection = Geometry2D.SegmentIntersectsSegment(
+            _startPosition, _endPosition,
+            new Vector2(-1000, _maxBarrierY), new Vector2(1000, _maxBarrierY)
+        );
+        if (intersection.Obj is Vector2 intersectionPosition)
+        {
+            _endPosition = intersectionPosition;
+        }
+
         _line.Points = new[]
         {
             _line.ToLocal(_startPosition),

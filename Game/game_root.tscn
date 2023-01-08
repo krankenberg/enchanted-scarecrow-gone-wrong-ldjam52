@@ -31,8 +31,12 @@ default_color = Color(0.254902, 0.454902, 0.333333, 1)
 [node name="Foreground" type="Node2D" parent="."]
 z_index = 200
 
-[node name="Scarecrow" parent="Foreground" instance=ExtResource("2_on6s6")]
+[node name="MinimumBarrierHeightMarker" type="Marker2D" parent="Foreground"]
+position = Vector2(154, 147)
+
+[node name="Scarecrow" parent="Foreground" node_paths=PackedStringArray("_minimumBarrierHeightMarker") instance=ExtResource("2_on6s6")]
 position = Vector2(154, 163)
+_minimumBarrierHeightMarker = NodePath("../MinimumBarrierHeightMarker")
 
 [node name="CrowSpawner" type="Node2D" parent="Foreground"]
 position = Vector2(160, -11)

@@ -10,12 +10,17 @@ public partial class Scarecrow : Node2D
     [Export]
     private PackedScene _barrierScene;
 
+    [Export]
+    private Node2D _minimumBarrierHeightMarker;
+
     private Barrier _currentBarrier;
     
     private bool _gameOver;
+    private float _maxBarrierY;
 
     public override void _Ready()
     {
+        _maxBarrierY = _minimumBarrierHeightMarker.GlobalPosition.y;
         GameOverEvent.Listen(_ => _gameOver = true);
     }
 
@@ -55,15 +60,26 @@ public partial class Scarecrow : Node2D
     {
         if (_currentBarrier == null)
         {
+            var mousePosition = GetGlobalMousePosition();
+            if (mousePosition.y > _maxBarrierY)
+            {
+                return;
+            }
+            
             _currentBarrier = _barrierScene.Instantiate<Barrier>();
             GetParent().AddChild(_currentBarrier);
-            
-            _currentBarrier.Begin(GetGlobalMousePosition());
+
+            _currentBarrier.Begin(_maxBarrierY, mousePosition);
         }
     }
 
     private void HandleInteractEnd()
     {
+        if (_currentBarrier == null)
+        {
+            return;
+        }
+        
         _currentBarrier.Cast();
         _currentBarrier = null;
     }
