@@ -13,7 +13,7 @@ public partial class Crow : Node2D
 	private float _speed;
 
 	[Export]
-	private Sprite2D _sprite;
+	private AnimatedSprite2D _sprite;
 
 	[Export]
 	private Area2D _collisionArea;
