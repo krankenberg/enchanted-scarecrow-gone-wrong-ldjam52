@@ -8,6 +8,11 @@ namespace ldjam52.Game.Farmers;
 
 public partial class Farmer : Node2D
 {
+    private static readonly StringName RunningAnimation = new("running"); 
+    private static readonly StringName ScareAnimation = new("scare"); 
+    private static readonly StringName SoulingAnimation = new("souling"); 
+    private static readonly StringName WalkingAnimation = new("walking"); 
+    
     [Export]
     private float _speedMin;
 
@@ -15,7 +20,10 @@ public partial class Farmer : Node2D
     private float _speedMax;
 
     [Export]
-    private Sprite2D _sprite;
+    private float _scaredSpeedModifier = 2;
+
+    [Export]
+    private AnimatedSprite2D _sprite;
 
     [Export(PropertyHint.Layers2dPhysics)]
     private uint _cropLayerMask;
@@ -51,6 +59,9 @@ public partial class Farmer : Node2D
     private bool _pullingSoulBack;
     private Vector2 _soulVector;
     private IEventHandler _soulCutEventHandler;
+
+    private bool _scaring;
+    private bool _scared;
 
     public override void _Ready()
     {
@@ -156,6 +167,11 @@ public partial class Farmer : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_scaring)
+        {
+            return;
+        }
+        
         if (_soulOut)
         {
             if (_pullingSoulBack)
@@ -208,6 +224,7 @@ public partial class Farmer : Node2D
         _pullingSoulBack = false;
         _pulledSoulLine.Visible = true;
         PullSoulTo(mousePosition);
+        _sprite.Animation = SoulingAnimation;
     }
 
     public void ContinuePullingSoul(Vector2 mousePosition)
@@ -245,9 +262,47 @@ public partial class Farmer : Node2D
             _soulOut = false;
             _pullingSoulBack = false;
             _pulledSoulLine.Visible = false;
+            _sprite.Animation = _scared ? RunningAnimation : WalkingAnimation;
             return;
         }
         _soulVector = _soulVector.LimitLength(length - soulDistance);
         UpdatePulledSoul();
     }
+
+    public void Scare(Vector2 sourcePosition)
+    {
+        if (_scared || _soulOut)
+        {
+            return;
+        }
+
+        var isRightOfMe = sourcePosition.x > GlobalPosition.x;
+        var lookingLeft = _sprite.FlipH;
+        if (lookingLeft && isRightOfMe || !lookingLeft && !isRightOfMe)
+        {
+            return;
+        }
+
+        _scared = true;
+        _target?.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
+        RunAway(isRightOfMe);
+    }
+
+    private void RunAway(bool isRightOfMe)
+    {
+        _scaring = true;
+        var targetX = isRightOfMe ? -10 : 330;
+        _targetPosition = new Vector2(targetX, _targetPosition.y);
+        _speed *= _scaredSpeedModifier;
+        _sprite.Animation = ScareAnimation;
+        _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.ItScaredMe), (uint) ConnectFlags.OneShot);
+    }
+
+    private void ItScaredMe()
+    {
+        _goingBack = true;
+        _sprite.Animation = RunningAnimation;
+        _scaring = false;
+    }
+    
 }
