@@ -113,10 +113,6 @@ gizmo_extents = 3.0
 position = Vector2(-3, 1)
 gizmo_extents = 3.0
 
-[node name="Marker2D2" type="Marker2D" parent="CropManager"]
-position = Vector2(-8, -1)
-gizmo_extents = 3.0
-
 [node name="Marker2D3" type="Marker2D" parent="CropManager"]
 position = Vector2(-14, 1)
 gizmo_extents = 3.0
