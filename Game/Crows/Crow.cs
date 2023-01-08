@@ -35,6 +35,11 @@ public partial class Crow : Node2D
 
 	private void OnAreaEntered(Area2D area)
 	{
+		if (_flyingBackUp)
+		{
+			return;
+		}
+		
 		var owner = area.Owner;
 		if (owner is Barrier barrier)
 		{
@@ -103,7 +108,6 @@ public partial class Crow : Node2D
 
 	private void FlyBack(Vector2 movementDirection, Vector2 reflectionNormal)
 	{
-		_collisionArea.Disconnect(Area2D.SignalName.AreaEntered, new Callable(this, MethodName.OnAreaEntered));
 		_flyingBackUp = true;
 		
 		var directionBackUp = movementDirection.Bounce(reflectionNormal);
