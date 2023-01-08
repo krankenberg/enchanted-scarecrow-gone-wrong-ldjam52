@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using ldjam52.Game.Events;
+using ldjam52.Game.Scarecrow.Spells;
 using ldjam52.Game.UserInterface;
 
 namespace ldjam52.Game.Field.Crops;
@@ -25,6 +26,9 @@ public partial class Crop : Node2D
 
     [Export]
     private Area2D _collisionArea;
+
+    [Export]
+    private Area2D _soulReadyCollisionArea;
 
     [Export]
     private float _gravity;
@@ -123,6 +127,7 @@ public partial class Crop : Node2D
         _soulParticles.Emitting = true;
         _soulReadySprite.Visible = true;
         _sprite.Visible = false;
+        _soulReadyCollisionArea.Monitorable = true;
     }
 
     private void StopWiggling()
@@ -130,6 +135,7 @@ public partial class Crop : Node2D
         _soulParticles.Emitting = false;
         _soulReadySprite.Visible = false;
         _sprite.Visible = true;
+        _soulReadyCollisionArea.Monitorable = false;
     }
 
     public void StartGrowing()
@@ -253,5 +259,13 @@ public partial class Crop : Node2D
         {
             _bouncing = true;
         }
+    }
+
+    public void Awaken()
+    {
+        var useSoulsEvent = new UseSoulsEvent();
+        useSoulsEvent.Amount = _soulsNeeded;
+        useSoulsEvent.Callback += usePossible => GD.Print("AWAKEN! " + usePossible);
+        useSoulsEvent.Emit();
     }
 }

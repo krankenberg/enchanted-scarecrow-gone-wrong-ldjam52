@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://chwx6yemtj3h5"]
+[gd_scene load_steps=11 format=3 uid="uid://chwx6yemtj3h5"]
 
 [ext_resource type="Script" path="res://Game/Field/Crops/Crop.cs" id="1_1jqh2"]
 [ext_resource type="Resource" uid="uid://cvhmmxx4lqywg" path="res://Game/Field/Crops/carrot.tres" id="2_7i1h8"]
@@ -31,16 +31,20 @@ linear_accel_max = 20.0
 color_ramp = SubResource("GradientTexture1D_swqy8")
 attractor_interaction_enabled = false
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_204ql"]
+size = Vector2(9, 13)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ne2m0"]
 size = Vector2(20, 6)
 
-[node name="Crop" type="Node2D" node_paths=PackedStringArray("_growthTimer", "_sprite", "_collisionArea", "_soulReadySprite", "_soulParticles")]
+[node name="Crop" type="Node2D" node_paths=PackedStringArray("_growthTimer", "_sprite", "_collisionArea", "_soulReadyCollisionArea", "_soulReadySprite", "_soulParticles")]
 texture_filter = 1
 script = ExtResource("1_1jqh2")
 _cropResource = ExtResource("2_7i1h8")
 _growthTimer = NodePath("GrowthTimer")
 _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
+_soulReadyCollisionArea = NodePath("SoulReadyCollisionArea")
 _gravity = 100.0
 _maxBounceDistance = 25.0
 _bounceVelocity = 30.0
@@ -58,7 +62,6 @@ hframes = 5
 region_rect = Rect2(0, 0, 24, 24)
 
 [node name="SoulReadySprite" type="AnimatedSprite2D" parent="."]
-visible = false
 frames = ExtResource("4_7n60h")
 animation = &"soul_ready"
 playing = true
@@ -73,7 +76,16 @@ process_material = SubResource("ParticleProcessMaterial_hhu7s")
 
 [node name="GrowthTimer" type="Timer" parent="."]
 wait_time = 4.0
-autostart = true
+
+[node name="SoulReadyCollisionArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape" type="CollisionShape2D" parent="SoulReadyCollisionArea"]
+position = Vector2(-0.5, -6.5)
+shape = SubResource("RectangleShape2D_204ql")
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 16

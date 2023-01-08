@@ -1,5 +1,6 @@
 using Godot;
 using ldjam52.Game.Farmers;
+using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Input;
 using ldjam52.Game.Scarecrow.Spells;
 using ldjam52.Game.UserInterface;
@@ -10,7 +11,7 @@ namespace ldjam52.Game.Scarecrow;
 public partial class Scarecrow : Node2D
 {
     private static readonly Color CutColor = new("#b63c35");
-    
+
     [Export]
     private PackedScene _barrierScene;
 
@@ -22,6 +23,9 @@ public partial class Scarecrow : Node2D
 
     [Export(PropertyHint.Layers2dPhysics)]
     private uint _farmerCollisionMask;
+
+    [Export(PropertyHint.Layers2dPhysics)]
+    private uint _soulReadyCropCollisionMask;
 
     private Barrier _currentBarrier;
     private Farmer _currentFarmer;
@@ -136,9 +140,17 @@ public partial class Scarecrow : Node2D
         }
         else
         {
-            _soulCutEvent = new SoulCutEvent();
-            _soulCutEvent.Start = mousePosition;
-            QueueRedraw();
+            var soulReadyCropUnderMouse = GetSoulReadyCropUnderMouse(mousePosition);
+            if (soulReadyCropUnderMouse != null)
+            {
+                soulReadyCropUnderMouse.Awaken();
+            }
+            else
+            {
+                _soulCutEvent = new SoulCutEvent();
+                _soulCutEvent.Start = mousePosition;
+                QueueRedraw();
+            }
         }
     }
 
@@ -161,14 +173,24 @@ public partial class Scarecrow : Node2D
 
     private Farmer GetFarmerUnderMouse(Vector2 mousePosition)
     {
+        return GetStuffUnderMouse<Farmer>(mousePosition, _farmerCollisionMask);
+    }
+
+    private Crop GetSoulReadyCropUnderMouse(Vector2 mousePosition)
+    {
+        return GetStuffUnderMouse<Crop>(mousePosition, _soulReadyCropCollisionMask);
+    }
+
+    private TStuff GetStuffUnderMouse<TStuff>(Vector2 mousePosition, uint collisionMask) where TStuff : Node
+    {
         var parameters = new PhysicsPointQueryParameters2D();
         parameters.CollideWithAreas = true;
         parameters.Position = mousePosition;
-        parameters.CollisionMask = _farmerCollisionMask;
+        parameters.CollisionMask = collisionMask;
         var shapecastHits = GetWorld2d().DirectSpaceState.IntersectPointEnhanced(parameters, 1);
         if (shapecastHits.Length == 1)
         {
-            return (Farmer)shapecastHits[0].Collider.As<Area2D>().Owner;
+            return (TStuff)shapecastHits[0].Collider.As<Area2D>().Owner;
         }
 
         return null;

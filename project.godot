@@ -69,6 +69,7 @@ Shield={
 2d_physics/layer_4="field"
 2d_physics/layer_5="crop"
 2d_physics/layer_6="farmer"
+2d_physics/layer_7="soul_ready_crop"
 
 [rendering]
 
