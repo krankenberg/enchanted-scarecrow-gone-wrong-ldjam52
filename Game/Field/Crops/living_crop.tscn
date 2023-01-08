@@ -9,6 +9,7 @@ script = ExtResource("1_scdke")
 _awakenAnimationName = &"jumping_out"
 _walkingAnimationName = &"walking"
 _sprite = NodePath("Sprite")
+_velocity = 30.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 frames = ExtResource("1_hhl05")
