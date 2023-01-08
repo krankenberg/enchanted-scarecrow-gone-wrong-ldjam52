@@ -11,6 +11,9 @@ public partial class CropManager : Node2D
     [Export]
     private PackedScene _cropScene;
 
+    [Export]
+    private int _startCropCount;
+
     private List<Vector2> _freeCropSlots;
     private Dictionary<Crop, Vector2> _occupiedCropSlots;
 
@@ -63,7 +66,7 @@ public partial class CropManager : Node2D
 
     private void SpawnCrops()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < _startCropCount; i++)
         {
             if (_freeCropSlots.Count == 0)
             {

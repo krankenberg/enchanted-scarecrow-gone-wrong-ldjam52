@@ -4,45 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://chwx6yemtj3h5" path="res://Game/Field/Crops/crop.tscn" id="2_lvhl4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l006g"]
-size = Vector2(236, 6)
+size = Vector2(196, 6)
 
 [node name="Field" type="Node2D"]
 position = Vector2(162, 165)
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(-120, 0, 120, 0)
+points = PackedVector2Array(-100, 0, 100, 0)
 default_color = Color(0.32549, 0.223529, 0.227451, 1)
 
 [node name="CropManager" type="Node2D" parent="."]
 script = ExtResource("1_dlh01")
 _cropScene = ExtResource("2_lvhl4")
-
-[node name="Marker2D" type="Marker2D" parent="CropManager"]
-position = Vector2(-115, -1)
-gizmo_extents = 3.0
-
-[node name="Marker2D37" type="Marker2D" parent="CropManager"]
-position = Vector2(115, 1)
-gizmo_extents = 3.0
-
-[node name="Marker2D38" type="Marker2D" parent="CropManager"]
-position = Vector2(110, -1)
-gizmo_extents = 3.0
-
-[node name="Marker2D31" type="Marker2D" parent="CropManager"]
-position = Vector2(106, 2)
-gizmo_extents = 3.0
-
-[node name="Marker2D32" type="Marker2D" parent="CropManager"]
-position = Vector2(101, -1)
-gizmo_extents = 3.0
-
-[node name="Marker2D33" type="Marker2D" parent="CropManager"]
-position = Vector2(97, 2)
-gizmo_extents = 3.0
+_startCropCount = 10
 
 [node name="Marker2D34" type="Marker2D" parent="CropManager"]
-position = Vector2(91, -2)
+position = Vector2(94, -2)
 gizmo_extents = 3.0
 
 [node name="Marker2D35" type="Marker2D" parent="CropManager"]
@@ -50,7 +27,7 @@ position = Vector2(87, 1)
 gizmo_extents = 3.0
 
 [node name="Marker2D36" type="Marker2D" parent="CropManager"]
-position = Vector2(83, -1)
+position = Vector2(82, -3)
 gizmo_extents = 3.0
 
 [node name="Marker2D24" type="Marker2D" parent="CropManager"]
@@ -105,12 +82,8 @@ gizmo_extents = 3.0
 position = Vector2(8, 0)
 gizmo_extents = 3.0
 
-[node name="Marker2D22" type="Marker2D" parent="CropManager"]
-position = Vector2(3, -2)
-gizmo_extents = 3.0
-
 [node name="Marker2D23" type="Marker2D" parent="CropManager"]
-position = Vector2(-3, 1)
+position = Vector2(-7, -1)
 gizmo_extents = 3.0
 
 [node name="Marker2D3" type="Marker2D" parent="CropManager"]
@@ -154,15 +127,7 @@ position = Vector2(-89, -1)
 gizmo_extents = 3.0
 
 [node name="Marker2D13" type="Marker2D" parent="CropManager"]
-position = Vector2(-98, 0)
-gizmo_extents = 3.0
-
-[node name="Marker2D14" type="Marker2D" parent="CropManager"]
-position = Vector2(-104, -2)
-gizmo_extents = 3.0
-
-[node name="Marker2D15" type="Marker2D" parent="CropManager"]
-position = Vector2(-110, 1)
+position = Vector2(-95, 2)
 gizmo_extents = 3.0
 
 [node name="Area" type="Area2D" parent="."]
