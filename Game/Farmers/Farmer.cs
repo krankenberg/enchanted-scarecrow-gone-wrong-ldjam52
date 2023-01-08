@@ -8,11 +8,11 @@ namespace ldjam52.Game.Farmers;
 
 public partial class Farmer : Node2D
 {
-    private static readonly StringName RunningAnimation = new("running"); 
-    private static readonly StringName ScareAnimation = new("scare"); 
-    private static readonly StringName SoulingAnimation = new("souling"); 
-    private static readonly StringName WalkingAnimation = new("walking"); 
-    
+    private static readonly StringName RunningAnimation = new("running");
+    private static readonly StringName ScareAnimation = new("scare");
+    private static readonly StringName SoulingAnimation = new("souling");
+    private static readonly StringName WalkingAnimation = new("walking");
+
     [Export]
     private float _speedMin;
 
@@ -171,16 +171,17 @@ public partial class Farmer : Node2D
         {
             return;
         }
-        
+
         if (_soulOut)
         {
             if (_pullingSoulBack)
             {
                 PullSoulBack(delta);
             }
+
             return;
         }
-        
+
         if (_target == null && !_goingBack)
         {
             return;
@@ -265,6 +266,7 @@ public partial class Farmer : Node2D
             _sprite.Animation = _scared ? RunningAnimation : WalkingAnimation;
             return;
         }
+
         _soulVector = _soulVector.LimitLength(length - soulDistance);
         UpdatePulledSoul();
     }
@@ -284,7 +286,11 @@ public partial class Farmer : Node2D
         }
 
         _scared = true;
-        _target?.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
+        if (_target != null && _target.IsConnected(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp)))
+        {
+            _target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
+        }
+
         RunAway(isRightOfMe);
     }
 
@@ -295,7 +301,7 @@ public partial class Farmer : Node2D
         _targetPosition = new Vector2(targetX, _targetPosition.y);
         _speed *= _scaredSpeedModifier;
         _sprite.Animation = ScareAnimation;
-        _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.ItScaredMe), (uint) ConnectFlags.OneShot);
+        _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.ItScaredMe), (uint)ConnectFlags.OneShot);
     }
 
     private void ItScaredMe()
@@ -304,5 +310,4 @@ public partial class Farmer : Node2D
         _sprite.Animation = RunningAnimation;
         _scaring = false;
     }
-    
 }
