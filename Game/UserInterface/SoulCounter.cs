@@ -10,28 +10,56 @@ public partial class SoulCounter : Control
 	
 	[Export]
 	private PackedScene _soulIconScene;
+
+	private int _soulCount;
 	
 	public override void _Ready()
 	{
 		SoulHarvestedEvent.Listen(OnSoulHarvested);
 		RequestSoulCountEvent.Listen(OnRequestSoulCountEvent);
+		UseSoulsEvent.Listen(OnUseSoulEvent);
+	}
+
+	private void OnUseSoulEvent(UseSoulsEvent useSoulsEvent)
+	{
+		if (useSoulsEvent.Amount <= _soulCount)
+		{
+			for (int i = 0; i < useSoulsEvent.Amount; i++)
+			{
+				GetChild(i).QueueFree();
+			}
+
+			_soulCount -= useSoulsEvent.Amount;
+			useSoulsEvent.Callback.Invoke(true);
+			EmitSoulCountUpdate();
+		}
+		else
+		{
+			useSoulsEvent.Callback.Invoke(false);
+		}
 	}
 
 	private void OnSoulHarvested(SoulHarvestedEvent soulHarvestedEvent)
 	{
-		var soulCount = GetChildCount();
-		if (soulCount < _maxSoulCount)
+		if (_soulCount < _maxSoulCount)
 		{
 			var soulIcon = _soulIconScene.Instantiate();
 			AddChild(soulIcon);
-			var soulCountUpdatedEvent = new SoulCountUpdatedEvent();
-			soulCountUpdatedEvent.SoulCount = soulCount + 1;
-			soulCountUpdatedEvent.Emit();
+			_soulCount++;
+			EmitSoulCountUpdate();
 		}
+	}
+
+	private void EmitSoulCountUpdate()
+	{
+		var soulCountUpdatedEvent = new SoulCountUpdatedEvent();
+		soulCountUpdatedEvent.SoulCount = _soulCount;
+		soulCountUpdatedEvent.Emit();
 	}
 
 	private void OnRequestSoulCountEvent(RequestSoulCountEvent requestSoulCountEvent)
 	{
-		requestSoulCountEvent.Callback.Invoke(GetChildCount());
+		requestSoulCountEvent.Callback.Invoke(_soulCount);
 	}
+
 }
