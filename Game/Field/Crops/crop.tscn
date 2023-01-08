@@ -1,8 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://chwx6yemtj3h5"]
+[gd_scene load_steps=6 format=3 uid="uid://chwx6yemtj3h5"]
 
 [ext_resource type="Script" path="res://Game/Field/Crops/Crop.cs" id="1_1jqh2"]
 [ext_resource type="Resource" uid="uid://cvhmmxx4lqywg" path="res://Game/Field/Crops/carrot.tres" id="2_7i1h8"]
 [ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="3_uplel"]
+
+[sub_resource type="Curve" id="Curve_riq0i"]
+_data = [Vector2(0, 0), 0.0, 2.0, 0, 1, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 1, 0]
+point_count = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ne2m0"]
 size = Vector2(20, 6)
@@ -14,6 +18,11 @@ _cropResource = ExtResource("2_7i1h8")
 _growthTimer = NodePath("GrowthTimer")
 _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
+_gravity = 100.0
+_maxBounceDistance = 50.0
+_bounceVelocity = 30.0
+_bounceHeight = 10.0
+_bounceCurve = SubResource("Curve_riq0i")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_uplel")

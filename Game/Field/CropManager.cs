@@ -20,12 +20,15 @@ public partial class CropManager : Node2D
     {
         RequestCropEvent.Listen(OnRequestCropEvent);
         RequestFullyGrownCropEvent.Listen(OnRequestFullyGrownCropEvent);
+        CropDropEvent.Listen(OnCropDroppedEvent);
+        CropLandedEvent.Listen(OnCropLandedEvent);
         _freeCropSlots = new List<Vector2>();
         _occupiedCropSlots = new Dictionary<Crop, Vector2>();
         for (var i = 0; i < GetChildCount(); i++)
         {
             _freeCropSlots.Add(GetChild<Node2D>(i).GlobalPosition);
         }
+
         _crops = new List<Crop>();
         CallDeferred(MethodName.SpawnCrops);
     }
@@ -74,6 +77,43 @@ public partial class CropManager : Node2D
         _freeCropSlots.RemoveAt(randomIndex);
         _occupiedCropSlots[crop] = position;
         crop.GlobalPosition = position;
+    }
+
+    private void OnCropDroppedEvent(CropDropEvent cropDropEvent)
+    {
+        var crop = cropDropEvent.Crop;
+        var cropPosition = crop.GlobalPosition;
+        crop.GetParent().RemoveChild(crop);
+        AddSibling(crop);
+        crop.GlobalPosition = cropPosition;
+    }
+
+    private void OnCropLandedEvent(CropLandedEvent cropLandedEvent)
+    {
+        var crop = cropLandedEvent.Crop;
+        var closestSlot = -1;
+        var lowestDistance = float.MaxValue;
+        for (var i = 0; i < _freeCropSlots.Count; i++)
+        {
+            var distance = crop.GlobalPosition.DistanceTo(_freeCropSlots[i]);
+            if (distance < lowestDistance)
+            {
+                closestSlot = i;
+                lowestDistance = distance;
+            }
+        }
+
+        if (closestSlot == -1 || lowestDistance > crop.MaxBounceDistance)
+        {
+            crop.Smash();
+            return;
+        }
+
+        var position = _freeCropSlots[closestSlot];
+        _freeCropSlots.RemoveAt(closestSlot);
+        _occupiedCropSlots[crop] = position;
+        crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
+        crop.BounceToSlot(position, () => _crops.Add(crop));
     }
 
     private void OnCropPickedUp(Crop crop)
