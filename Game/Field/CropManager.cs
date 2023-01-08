@@ -22,6 +22,7 @@ public partial class CropManager : Node2D
         RequestFullyGrownCropEvent.Listen(OnRequestFullyGrownCropEvent);
         CropDropEvent.Listen(OnCropDroppedEvent);
         CropLandedEvent.Listen(OnCropLandedEvent);
+        FallingCropSpawnEvent.Listen(OnFallingCropSpawnEvent);
         _freeCropSlots = new List<Vector2>();
         _occupiedCropSlots = new Dictionary<Crop, Vector2>();
         for (var i = 0; i < GetChildCount(); i++)
@@ -31,6 +32,14 @@ public partial class CropManager : Node2D
 
         _crops = new List<Crop>();
         CallDeferred(MethodName.SpawnCrops);
+    }
+
+    private void OnFallingCropSpawnEvent(FallingCropSpawnEvent fallingCropSpawnEvent)
+    {
+        var crop = _cropScene.Instantiate<Crop>();
+        AddSibling(crop);
+        crop.GlobalPosition = fallingCropSpawnEvent.Position;
+        crop.Drop();
     }
 
     private void OnRequestFullyGrownCropEvent(RequestFullyGrownCropEvent requestFullyGrownCropEvent)
@@ -67,6 +76,7 @@ public partial class CropManager : Node2D
             OccupyRandomCropSlot(crop);
             crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
             _crops.Add(crop);
+            crop.StartGrowing();
         }
     }
 

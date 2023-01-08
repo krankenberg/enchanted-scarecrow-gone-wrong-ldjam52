@@ -19,7 +19,7 @@ _growthTimer = NodePath("GrowthTimer")
 _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
 _gravity = 100.0
-_maxBounceDistance = 50.0
+_maxBounceDistance = 25.0
 _bounceVelocity = 30.0
 _bounceHeight = 10.0
 _bounceCurve = SubResource("Curve_riq0i")
@@ -39,6 +39,7 @@ autostart = true
 collision_layer = 16
 collision_mask = 0
 monitoring = false
+monitorable = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("RectangleShape2D_ne2m0")

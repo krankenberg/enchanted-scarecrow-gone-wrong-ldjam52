@@ -2,6 +2,7 @@ using Godot;
 using ldjam52.Game.Field;
 using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Scarecrow.Spells;
+using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Crows;
 
@@ -20,6 +21,9 @@ public partial class Crow : Node2D
 	[Export]
 	private Marker2D _slot;
 
+	[Export]
+	private float _cropSpawnProbability;
+	
 	private bool _flyingBackUp;
 
 	private Vector2 _startPosition;
@@ -46,7 +50,18 @@ public partial class Crow : Node2D
 			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			FlyBack(_target.GlobalPosition - GlobalPosition, barrier.Normal());
 			barrier.Destroy();
+			if (Random.Generator.Randf() <= _cropSpawnProbability)
+			{
+				CallDeferred(MethodName.SpawnCrop);
+			}
 		}
+	}
+
+	private void SpawnCrop()
+	{
+		var fallingCropSpawnEvent = new FallingCropSpawnEvent();
+		fallingCropSpawnEvent.Position = GlobalPosition;
+		fallingCropSpawnEvent.Emit();
 	}
 
 	public void GrabCrop(Vector2 startPosition, Crop crop)

@@ -63,6 +63,12 @@ public partial class Crop : Node2D
         _growthTimer.Timeout += OnGrowthTimer;
     }
 
+    public void StartGrowing()
+    {
+        _growthTimer.Start();
+        _collisionArea.Monitorable = true;
+    }
+
     public void Drop()
     {
         _velocity = 0;
