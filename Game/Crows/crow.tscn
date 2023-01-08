@@ -15,9 +15,9 @@ _collisionArea = NodePath("CollisionArea")
 _slot = NodePath("Slot")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(-12, -11)
 texture = ExtResource("1_ldpi3")
 centered = false
+offset = Vector2(-12, -11)
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 2

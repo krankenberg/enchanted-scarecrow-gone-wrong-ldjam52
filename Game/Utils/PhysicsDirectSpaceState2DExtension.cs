@@ -27,6 +27,18 @@ public static class PhysicsDirectSpaceState2DExtension
 
         return raycastHits;
     }
+    
+    public static ShapecastHit[] IntersectPointEnhanced(this PhysicsDirectSpaceState2D state, PhysicsPointQueryParameters2D parameters, int maxResults = 32)
+    {
+        var dictionaries = state.IntersectPoint(parameters, maxResults);
+        var raycastHits = new ShapecastHit[dictionaries.Count];
+        for (var i = 0; i < dictionaries.Count; i++)
+        {
+            raycastHits[i] = ShapecastHit.Of(dictionaries[i]);
+        }
+
+        return raycastHits;
+    }
 
     public static RaycastHit? IntersectRay(this PhysicsDirectSpaceState2D state, Vector2 origin, Vector2 direction, float maxLength)
     {

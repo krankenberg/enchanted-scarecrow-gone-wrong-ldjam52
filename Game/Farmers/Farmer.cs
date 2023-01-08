@@ -1,5 +1,7 @@
 using Godot;
+using ldjam52.Game.Events;
 using ldjam52.Game.Field.Crops;
+using ldjam52.Game.Scarecrow.Spells;
 using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Farmers;
@@ -21,16 +23,73 @@ public partial class Farmer : Node2D
     [Export]
     private Shape2D _cropDetectorShape;
 
+    [Export]
+    private Area2D _collisionArea;
+
+    [Export]
+    private GPUParticles2D _soulParticles;
+
+    [Export]
+    private Line2D _pulledSoulLine;
+
+    [Export]
+    private float _pulledSoulMaxLength;
+
+    [Export]
+    private float _soulPullBackSpeed;
+
+    [Export]
+    private float _pulledSoulMinLength;
+
     private float _speed;
     private Crop _target;
 
     private Vector2 _startPosition;
     private bool _goingBack;
     private Vector2 _targetPosition;
+    private bool _soulOut;
+    private bool _pullingSoulBack;
+    private Vector2 _soulVector;
+    private IEventHandler _soulCutEventHandler;
 
     public override void _Ready()
     {
+        _soulCutEventHandler = SoulCutEvent.Listen(OnSoulCutEvent);
+        _pulledSoulLine.Visible = false;
+        _soulParticles.Emitting = false;
         _speed = Random.Generator.RandfRange(_speedMin, _speedMax);
+        _collisionArea.MouseEntered += OnMouseEntered;
+        _collisionArea.MouseExited += OnMouseExited;
+    }
+
+    public override void _ExitTree()
+    {
+        EventBus.Unregister(ref _soulCutEventHandler);
+    }
+
+    private void OnSoulCutEvent(SoulCutEvent soulCutEvent)
+    {
+        if (_soulOut)
+        {
+            var intersection = Geometry2D.SegmentIntersectsSegment(
+                _pulledSoulLine.GlobalPosition, _pulledSoulLine.GlobalPosition + _soulVector,
+                soulCutEvent.Start, soulCutEvent.End
+            );
+            if (intersection.Obj is Vector2 intersectionPoint)
+            {
+                QueueFree();
+            }
+        }
+    }
+
+    private void OnMouseEntered()
+    {
+        _soulParticles.Emitting = true;
+    }
+
+    private void OnMouseExited()
+    {
+        _soulParticles.Emitting = false;
     }
 
     public void Start()
@@ -95,6 +154,15 @@ public partial class Farmer : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_soulOut)
+        {
+            if (_pullingSoulBack)
+            {
+                PullSoulBack(delta);
+            }
+            return;
+        }
+        
         if (_target == null && !_goingBack)
         {
             return;
@@ -130,5 +198,54 @@ public partial class Farmer : Node2D
     {
         _goingBack = true;
         _targetPosition = _startPosition;
+    }
+
+    public void StartPullingSoul(Vector2 mousePosition)
+    {
+        _soulOut = true;
+        _pullingSoulBack = false;
+        _pulledSoulLine.Visible = true;
+        PullSoulTo(mousePosition);
+    }
+
+    public void ContinuePullingSoul(Vector2 mousePosition)
+    {
+        PullSoulTo(mousePosition);
+    }
+
+    private void PullSoulTo(Vector2 mousePosition)
+    {
+        _soulVector = mousePosition - _pulledSoulLine.GlobalPosition;
+        _soulVector = _soulVector.LimitLength(_pulledSoulMaxLength);
+        UpdatePulledSoul();
+    }
+
+    private void UpdatePulledSoul()
+    {
+        _pulledSoulLine.Points = new[]
+        {
+            Vector2.Zero,
+            _soulVector
+        };
+    }
+
+    public void StopPullingSoul()
+    {
+        _pullingSoulBack = true;
+    }
+
+    private void PullSoulBack(double delta)
+    {
+        var soulDistance = (float)delta * _soulPullBackSpeed;
+        var length = _soulVector.Length();
+        if (length < _pulledSoulMinLength)
+        {
+            _soulOut = false;
+            _pullingSoulBack = false;
+            _pulledSoulLine.Visible = false;
+            return;
+        }
+        _soulVector = _soulVector.LimitLength(length - soulDistance);
+        UpdatePulledSoul();
     }
 }

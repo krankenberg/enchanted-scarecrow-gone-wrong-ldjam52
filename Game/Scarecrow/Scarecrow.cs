@@ -1,7 +1,9 @@
 using Godot;
+using ldjam52.Game.Farmers;
 using ldjam52.Game.Input;
 using ldjam52.Game.Scarecrow.Spells;
 using ldjam52.Game.UserInterface;
+using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Scarecrow;
 
@@ -16,8 +18,13 @@ public partial class Scarecrow : Node2D
     [Export]
     private GPUParticles2D _barrierCursorParticles;
 
+    [Export(PropertyHint.Layers2dPhysics)]
+    private uint _farmerCollisionMask;
+
     private Barrier _currentBarrier;
-    
+    private Farmer _currentFarmer;
+    private SoulCutEvent _soulCutEvent;
+
     private bool _gameOver;
     private float _maxBarrierY;
 
@@ -35,10 +42,10 @@ public partial class Scarecrow : Node2D
         if (_currentBarrier != null)
         {
             _barrierCursorParticles.Emitting = false;
-            
+
             if (_gameOver)
             {
-                HandleInteractEnd();
+                HandleShieldEnd();
                 return;
             }
 
@@ -47,8 +54,11 @@ public partial class Scarecrow : Node2D
         else
         {
             _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY;
+            if (_currentFarmer != null)
+            {
+                _currentFarmer.ContinuePullingSoul(mousePosition);
+            }
         }
-        
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -57,18 +67,29 @@ public partial class Scarecrow : Node2D
         {
             return;
         }
-        
+
         if (inputEvent.IsActionPressed(InputConstants.Interact))
         {
             HandleInteractStart();
         }
+
         if (inputEvent.IsActionReleased(InputConstants.Interact))
         {
             HandleInteractEnd();
         }
+
+        if (inputEvent.IsActionPressed(InputConstants.Shield))
+        {
+            HandleShieldStart();
+        }
+
+        if (inputEvent.IsActionReleased(InputConstants.Shield))
+        {
+            HandleShieldEnd();
+        }
     }
 
-    private void HandleInteractStart()
+    private void HandleShieldStart()
     {
         if (_currentBarrier == null)
         {
@@ -77,7 +98,7 @@ public partial class Scarecrow : Node2D
             {
                 return;
             }
-            
+
             _currentBarrier = _barrierScene.Instantiate<Barrier>();
             GetParent().AddChild(_currentBarrier);
 
@@ -85,14 +106,61 @@ public partial class Scarecrow : Node2D
         }
     }
 
-    private void HandleInteractEnd()
+    private void HandleShieldEnd()
     {
         if (_currentBarrier == null)
         {
             return;
         }
-        
+
         _currentBarrier.Cast();
         _currentBarrier = null;
+    }
+
+    private void HandleInteractStart()
+    {
+        var mousePosition = GetGlobalMousePosition();
+        var farmerUnderMouse = GetFarmerUnderMouse(mousePosition);
+        if (farmerUnderMouse != null)
+        {
+            _currentFarmer = farmerUnderMouse;
+            _currentFarmer.StartPullingSoul(mousePosition);
+        }
+        else
+        {
+            _soulCutEvent = new SoulCutEvent();
+            _soulCutEvent.Start = mousePosition;
+        }
+    }
+
+    private void HandleInteractEnd()
+    {
+        if (_currentFarmer != null)
+        {
+            _currentFarmer.StopPullingSoul();
+            _currentFarmer = null;
+        }
+
+        if (_soulCutEvent != null)
+        {
+            _soulCutEvent.End = GetGlobalMousePosition();
+            _soulCutEvent.Emit();
+            _soulCutEvent = null;;
+        }
+    }
+
+    private Farmer GetFarmerUnderMouse(Vector2 mousePosition)
+    {
+        var parameters = new PhysicsPointQueryParameters2D();
+        parameters.CollideWithAreas = true;
+        parameters.Position = mousePosition;
+        parameters.CollisionMask = _farmerCollisionMask;
+        var shapecastHits = GetWorld2d().DirectSpaceState.IntersectPointEnhanced(parameters, 1);
+        if (shapecastHits.Length == 1)
+        {
+            return (Farmer)shapecastHits[0].Collider.As<Area2D>().Owner;
+        }
+
+        return null;
     }
 }

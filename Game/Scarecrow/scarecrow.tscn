@@ -28,6 +28,7 @@ texture_filter = 1
 script = ExtResource("1_eictq")
 _barrierScene = ExtResource("2_ti0na")
 _barrierCursorParticles = NodePath("BarrierCursorParticleSystem")
+_farmerCollisionMask = 32
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_o7b2i")
