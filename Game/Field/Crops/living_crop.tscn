@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c15ryl4px1qnt"]
+
+[ext_resource type="SpriteFrames" uid="uid://dbps08s8bixc7" path="res://Game/Field/Crops/crop_animation.tres" id="1_hhl05"]
+[ext_resource type="Script" path="res://Game/Field/Crops/LivingCrop.cs" id="1_scdke"]
+
+[node name="LivingCrop" type="Node2D" node_paths=PackedStringArray("_sprite")]
+texture_filter = 1
+script = ExtResource("1_scdke")
+_awakenAnimationName = &"jumping_out"
+_walkingAnimationName = &"walking"
+_sprite = NodePath("Sprite")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+frames = ExtResource("1_hhl05")
+animation = &"dead"
+playing = true
+centered = false
+offset = Vector2(-12, -24)

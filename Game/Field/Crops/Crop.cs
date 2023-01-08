@@ -265,7 +265,20 @@ public partial class Crop : Node2D
     {
         var useSoulsEvent = new UseSoulsEvent();
         useSoulsEvent.Amount = _soulsNeeded;
-        useSoulsEvent.Callback += usePossible => GD.Print("AWAKEN! " + usePossible);
+        useSoulsEvent.Callback += usePossible =>
+        {
+            if (usePossible)
+            {
+                var spawnLivingCropEvent = new SpawnLivingCropEvent();
+                spawnLivingCropEvent.Position = GlobalPosition;
+                spawnLivingCropEvent.Emit();
+                PickedUp = true;
+                _collisionArea.Monitorable = false;
+                _growthTimer.Stop();
+                EmitSignal(SignalName.CropPickedUp, this);
+                QueueFree();
+            }
+        };
         useSoulsEvent.Emit();
     }
 }
