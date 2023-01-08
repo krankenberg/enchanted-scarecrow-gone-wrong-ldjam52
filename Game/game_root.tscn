@@ -35,6 +35,12 @@ z_index = 200
 [node name="MinimumBarrierHeightMarker" type="Marker2D" parent="Foreground"]
 position = Vector2(154, 147)
 
+[node name="FarmerSpawner" parent="Foreground" instance=ExtResource("7_sgyef")]
+position = Vector2(335, 164)
+
+[node name="FarmerSpawner2" parent="Foreground" instance=ExtResource("7_sgyef")]
+position = Vector2(-15, 164)
+
 [node name="Scarecrow" parent="Foreground" node_paths=PackedStringArray("_minimumBarrierHeightMarker") instance=ExtResource("2_on6s6")]
 position = Vector2(154, 163)
 _minimumBarrierHeightMarker = NodePath("../MinimumBarrierHeightMarker")
@@ -47,12 +53,6 @@ _spawnTimeMin = 1.0
 _spawnTimeMax = 2.0
 _spawnXOffsetMin = 160.0
 _spawnXOffsetMax = 200.0
-
-[node name="FarmerSpawner" parent="Foreground" instance=ExtResource("7_sgyef")]
-position = Vector2(335, 164)
-
-[node name="FarmerSpawner2" parent="Foreground" instance=ExtResource("7_sgyef")]
-position = Vector2(-15, 164)
 
 [node name="Camera" type="Camera2D" parent="."]
 anchor_mode = 0

@@ -9,6 +9,8 @@ namespace ldjam52.Game.Scarecrow;
 
 public partial class Scarecrow : Node2D
 {
+    private static readonly Color CutColor = new("#b63c35");
+    
     [Export]
     private PackedScene _barrierScene;
 
@@ -57,6 +59,12 @@ public partial class Scarecrow : Node2D
             if (_currentFarmer != null)
             {
                 _currentFarmer.ContinuePullingSoul(mousePosition);
+            }
+
+            if (_soulCutEvent != null)
+            {
+                _soulCutEvent.End = mousePosition;
+                QueueRedraw();
             }
         }
     }
@@ -130,6 +138,7 @@ public partial class Scarecrow : Node2D
         {
             _soulCutEvent = new SoulCutEvent();
             _soulCutEvent.Start = mousePosition;
+            QueueRedraw();
         }
     }
 
@@ -145,7 +154,8 @@ public partial class Scarecrow : Node2D
         {
             _soulCutEvent.End = GetGlobalMousePosition();
             _soulCutEvent.Emit();
-            _soulCutEvent = null;;
+            _soulCutEvent = null;
+            QueueRedraw();
         }
     }
 
@@ -162,5 +172,13 @@ public partial class Scarecrow : Node2D
         }
 
         return null;
+    }
+
+    public override void _Draw()
+    {
+        if (_soulCutEvent != null)
+        {
+            DrawDashedLine(ToLocal(_soulCutEvent.Start), ToLocal(_soulCutEvent.End), CutColor);
+        }
     }
 }

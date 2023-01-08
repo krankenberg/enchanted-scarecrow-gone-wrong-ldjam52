@@ -19,7 +19,6 @@ size_flags_vertical = 3
 theme = ExtResource("1_6pe3b")
 
 [node name="SoulCounter" type="HFlowContainer" parent="."]
-layout_mode = 0
 offset_right = 320.0
 offset_bottom = 24.0
 script = ExtResource("2_0dguf")
