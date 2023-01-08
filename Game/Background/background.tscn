@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://7sqck0io85en"]
+[gd_scene load_steps=3 format=3 uid="uid://7sqck0io85en"]
 
 [ext_resource type="Texture2D" uid="uid://6fqqleor51hp" path="res://Game/Background/sky.png" id="1_girpp"]
+[ext_resource type="PackedScene" uid="uid://c3c6v607puwsy" path="res://Game/Background/cloud.tscn" id="3_v5ouk"]
 
 [node name="Background" type="Node2D"]
 
@@ -13,3 +14,21 @@ motion_scale = Vector2(0, 0)
 texture_filter = 1
 texture = ExtResource("1_girpp")
 centered = false
+
+[node name="Cloud" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(43, 7)
+
+[node name="Cloud2" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(150, 43)
+
+[node name="Cloud3" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(279, 16)
+
+[node name="Cloud4" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(-9, 73)
+
+[node name="Cloud5" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(292, 81)
+
+[node name="Cloud6" parent="." instance=ExtResource("3_v5ouk")]
+position = Vector2(-120, 34)
