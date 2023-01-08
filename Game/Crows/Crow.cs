@@ -43,6 +43,7 @@ public partial class Crow : Node2D
 		var owner = area.Owner;
 		if (owner is Barrier barrier)
 		{
+			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			FlyBack(_target.GlobalPosition - GlobalPosition, barrier.Normal());
 			barrier.Destroy();
 		}
