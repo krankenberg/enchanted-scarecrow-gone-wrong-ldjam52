@@ -77,6 +77,8 @@ public partial class Farmer : Node2D
             );
             if (intersection.Obj is Vector2 intersectionPoint)
             {
+                var soulHarvestedEvent = new SoulHarvestedEvent();
+                soulHarvestedEvent.Emit();
                 QueueFree();
             }
         }
