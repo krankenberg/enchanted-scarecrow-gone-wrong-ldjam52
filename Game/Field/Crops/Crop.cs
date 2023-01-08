@@ -18,6 +18,9 @@ public partial class Crop : Node2D
     [Export]
     private Sprite2D _sprite;
 
+    [Export]
+    private Area2D _collisionArea;
+
     private int _growthStage;
 
     public override void _Ready()
@@ -41,8 +44,9 @@ public partial class Crop : Node2D
 
     public void PickUp()
     {
-        EmitSignal(SignalName.CropPickedUp, this);
-        _growthTimer.Stop();
         PickedUp = true;
+        EmitSignal(SignalName.CropPickedUp, this);
+        _collisionArea.Monitorable = false;
+        _growthTimer.Stop();
     }
 }
