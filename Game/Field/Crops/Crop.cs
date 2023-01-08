@@ -1,5 +1,7 @@
 using System;
 using Godot;
+using ldjam52.Game.Events;
+using ldjam52.Game.UserInterface;
 
 namespace ldjam52.Game.Field.Crops;
 
@@ -39,6 +41,15 @@ public partial class Crop : Node2D
     [Export]
     private Curve _bounceCurve;
 
+    [Export]
+    private AnimatedSprite2D _soulReadySprite;
+
+    [Export]
+    private GPUParticles2D _soulParticles;
+
+    [Export]
+    private int _soulsNeeded;
+
     private int _growthStage;
 
     private bool _falling;
@@ -54,13 +65,71 @@ public partial class Crop : Node2D
     private Vector2 _bounceTo;
 
     private float _bounceProgress;
+    
+    private IEventHandler _soulCountUpdatedEventHandler;
+    
+    private bool _soulsAvailable;
 
     public override void _Ready()
     {
+        _soulParticles.Emitting = false;
+        _soulReadySprite.Visible = false;
+        
         _sprite.Texture = _cropResource.SpriteTexture;
         _sprite.Hframes = _cropResource.GrowthStageCount;
 
         _growthTimer.Timeout += OnGrowthTimer;
+
+        var requestSoulCountEvent = new RequestSoulCountEvent();
+        requestSoulCountEvent.Callback = SoulCountUpdate;
+        requestSoulCountEvent.Emit();
+    }
+
+    public override void _EnterTree()
+    {
+        _soulCountUpdatedEventHandler = SoulCountUpdatedEvent.Listen(OnSoulCountUpdated);
+    }
+
+    public override void _ExitTree()
+    {
+        EventBus.Unregister(ref _soulCountUpdatedEventHandler);
+    }
+
+    private void OnSoulCountUpdated(SoulCountUpdatedEvent soulCountUpdatedEvent)
+    {
+        SoulCountUpdate(soulCountUpdatedEvent.SoulCount);
+    }
+
+    private void SoulCountUpdate(int soulCount)
+    {
+        _soulsAvailable = soulCount >= _soulsNeeded;
+        WiggleIfPossible();
+    }
+
+    private void WiggleIfPossible()
+    {
+        if (FullyGrown && _soulsAvailable && !PickedUp)
+        {
+            StartWiggling();
+        }
+        else
+        {
+            StopWiggling();
+        }
+    }
+
+    private void StartWiggling()
+    {
+        _soulParticles.Emitting = true;
+        _soulReadySprite.Visible = true;
+        _sprite.Visible = false;
+    }
+
+    private void StopWiggling()
+    {
+        _soulParticles.Emitting = false;
+        _soulReadySprite.Visible = false;
+        _sprite.Visible = true;
     }
 
     public void StartGrowing()
@@ -140,6 +209,7 @@ public partial class Crop : Node2D
         _growthTimer.Start();
         _afterBounceCallback.Invoke();
         _afterBounceCallback = null;
+        WiggleIfPossible();
     }
 
     private void OnGrowthTimer()
@@ -150,12 +220,14 @@ public partial class Crop : Node2D
         if (FullyGrown)
         {
             _growthTimer.Stop();
+            WiggleIfPossible();
         }
     }
 
     public void PickUp()
     {
         PickedUp = true;
+        StopWiggling();
         EmitSignal(SignalName.CropPickedUp, this);
         _collisionArea.Monitorable = false;
         _growthTimer.Stop();

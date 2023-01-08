@@ -1,0 +1,90 @@
+[gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://dbps08s8bixc7"]
+
+[ext_resource type="Texture2D" uid="uid://cxsc0ktjwfe3g" path="res://Game/Field/Crops/living_carrot.png" id="1_m37ie"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fn64w"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(0, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1b38"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ge33"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7d4m"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyh0b"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_re1un"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(96, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s10qo"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdadd"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocoxb"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b23v5"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82pm6"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5g61k"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yubj"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1d32"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(48, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8igj"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(72, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ay07l"]
+atlas = ExtResource("1_m37ie")
+region = Rect2(96, 48, 24, 24)
+
+[resource]
+animations = [{
+"frames": [SubResource("AtlasTexture_fn64w")],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [SubResource("AtlasTexture_j1b38"), SubResource("AtlasTexture_2ge33"), SubResource("AtlasTexture_x7d4m"), SubResource("AtlasTexture_nyh0b"), SubResource("AtlasTexture_re1un")],
+"loop": false,
+"name": &"jumping_out",
+"speed": 10.0
+}, {
+"frames": [SubResource("AtlasTexture_s10qo"), SubResource("AtlasTexture_sdadd"), SubResource("AtlasTexture_ocoxb"), SubResource("AtlasTexture_b23v5"), SubResource("AtlasTexture_82pm6")],
+"loop": true,
+"name": &"soul_ready",
+"speed": 10.0
+}, {
+"frames": [SubResource("AtlasTexture_5g61k"), SubResource("AtlasTexture_5yubj"), SubResource("AtlasTexture_j1d32"), SubResource("AtlasTexture_o8igj"), SubResource("AtlasTexture_ay07l")],
+"loop": true,
+"name": &"walking",
+"speed": 10.0
+}]

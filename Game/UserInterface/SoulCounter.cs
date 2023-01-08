@@ -14,15 +14,24 @@ public partial class SoulCounter : Control
 	public override void _Ready()
 	{
 		SoulHarvestedEvent.Listen(OnSoulHarvested);
+		RequestSoulCountEvent.Listen(OnRequestSoulCountEvent);
 	}
 
 	private void OnSoulHarvested(SoulHarvestedEvent soulHarvestedEvent)
 	{
-		if (GetChildCount() < _maxSoulCount)
+		var soulCount = GetChildCount();
+		if (soulCount < _maxSoulCount)
 		{
 			var soulIcon = _soulIconScene.Instantiate();
 			AddChild(soulIcon);
+			var soulCountUpdatedEvent = new SoulCountUpdatedEvent();
+			soulCountUpdatedEvent.SoulCount = soulCount + 1;
+			soulCountUpdatedEvent.Emit();
 		}
 	}
-	
+
+	private void OnRequestSoulCountEvent(RequestSoulCountEvent requestSoulCountEvent)
+	{
+		requestSoulCountEvent.Callback.Invoke(GetChildCount());
+	}
 }
