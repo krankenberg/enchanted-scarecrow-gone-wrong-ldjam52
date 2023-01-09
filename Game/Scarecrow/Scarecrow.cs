@@ -3,6 +3,7 @@ using ldjam52.Game.Farmers;
 using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Input;
 using ldjam52.Game.Scarecrow.Spells;
+using ldjam52.Game.Tutorial;
 using ldjam52.Game.UserInterface;
 using ldjam52.Game.Utils;
 
@@ -39,11 +40,19 @@ public partial class Scarecrow : Node2D
 
     private int _barrierCount;
 
+    private bool _barrierTutorialDone;
+
     public override void _Ready()
     {
+        BarrierTutorialDoneEvent.Listen(OnBarrierTutorialDoneEvent);
         _maxBarrierY = _minimumBarrierHeightMarker.GlobalPosition.y;
         _barrierCursorParticles.Emitting = false;
         GameOverEvent.Listen(_ => _gameOver = true);
+    }
+
+    private void OnBarrierTutorialDoneEvent(BarrierTutorialDoneEvent _)
+    {
+        _barrierTutorialDone = true;
     }
 
     public override void _Process(double delta)
@@ -64,7 +73,7 @@ public partial class Scarecrow : Node2D
         }
         else
         {
-            _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY && _barrierCount < _maxBarrierCount;
+            _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY && CanCastBarrier();
             if (_currentFarmer != null)
             {
                 _currentFarmer.ContinuePullingSoul(mousePosition);
@@ -108,7 +117,7 @@ public partial class Scarecrow : Node2D
 
     private void HandleShieldStart()
     {
-        if (_currentBarrier == null && _barrierCount < _maxBarrierCount)
+        if (_currentBarrier == null && CanCastBarrier())
         {
             var mousePosition = GetGlobalMousePosition();
             if (mousePosition.y > _maxBarrierY)
@@ -123,6 +132,11 @@ public partial class Scarecrow : Node2D
 
             _currentBarrier.Begin(_maxBarrierY, mousePosition);
         }
+    }
+
+    private bool CanCastBarrier()
+    {
+        return !_barrierTutorialDone || _barrierCount < _maxBarrierCount;
     }
 
     private void OnBarrierDestroyed()
