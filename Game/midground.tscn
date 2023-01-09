@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://4psrnbqwwpka"]
+
+[ext_resource type="Texture2D" uid="uid://by1qmdwdprihe" path="res://Game/Background/ground_Ground.png" id="1_0c6ki"]
+[ext_resource type="PackedScene" uid="uid://devuwdeq374dw" path="res://Game/Field/field.tscn" id="2_nd6b3"]
+
+[node name="Midground" type="Node2D"]
+z_index = 100
+
+[node name="Ground" type="Sprite2D" parent="."]
+position = Vector2(0, 180)
+texture = ExtResource("1_0c6ki")
+centered = false
+offset = Vector2(0, -26)
+
+[node name="Field" parent="." instance=ExtResource("2_nd6b3")]
+position = Vector2(160, 165)

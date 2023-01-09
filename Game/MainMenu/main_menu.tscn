@@ -1,0 +1,211 @@
+[gd_scene load_steps=9 format=3 uid="uid://dlbu4djo6furw"]
+
+[ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_e7fy3"]
+[ext_resource type="PackedScene" uid="uid://4psrnbqwwpka" path="res://Game/midground.tscn" id="2_g78rf"]
+[ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="3_c6hxy"]
+[ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="4_rrogc"]
+[ext_resource type="Theme" uid="uid://eb5r46bxjdwp" path="res://Game/UserInterface/theme.tres" id="5_rebq8"]
+[ext_resource type="Texture2D" uid="uid://bhddwokmevhba" path="res://Game/MainMenu/play_button.png" id="6_821im"]
+[ext_resource type="Texture2D" uid="uid://3usg4x5sr5n4" path="res://Game/MainMenu/exit_button.png" id="7_7u0u7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5pyg"]
+bg_color = Color(0.447059, 0.352941, 0.317647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.27451, 0.27451, 1)
+anti_aliasing = false
+
+[node name="MainMenu" type="Node2D"]
+texture_filter = 1
+
+[node name="MenuBackground" type="Node2D" parent="."]
+visible = false
+metadata/_edit_lock_ = true
+
+[node name="Background" parent="MenuBackground" instance=ExtResource("1_e7fy3")]
+metadata/_edit_lock_ = true
+
+[node name="Midground" parent="MenuBackground" instance=ExtResource("2_g78rf")]
+
+[node name="Ground" parent="MenuBackground/Midground" index="0"]
+metadata/_edit_lock_ = true
+
+[node name="GroundField" parent="MenuBackground/Midground/Field" index="0"]
+metadata/_edit_lock_ = true
+
+[node name="CropManager" parent="MenuBackground/Midground/Field" index="1"]
+visible = false
+script = null
+
+[node name="Area" parent="MenuBackground/Midground/Field" index="2"]
+visible = false
+monitoring = false
+monitorable = false
+
+[node name="Foreground" type="Node2D" parent="MenuBackground"]
+z_index = 200
+
+[node name="Carrot" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(191, 151)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 1
+
+[node name="Carrot10" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(248, 152)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 2
+
+[node name="Carrot11" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(233, 155)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 3
+
+[node name="Carrot12" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(220, 151)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 4
+
+[node name="Carrot13" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(206, 156)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+
+[node name="Carrot14" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(66, 152)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 2
+
+[node name="Carrot2" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(178, 156)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 3
+
+[node name="Carrot3" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(147, 153)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 3
+
+[node name="Carrot4" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(138, 157)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 2
+
+[node name="Carrot5" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(125, 153)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+
+[node name="Carrot6" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(114, 157)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 4
+
+[node name="Carrot7" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(102, 156)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 3
+
+[node name="Carrot8" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(88, 154)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+frame = 3
+
+[node name="Carrot9" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(77, 158)
+texture = ExtResource("3_c6hxy")
+hframes = 5
+
+[node name="ScarecrowSprite" type="Sprite2D" parent="MenuBackground/Foreground"]
+position = Vector2(160, 163)
+texture = ExtResource("4_rrogc")
+centered = false
+offset = Vector2(-12, -24)
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 320.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_rebq8")
+
+[node name="CenterContainer" type="CenterContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Menu/CenterContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g5pyg")
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Game Title here"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="StartMargin" type="MarginContainer" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="StartButton" type="TextureButton" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/StartMargin"]
+layout_mode = 2
+texture_normal = ExtResource("6_821im")
+
+[node name="ExitMargin" type="MarginContainer" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="ExitButton" type="TextureButton" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ExitMargin"]
+layout_mode = 2
+texture_normal = ExtResource("7_7u0u7")
+
+[node name="Camera" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+limit_top = 0
+limit_bottom = 180
+editor_draw_screen = false
+
+[editable path="MenuBackground/Midground"]
+[editable path="MenuBackground/Midground/Field"]
