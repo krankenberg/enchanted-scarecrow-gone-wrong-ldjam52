@@ -60,7 +60,7 @@ public partial class CropManager : Node2D
         crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
         _crops.Add(crop);
         CropsOnFieldEvent.Emit(true);
-        crop.StartGrowing();
+        crop.StartGrowing(0.4F);
         
         spawnTutorialCropEvent.Callback.Invoke(crop);
     }
@@ -108,7 +108,7 @@ public partial class CropManager : Node2D
             crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
             _crops.Add(crop);
             CropsOnFieldEvent.Emit(true);
-            crop.StartGrowing();
+            crop.StartGrowing(Random.Generator.RandfRange(1, 4));
         }
     }
 

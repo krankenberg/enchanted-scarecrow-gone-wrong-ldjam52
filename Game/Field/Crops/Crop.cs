@@ -21,6 +21,9 @@ public partial class Crop : Node2D
     private CropResource _cropResource;
 
     [Export]
+    private Timer _startGrowthTimer;
+
+    [Export]
     private Timer _growthTimer;
 
     [Export]
@@ -85,6 +88,7 @@ public partial class Crop : Node2D
         _sprite.Hframes = _cropResource.GrowthStageCount;
 
         _growthTimer.Timeout += OnGrowthTimer;
+        _startGrowthTimer.Timeout += StartGrowingNowReally;
 
         var requestSoulCountEvent = new RequestSoulCountEvent();
         requestSoulCountEvent.Callback = SoulCountUpdate;
@@ -140,10 +144,15 @@ public partial class Crop : Node2D
         _soulReadyCollisionArea.Monitorable = false;
     }
 
-    public void StartGrowing()
+    public void StartGrowing(float startTime)
+    {
+        _startGrowthTimer.Start(startTime);
+        _collisionArea.Monitorable = true;
+    }
+
+    private void StartGrowingNowReally()
     {
         _growthTimer.Start();
-        _collisionArea.Monitorable = true;
     }
 
     public void Drop()
@@ -153,6 +162,7 @@ public partial class Crop : Node2D
         PickedUp = true;
         _collisionArea.Monitorable = false;
         _growthTimer.Stop();
+        _startGrowthTimer.Stop();
         var cropDropEvent = new CropDropEvent();
         cropDropEvent.Crop = this;
         cropDropEvent.Emit();
@@ -213,8 +223,7 @@ public partial class Crop : Node2D
         GlobalPosition = _bounceTo;
         _bouncing = false;
         PickedUp = false;
-        _collisionArea.Monitorable = true;
-        _growthTimer.Start();
+        StartGrowing(1F);
         _afterBounceCallback.Invoke();
         _afterBounceCallback = null;
         WiggleIfPossible();
@@ -239,6 +248,7 @@ public partial class Crop : Node2D
         EmitSignal(SignalName.CropPickedUp, this);
         _collisionArea.Monitorable = false;
         _growthTimer.Stop();
+        _startGrowthTimer.Stop();
     }
 
     public void Smash()
@@ -277,6 +287,7 @@ public partial class Crop : Node2D
                 PickedUp = true;
                 _collisionArea.Monitorable = false;
                 _growthTimer.Stop();
+                _startGrowthTimer.Stop();
                 EmitSignal(SignalName.CropPickedUp, this);
                 QueueFree();
             }

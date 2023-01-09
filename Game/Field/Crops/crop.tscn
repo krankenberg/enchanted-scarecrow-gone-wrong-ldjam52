@@ -37,10 +37,11 @@ size = Vector2(9, 13)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ne2m0"]
 size = Vector2(20, 6)
 
-[node name="Crop" type="Node2D" node_paths=PackedStringArray("_growthTimer", "_sprite", "_collisionArea", "_soulReadyCollisionArea", "_soulReadySprite", "_soulParticles")]
+[node name="Crop" type="Node2D" node_paths=PackedStringArray("_startGrowthTimer", "_growthTimer", "_sprite", "_collisionArea", "_soulReadyCollisionArea", "_soulReadySprite", "_soulParticles")]
 texture_filter = 1
 script = ExtResource("1_1jqh2")
 _cropResource = ExtResource("2_7i1h8")
+_startGrowthTimer = NodePath("StartGrowthTimer")
 _growthTimer = NodePath("GrowthTimer")
 _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
@@ -74,8 +75,12 @@ emitting = false
 amount = 12
 process_material = SubResource("ParticleProcessMaterial_hhu7s")
 
+[node name="StartGrowthTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="GrowthTimer" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 3.0
 
 [node name="SoulReadyCollisionArea" type="Area2D" parent="."]
 collision_layer = 64

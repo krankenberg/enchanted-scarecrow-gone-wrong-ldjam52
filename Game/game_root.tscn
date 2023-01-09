@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=14 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
 [ext_resource type="PackedScene" uid="uid://ew14at3sglny" path="res://Game/UserInterface/ui.tscn" id="1_ydlmt"]
@@ -11,6 +11,16 @@
 [ext_resource type="PackedScene" uid="uid://lp276f5antrm" path="res://Game/Farmers/farmer_spawner.tscn" id="7_sgyef"]
 [ext_resource type="Script" path="res://Game/Tutorial/Tutorial.cs" id="10_84qat"]
 [ext_resource type="PackedScene" uid="uid://dn0px3ji7r3m8" path="res://Game/Tutorial/mouse_cursor.tscn" id="11_qnoxi"]
+
+[sub_resource type="Curve" id="Curve_ifuun"]
+min_value = 0.75
+max_value = 4.0
+_data = [Vector2(0, 3.10909), 0.0, 0.0, 0, 0, Vector2(0.44898, 1.9), 0.0, 0.0, 0, 0, Vector2(1, 0.75), -2.08704, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_xmqyn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="GameRoot" type="Node2D"]
 texture_filter = 1
@@ -52,8 +62,8 @@ _minimumBarrierHeightMarker = NodePath("../MinimumBarrierHeightMarker")
 position = Vector2(160, -11)
 script = ExtResource("3_fjekh")
 _crowScene = ExtResource("4_xrtw1")
-_spawnTimeMin = 1.0
-_spawnTimeMax = 2.0
+_spawnTimeCurve = SubResource("Curve_ifuun")
+_spawnTimeVarianceCurve = SubResource("Curve_xmqyn")
 _spawnXOffsetMin = 160.0
 _spawnXOffsetMax = 200.0
 

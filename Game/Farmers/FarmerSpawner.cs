@@ -1,7 +1,6 @@
 using Godot;
 using ldjam52.Game.Field;
 using ldjam52.Game.Tutorial;
-using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Farmers;
 
@@ -11,14 +10,16 @@ public partial class FarmerSpawner : Node2D
     private PackedScene _farmerScene;
 
     [Export]
-    private float _spawnTimeMin;
+    private Curve _spawnTimeCurve;
 
     [Export]
-    private float _spawnTimeMax;
-    
+    private Curve _spawnTimeVarianceCurve;
+
     private Timer _spawnTimer;
 
     private bool _active;
+
+    private float _timeSpawning;
 
     public override void _Ready()
     {
@@ -36,11 +37,19 @@ public partial class FarmerSpawner : Node2D
         });
     }
 
+    public override void _Process(double delta)
+    {
+        if (_active)
+        {
+            _timeSpawning += (float)delta;
+        }
+    }
+
     private void RestartSpawnTimer()
     {
         if (_active)
         {
-            _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+            _spawnTimer.Start(BalancingConstants.Sample(_timeSpawning, _spawnTimeCurve, _spawnTimeVarianceCurve));
         }
     }
 
@@ -53,7 +62,7 @@ public partial class FarmerSpawner : Node2D
             {
                 return;
             }
-            
+
             var farmer = _farmerScene.Instantiate<Farmer>();
             AddSibling(farmer);
             farmer.GlobalPosition = GlobalPosition;

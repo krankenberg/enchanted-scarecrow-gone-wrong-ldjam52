@@ -12,10 +12,10 @@ public partial class CrowSpawner : Node2D
     private PackedScene _crowScene;
 
     [Export]
-    private float _spawnTimeMin;
+    private Curve _spawnTimeCurve;
 
     [Export]
-    private float _spawnTimeMax;
+    private Curve _spawnTimeVarianceCurve;
 
     [Export]
     private float _spawnXOffsetMin;
@@ -26,6 +26,8 @@ public partial class CrowSpawner : Node2D
     private Timer _spawnTimer;
 
     private bool _active;
+
+    private float _timeSpawning;
 
     public override void _Ready()
     {
@@ -41,8 +43,16 @@ public partial class CrowSpawner : Node2D
             _active = true;
             RestartSpawnTimer();
         });
-        
+
         SpawnTutorialCrowEvent.Listen(OnSpawnTutorialCrowEvent);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (_active)
+        {
+            _timeSpawning += (float)delta;
+        }
     }
 
     private void OnSpawnTutorialCrowEvent(SpawnTutorialCrowEvent spawnTutorialCrowEvent)
@@ -54,7 +64,8 @@ public partial class CrowSpawner : Node2D
     {
         if (_active)
         {
-            _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+            var spawnTime = BalancingConstants.Sample(_timeSpawning, _spawnTimeCurve, _spawnTimeVarianceCurve);
+            _spawnTimer.Start(spawnTime);
         }
     }
 

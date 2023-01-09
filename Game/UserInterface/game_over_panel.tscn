@@ -104,46 +104,63 @@ _farmersEscapedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/
 _scoreTabContainer = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 2
+offset_right = 320.0
+offset_bottom = 180.0
 
 [node name="GameOverPanel" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
+offset_left = 60.0
+offset_top = 15.0
+offset_right = 260.0
+offset_bottom = 164.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/GameOverPanel"]
-layout_mode = 2
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 198.0
+offset_bottom = 147.0
 alignment = 1
 
 [node name="Label" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer"]
-layout_mode = 2
+offset_right = 196.0
+offset_bottom = 21.0
 text = "Game Over!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TabContainer" type="TabContainer" parent="CenterContainer/GameOverPanel/VBoxContainer"]
-layout_mode = 2
+offset_top = 25.0
+offset_right = 196.0
+offset_bottom = 93.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vb4ae")
 tabs_visible = false
 
 [node name="1" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1"]
-layout_mode = 2
+offset_left = 20.0
+offset_top = 4.0
+offset_right = 196.0
+offset_bottom = 64.0
 
 [node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer"]
-layout_mode = 2
+offset_right = 156.0
+offset_bottom = 60.0
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 8
 columns = 3
 
 [node name="ScorePanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -154,7 +171,10 @@ centered = false
 offset = Vector2(2, 2)
 
 [node name="ScoreBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 3.0
+offset_right = 92.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "
@@ -163,7 +183,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="ScoreSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 3.0
+offset_right = 156.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -172,7 +195,9 @@ vertical_alignment = 1
 
 [node name="CarrotPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_top = 32.0
+offset_right = 28.0
+offset_bottom = 60.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -184,7 +209,10 @@ centered = false
 offset = Vector2(2, 2)
 
 [node name="CarrotBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 92.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -192,7 +220,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="CarrotSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 35.0
+offset_right = 156.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -200,36 +231,46 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="NextButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer"]
-layout_mode = 2
+offset_left = 160.0
+offset_right = 176.0
+offset_bottom = 60.0
 texture_normal = ExtResource("5_31jeo")
 texture_hover = ExtResource("6_mgh5u")
 stretch_mode = 3
 
 [node name="2" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
 visible = false
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2"]
-layout_mode = 2
+offset_top = 4.0
+offset_right = 196.0
+offset_bottom = 64.0
 
 [node name="PrevButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
-layout_mode = 2
+offset_right = 16.0
+offset_bottom = 60.0
 texture_normal = ExtResource("5_31jeo")
 texture_hover = ExtResource("6_mgh5u")
 stretch_mode = 3
 flip_h = true
 
 [node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
-layout_mode = 2
+offset_left = 20.0
+offset_right = 176.0
+offset_bottom = 60.0
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 8
 columns = 3
 
 [node name="CrowsBlockedPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -246,7 +287,10 @@ width = 2.0
 default_color = Color(0.176471, 0.239216, 0.447059, 1)
 
 [node name="CrowsBlockedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 3.0
+offset_right = 92.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -254,7 +298,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="CrowsBlockedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 3.0
+offset_right = 156.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -263,7 +310,9 @@ vertical_alignment = 1
 
 [node name="SoulsPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_top = 32.0
+offset_right = 28.0
+offset_bottom = 60.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -276,7 +325,10 @@ offset = Vector2(-2, -2)
 
 [node name="Container" type="Container" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsPanelContainer"]
 clip_contents = true
-layout_mode = 2
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 26.0
+offset_bottom = 26.0
 
 [node name="SoulParticles" type="GPUParticles2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsPanelContainer/Container"]
 position = Vector2(12, 12)
@@ -286,7 +338,10 @@ lifetime = 2.0
 visibility_rect = Rect2(-12, -12, 24, 24)
 
 [node name="SoulsBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 92.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -294,7 +349,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="SoulsSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 35.0
+offset_right = 156.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -302,37 +360,47 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="NextButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
-layout_mode = 2
+offset_left = 180.0
+offset_right = 196.0
+offset_bottom = 60.0
 texture_normal = ExtResource("5_31jeo")
 texture_hover = ExtResource("6_mgh5u")
 stretch_mode = 3
 
 [node name="3" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
 visible = false
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3"]
-layout_mode = 2
+offset_top = 4.0
+offset_right = 176.0
+offset_bottom = 64.0
 
 [node name="PrevButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer"]
-layout_mode = 2
+offset_right = 16.0
+offset_bottom = 60.0
 texture_normal = ExtResource("5_31jeo")
 texture_hover = ExtResource("6_mgh5u")
 stretch_mode = 3
 flip_h = true
 
 [node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer"]
-layout_mode = 2
+offset_left = 20.0
+offset_right = 176.0
+offset_bottom = 60.0
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 8
 columns = 3
 
 [node name="CrowsEscapedContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -352,7 +420,10 @@ centered = false
 offset = Vector2(2, 2)
 
 [node name="CrowsEscapedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 3.0
+offset_right = 92.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -360,7 +431,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="CrowsEscapedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 3.0
+offset_right = 156.0
+offset_bottom = 24.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -369,7 +443,9 @@ vertical_alignment = 1
 
 [node name="FarmersEscapedPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
 custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
+offset_top = 32.0
+offset_right = 28.0
+offset_bottom = 60.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -390,7 +466,10 @@ centered = false
 offset = Vector2(-2, -2)
 
 [node name="FarmersEscapedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 92.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -398,7 +477,10 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="FarmersEscapedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
-layout_mode = 2
+offset_left = 100.0
+offset_top = 35.0
+offset_right = 156.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "+100"
@@ -406,27 +488,39 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer"]
-layout_mode = 2
+offset_top = 97.0
+offset_right = 196.0
+offset_bottom = 145.0
 alignment = 1
 
 [node name="RetryMargin" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
+offset_left = 32.0
+offset_right = 96.0
+offset_bottom = 48.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
 [node name="RetryButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/RetryMargin"]
-layout_mode = 2
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 40.0
 texture_normal = ExtResource("2_qjudu")
 
 [node name="ExitMargin" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
+offset_left = 100.0
+offset_right = 164.0
+offset_bottom = 48.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
 [node name="ExitButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/ExitMargin"]
-layout_mode = 2
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 40.0
 texture_normal = ExtResource("3_tcltb")
