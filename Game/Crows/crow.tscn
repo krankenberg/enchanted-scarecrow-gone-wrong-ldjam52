@@ -1,35 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://b16j15c7ixs17"]
+[gd_scene load_steps=4 format=3 uid="uid://b16j15c7ixs17"]
 
 [ext_resource type="Script" path="res://Game/Crows/Crow.cs" id="1_4uxwo"]
-[ext_resource type="Texture2D" uid="uid://dlbys541gxfkf" path="res://Game/Crows/crow.png" id="1_ldpi3"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_424ex"]
-atlas = ExtResource("1_ldpi3")
-region = Rect2(0, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bcxd3"]
-atlas = ExtResource("1_ldpi3")
-region = Rect2(24, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h0cg0"]
-atlas = ExtResource("1_ldpi3")
-region = Rect2(48, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d23mq"]
-atlas = ExtResource("1_ldpi3")
-region = Rect2(72, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rsbqd"]
-atlas = ExtResource("1_ldpi3")
-region = Rect2(96, 0, 24, 24)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_y2fnc"]
-animations = [{
-"frames": [SubResource("AtlasTexture_424ex"), SubResource("AtlasTexture_bcxd3"), SubResource("AtlasTexture_h0cg0"), SubResource("AtlasTexture_d23mq"), SubResource("AtlasTexture_rsbqd")],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
+[ext_resource type="SpriteFrames" uid="uid://72cpnvbe8lvu" path="res://Game/Crows/crow_animation.tres" id="2_ugv1j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ew1kn"]
 radius = 5.0
@@ -44,7 +16,7 @@ _slot = NodePath("Slot")
 _cropSpawnProbability = 0.2
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
-frames = SubResource("SpriteFrames_y2fnc")
+frames = ExtResource("2_ugv1j")
 playing = true
 centered = false
 offset = Vector2(-12, -11)

@@ -1,0 +1,31 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://72cpnvbe8lvu"]
+
+[ext_resource type="Texture2D" uid="uid://dlbys541gxfkf" path="res://Game/Crows/crow.png" id="1_40jam"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_424ex"]
+atlas = ExtResource("1_40jam")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcxd3"]
+atlas = ExtResource("1_40jam")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0cg0"]
+atlas = ExtResource("1_40jam")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d23mq"]
+atlas = ExtResource("1_40jam")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rsbqd"]
+atlas = ExtResource("1_40jam")
+region = Rect2(96, 0, 24, 24)
+
+[resource]
+animations = [{
+"frames": [SubResource("AtlasTexture_424ex"), SubResource("AtlasTexture_bcxd3"), SubResource("AtlasTexture_h0cg0"), SubResource("AtlasTexture_d23mq"), SubResource("AtlasTexture_rsbqd")],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]

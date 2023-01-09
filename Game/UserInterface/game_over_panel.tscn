@@ -1,15 +1,76 @@
-[gd_scene load_steps=6 format=3 uid="uid://w7quti5p5l28"]
+[gd_scene load_steps=23 format=3 uid="uid://w7quti5p5l28"]
 
 [ext_resource type="Theme" uid="uid://eb5r46bxjdwp" path="res://Game/UserInterface/theme.tres" id="1_ojy4j"]
 [ext_resource type="Texture2D" uid="uid://cyldhb55twndd" path="res://Game/MainMenu/retry_button.png" id="2_qjudu"]
 [ext_resource type="Script" path="res://Game/UserInterface/GameOverPanel.cs" id="2_yne55"]
+[ext_resource type="SpriteFrames" uid="uid://dbps08s8bixc7" path="res://Game/Field/Crops/crop_animation.tres" id="3_djtla"]
+[ext_resource type="Texture2D" uid="uid://d1llcq804wpv2" path="res://Game/UserInterface/score.png" id="3_iv3qd"]
 [ext_resource type="Texture2D" uid="uid://3usg4x5sr5n4" path="res://Game/MainMenu/exit_button.png" id="3_tcltb"]
+[ext_resource type="SpriteFrames" uid="uid://cj7mmvsnyd6o5" path="res://Game/Farmers/farmer_animation.tres" id="4_j5qyr"]
+[ext_resource type="Texture2D" uid="uid://c0j5lulkxthsk" path="res://Game/UserInterface/next_button_Normal.png" id="5_31jeo"]
+[ext_resource type="Texture2D" uid="uid://moyuh27s5a4l" path="res://Game/UserInterface/next_button_Hover.png" id="6_mgh5u"]
+[ext_resource type="SpriteFrames" uid="uid://72cpnvbe8lvu" path="res://Game/Crows/crow_animation.tres" id="7_b0ep5"]
+[ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="9_4grnb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mejm"]
 bg_color = Color(0, 0, 0, 0.627451)
 anti_aliasing = false
 
-[node name="GameOverPanel" type="PanelContainer" node_paths=PackedStringArray("_retryButton", "_exitButton")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vb4ae"]
+bg_color = Color(0.290196, 0.207843, 0.235294, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sv42g"]
+atlas = ExtResource("3_iv3qd")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnypy"]
+atlas = ExtResource("3_iv3qd")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ku48y"]
+atlas = ExtResource("3_iv3qd")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ld75y"]
+atlas = ExtResource("3_iv3qd")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvxnr"]
+atlas = ExtResource("3_iv3qd")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xi5ih"]
+animations = [{
+"frames": [SubResource("AtlasTexture_sv42g"), SubResource("AtlasTexture_vnypy"), SubResource("AtlasTexture_ku48y"), SubResource("AtlasTexture_ld75y"), SubResource("AtlasTexture_mvxnr")],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_c4aod"]
+offsets = PackedFloat32Array(0, 0.528497, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8y7ob"]
+gradient = SubResource("Gradient_c4aod")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t016e"]
+emission_shape = 3
+emission_box_extents = Vector3(4, 4, 1)
+particle_flag_disable_z = true
+direction = Vector3(1, -1, 0)
+spread = 15.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_max = 20.0
+color_ramp = SubResource("GradientTexture1D_8y7ob")
+attractor_interaction_enabled = false
+collision_mode = 2
+
+[node name="GameOverPanel" type="PanelContainer" node_paths=PackedStringArray("_retryButton", "_exitButton", "_nextButton1", "_nextButton2", "_prevButton1", "_prevButton2", "_finalScoreSumLabel", "_carrotsEscapedBaseLabel", "_carrotsEscapedSumLabel", "_crowsBlockedBaseLabel", "_crowsBlockedSumLabel", "_soulsCollectedBaseLabel", "_soulsCollectedSumLabel", "_crowsEscapedBaseLabel", "_crowsEscapedSumLabel", "_farmersEscapedBaseLabel", "_farmersEscapedSumLabel", "_scoreTabContainer")]
 texture_filter = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,67 +83,350 @@ script = ExtResource("2_yne55")
 _mainMenuScenePath = "res://Game/MainMenu/main_menu.tscn"
 _retryButton = NodePath("CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/RetryMargin/RetryButton")
 _exitButton = NodePath("CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/ExitMargin/ExitButton")
+_positiveScoreColor = Color(0.317647, 0.533333, 0.133333, 1)
+_negativeScoreColor = Color(0.509804, 0.129412, 0.113725, 1)
+_neutralScoreColor = Color(0.509804, 0.545098, 0.596078, 1)
+_nextButton1 = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/NextButton")
+_nextButton2 = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/NextButton")
+_prevButton1 = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/PrevButton")
+_prevButton2 = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/PrevButton")
+_finalScoreSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid/ScoreSummedScore")
+_carrotsEscapedBaseLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid/CarrotBaseScore")
+_carrotsEscapedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid/CarrotSummedScore")
+_crowsBlockedBaseLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/CrowsBlockedBaseScore")
+_crowsBlockedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/CrowsBlockedSummedScore")
+_soulsCollectedBaseLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsBaseScore")
+_soulsCollectedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsSummedScore")
+_crowsEscapedBaseLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/CrowsEscapedBaseScore")
+_crowsEscapedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/CrowsEscapedSummedScore")
+_farmersEscapedBaseLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/FarmersEscapedBaseScore")
+_farmersEscapedSumLabel = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/FarmersEscapedSummedScore")
+_scoreTabContainer = NodePath("CenterContainer/GameOverPanel/VBoxContainer/TabContainer")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-offset_right = 320.0
-offset_bottom = 180.0
+layout_mode = 2
 
 [node name="GameOverPanel" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(200, 100)
-offset_left = 60.0
-offset_top = 40.0
-offset_right = 260.0
-offset_bottom = 140.0
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/GameOverPanel"]
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 198.0
-offset_bottom = 98.0
+layout_mode = 2
 alignment = 1
 
 [node name="Label" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer"]
-offset_top = 11.0
-offset_right = 196.0
-offset_bottom = 32.0
+layout_mode = 2
 text = "Game Over!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TabContainer" type="TabContainer" parent="CenterContainer/GameOverPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vb4ae")
+tabs_visible = false
+
+[node name="1" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1"]
+layout_mode = 2
+
+[node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+columns = 3
+
+[node name="ScorePanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid/ScorePanelContainer"]
+frames = SubResource("SpriteFrames_xi5ih")
+playing = true
+centered = false
+offset = Vector2(2, 2)
+
+[node name="ScoreBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ScoreSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CarrotPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid/CarrotPanelContainer"]
+frames = ExtResource("3_djtla")
+animation = &"walking"
+playing = true
+centered = false
+offset = Vector2(2, 2)
+
+[node name="CarrotBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CarrotSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="NextButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/1/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_31jeo")
+texture_hover = ExtResource("6_mgh5u")
+stretch_mode = 3
+
+[node name="2" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2"]
+layout_mode = 2
+
+[node name="PrevButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_31jeo")
+texture_hover = ExtResource("6_mgh5u")
+stretch_mode = 3
+flip_h = true
+
+[node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+columns = 3
+
+[node name="CrowsBlockedPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/CrowsBlockedPanelContainer"]
+frames = ExtResource("7_b0ep5")
+playing = true
+centered = false
+offset = Vector2(2, 2)
+
+[node name="Line2D" type="Line2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/CrowsBlockedPanelContainer"]
+position = Vector2(-1, -3)
+points = PackedVector2Array(14, 25, 25, 16)
+width = 2.0
+default_color = Color(0.176471, 0.239216, 0.447059, 1)
+
+[node name="CrowsBlockedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CrowsBlockedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SoulsPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsPanelContainer"]
+frames = ExtResource("4_j5qyr")
+animation = &"souling"
+playing = true
+centered = false
+offset = Vector2(-2, -2)
+
+[node name="Container" type="Container" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsPanelContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="SoulParticles" type="GPUParticles2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid/SoulsPanelContainer/Container"]
+position = Vector2(12, 12)
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_t016e")
+lifetime = 2.0
+visibility_rect = Rect2(-12, -12, 24, 24)
+
+[node name="SoulsBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SoulsSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="NextButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/2/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_31jeo")
+texture_hover = ExtResource("6_mgh5u")
+stretch_mode = 3
+
+[node name="3" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3"]
+layout_mode = 2
+
+[node name="PrevButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_31jeo")
+texture_hover = ExtResource("6_mgh5u")
+stretch_mode = 3
+flip_h = true
+
+[node name="ScoreGrid" type="GridContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+columns = 3
+
+[node name="CrowsEscapedContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Carrot" type="Sprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/CrowsEscapedContainer"]
+position = Vector2(15, 26)
+texture = ExtResource("9_4grnb")
+centered = false
+offset = Vector2(-12, -12)
+flip_v = true
+hframes = 5
+frame = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/CrowsEscapedContainer"]
+frames = ExtResource("7_b0ep5")
+playing = true
+centered = false
+offset = Vector2(2, 2)
+
+[node name="CrowsEscapedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CrowsEscapedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FarmersEscapedPanelContainer" type="PanelContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Carrot" type="Sprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/FarmersEscapedPanelContainer"]
+position = Vector2(29, 18)
+rotation = 1.57079
+texture = ExtResource("9_4grnb")
+centered = false
+offset = Vector2(-12, -12)
+hframes = 5
+frame = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid/FarmersEscapedPanelContainer"]
+frames = ExtResource("4_j5qyr")
+animation = &"walking"
+playing = true
+centered = false
+offset = Vector2(-2, -2)
+
+[node name="FarmersEscapedBaseScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FarmersEscapedSummedScore" type="Label" parent="CenterContainer/GameOverPanel/VBoxContainer/TabContainer/3/HBoxContainer/ScoreGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "+100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GameOverPanel/VBoxContainer"]
-offset_top = 36.0
-offset_right = 196.0
-offset_bottom = 84.0
+layout_mode = 2
 alignment = 1
 
 [node name="RetryMargin" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer"]
-offset_left = 32.0
-offset_right = 96.0
-offset_bottom = 48.0
+layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
 [node name="RetryButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/RetryMargin"]
-offset_left = 16.0
-offset_top = 8.0
-offset_right = 48.0
-offset_bottom = 40.0
+layout_mode = 2
 texture_normal = ExtResource("2_qjudu")
 
 [node name="ExitMargin" type="MarginContainer" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer"]
-offset_left = 100.0
-offset_right = 164.0
-offset_bottom = 48.0
+layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
 [node name="ExitButton" type="TextureButton" parent="CenterContainer/GameOverPanel/VBoxContainer/HBoxContainer/ExitMargin"]
-offset_left = 16.0
-offset_top = 8.0
-offset_right = 48.0
-offset_bottom = 40.0
+layout_mode = 2
 texture_normal = ExtResource("3_tcltb")
