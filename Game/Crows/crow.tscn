@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://b16j15c7ixs17"]
+[gd_scene load_steps=6 format=3 uid="uid://b16j15c7ixs17"]
 
 [ext_resource type="Script" path="res://Game/Crows/Crow.cs" id="1_4uxwo"]
 [ext_resource type="SpriteFrames" uid="uid://72cpnvbe8lvu" path="res://Game/Crows/crow_animation.tres" id="2_ugv1j"]
+[ext_resource type="AudioStream" uid="uid://d3n3icu6ac8nr" path="res://Game/Sounds/cawcaw.wav" id="3_4dl4u"]
+[ext_resource type="AudioStream" uid="uid://umwtrangf6h0" path="res://Game/Sounds/crow_bounce.wav" id="3_jcykc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ew1kn"]
 radius = 5.0
 
-[node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea", "_slot")]
+[node name="Crow" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea", "_slot", "_visibleOnScreenNotifier", "_visibleSound", "_bounceSound")]
 texture_filter = 1
 script = ExtResource("1_4uxwo")
 _speed = 60.0
@@ -14,6 +16,9 @@ _sprite = NodePath("Sprite")
 _collisionArea = NodePath("CollisionArea")
 _slot = NodePath("Slot")
 _cropSpawnProbability = 0.2
+_visibleOnScreenNotifier = NodePath("VisibleOnScreenNotifier")
+_visibleSound = NodePath("VisibleSound")
+_bounceSound = NodePath("BounceSound")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 frames = ExtResource("2_ugv1j")
@@ -32,3 +37,15 @@ shape = SubResource("CircleShape2D_ew1kn")
 [node name="Slot" type="Marker2D" parent="."]
 position = Vector2(-1, 1)
 gizmo_extents = 2.0
+
+[node name="VisibleOnScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(5, -5)
+rect = Rect2(-10, -10, 10, 10)
+
+[node name="VisibleSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_4dl4u")
+bus = &"CrowVisible"
+
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_jcykc")
+bus = &"CrowBounce"

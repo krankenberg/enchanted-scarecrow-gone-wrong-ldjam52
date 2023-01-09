@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://c15ryl4px1qnt"]
+[gd_scene load_steps=6 format=3 uid="uid://c15ryl4px1qnt"]
 
 [ext_resource type="SpriteFrames" uid="uid://dbps08s8bixc7" path="res://Game/Field/Crops/crop_animation.tres" id="1_hhl05"]
 [ext_resource type="Script" path="res://Game/Field/Crops/LivingCrop.cs" id="1_scdke"]
+[ext_resource type="AudioStream" uid="uid://bhbeqqoewvbfd" path="res://Game/Sounds/carrot_jump.wav" id="3_b8gr7"]
+[ext_resource type="AudioStream" uid="uid://c3h18cdhhm0fk" path="res://Game/Sounds/carrot_jump2.wav" id="3_ibd3u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hpmdj"]
 
-[node name="LivingCrop" type="Node2D" node_paths=PackedStringArray("_sprite", "_scareCast")]
+[node name="LivingCrop" type="Node2D" node_paths=PackedStringArray("_sprite", "_scareCast", "_awakenSound", "_jumpSound")]
 texture_filter = 1
 script = ExtResource("1_scdke")
 _awakenAnimationName = &"jumping_out"
@@ -13,6 +15,8 @@ _walkingAnimationName = &"walking"
 _sprite = NodePath("Sprite")
 _velocity = 30.0
 _scareCast = NodePath("ScareCast")
+_awakenSound = NodePath("AwakenSound")
+_jumpSound = NodePath("JumpSound")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 frames = ExtResource("1_hhl05")
@@ -28,3 +32,11 @@ target_position = Vector2(140, 0)
 collision_mask = 32
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="AwakenSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_b8gr7")
+bus = &"CropAwake"
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ibd3u")
+bus = &"CropJump"

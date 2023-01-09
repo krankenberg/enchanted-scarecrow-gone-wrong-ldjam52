@@ -35,6 +35,9 @@ public partial class Scarecrow : Node2D
     [Export]
     private int _maxBarrierCount = 3;
 
+    [Export]
+    private AudioStreamPlayer _awakenSound;
+
     private Barrier _currentBarrier;
     private Farmer _currentFarmer;
     private SoulCutEvent _soulCutEvent;
@@ -53,11 +56,20 @@ public partial class Scarecrow : Node2D
         BarrierTutorialDoneEvent.Listen(OnBarrierTutorialDoneEvent);
         _maxBarrierY = _minimumBarrierHeightMarker.GlobalPosition.y;
         _barrierCursorParticles.Emitting = false;
-        GameOverEvent.Listen(_ => _gameOver = true);
+        GameOverEvent.Listen(_ =>
+        {
+            _gameOver = true;
+            if (_currentFarmer != null)
+            {
+                _currentFarmer.StopPullingSoul();
+                _currentFarmer = null;
+            }
+        });
         CutsceneEndedEvent.Listen(_ =>
         {
             _cutsceneDone = true;
             _sparkles.Emitting = true;
+            _awakenSound.Play();
         });
     }
 

@@ -54,6 +54,15 @@ public partial class Farmer : Node2D
     [Export]
     private float _pulledSoulMinLength;
 
+    [Export]
+    private AudioStreamPlayer _scaredSound;
+
+    [Export]
+    private AudioStreamPlayer _soulPullOutSound;
+
+    [Export]
+    private AudioStreamPlayer _soulCutOffSound;
+
     private float _speed;
     private Crop _target;
 
@@ -98,6 +107,14 @@ public partial class Farmer : Node2D
                 EmitSignal(SignalName.SoulWasCut);
                 var soulHarvestedEvent = new SoulHarvestedEvent();
                 soulHarvestedEvent.Emit();
+                
+                _soulPullOutSound.Playing = false;
+                RemoveChild(_soulCutOffSound);
+                AddSibling(_soulCutOffSound);
+                _soulCutOffSound.PitchScale = Random.Pitch();
+                _soulCutOffSound.Play();
+                _soulCutOffSound.Finished += _soulCutOffSound.QueueFree;
+                
                 QueueFree();
             }
         }
@@ -262,6 +279,8 @@ public partial class Farmer : Node2D
         _pulledSoulLine.Visible = true;
         PullSoulTo(mousePosition);
         _sprite.Animation = SoulingAnimation;
+        _soulPullOutSound.PitchScale = Random.Pitch();
+        _soulPullOutSound.Playing = !GetTree().Paused;
     }
 
     public void ContinuePullingSoul(Vector2 mousePosition)
@@ -296,6 +315,7 @@ public partial class Farmer : Node2D
         var length = _soulVector.Length();
         if (length < _pulledSoulMinLength)
         {
+            _soulPullOutSound.Playing = false;
             _soulOut = false;
             _pullingSoulBack = false;
             _pulledSoulLine.Visible = false;
@@ -342,6 +362,8 @@ public partial class Farmer : Node2D
 
     private void ItScaredMe()
     {
+        _scaredSound.PitchScale = Random.Pitch();
+        _scaredSound.Play();
         _goingBack = true;
         _sprite.Animation = RunningAnimation;
         _scaring = false;

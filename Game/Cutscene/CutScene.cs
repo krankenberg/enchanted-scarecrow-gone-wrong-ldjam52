@@ -13,6 +13,9 @@ public partial class CutScene : Node2D
     }
 
     [Export]
+    private bool _skipCutScene;
+
+    [Export]
     private Druid _druid;
 
     [Export]
@@ -49,6 +52,18 @@ public partial class CutScene : Node2D
         _stage = Stage.WalkingToCastPosition;
         _druid.TargetReached += OnDruidTargetReached;
         _druid.WalkTo(_castPosition.GlobalPosition);
+
+
+        if (_skipCutScene)
+        {
+            CallDeferred(MethodName.SkipCutscene);
+        }
+    }
+
+    private void SkipCutscene()
+    {
+            CutsceneEndedEvent.Emit();
+            QueueFree();
     }
 
     private void OnDruidTargetReached()

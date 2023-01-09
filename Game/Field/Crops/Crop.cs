@@ -3,6 +3,7 @@ using Godot;
 using ldjam52.Game.Events;
 using ldjam52.Game.Scarecrow.Spells;
 using ldjam52.Game.UserInterface;
+using Random = ldjam52.Game.Utils.Random;
 
 namespace ldjam52.Game.Field.Crops;
 
@@ -58,6 +59,21 @@ public partial class Crop : Node2D
 
     [Export]
     private int _soulsNeeded;
+
+    [Export]
+    private AudioStreamPlayer _bounceSound;
+
+    [Export]
+    private AudioStreamPlayer _cropInSlotSound;
+
+    [Export]
+    private AudioStreamPlayer _smashSound;
+
+    [Export]
+    private AudioStreamPlayer _dropSound;
+
+    [Export]
+    private AudioStreamPlayer _pickUpSound;
 
     private int _growthStage;
 
@@ -166,6 +182,8 @@ public partial class Crop : Node2D
         var cropDropEvent = new CropDropEvent();
         cropDropEvent.Crop = this;
         cropDropEvent.Emit();
+        _dropSound.PitchScale = Random.Pitch(0.05F);
+        _dropSound.Play();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -216,10 +234,14 @@ public partial class Crop : Node2D
         var cropLandedEvent = new CropLandedEvent();
         cropLandedEvent.Crop = this;
         cropLandedEvent.Emit();
+        _bounceSound.PitchScale = Random.Pitch();
+        _bounceSound.Play();
     }
 
     private void LandAfterBounce()
     {
+        _cropInSlotSound.PitchScale = Random.Pitch();
+        _cropInSlotSound.Play();
         GlobalPosition = _bounceTo;
         _bouncing = false;
         PickedUp = false;
@@ -249,11 +271,17 @@ public partial class Crop : Node2D
         _collisionAreaShape.Disabled = true;
         _growthTimer.Stop();
         _startGrowthTimer.Stop();
+        _pickUpSound.PitchScale = Random.Pitch();
+        _pickUpSound.Play();
     }
 
     public void Smash()
     {
-        GD.Print($"{Name} smashed!");
+        RemoveChild(_smashSound);
+        AddSibling(_smashSound);
+        _smashSound.PitchScale = Random.Pitch();
+        _smashSound.Play();
+        _smashSound.Finished += _smashSound.QueueFree;
         QueueFree();
     }
 

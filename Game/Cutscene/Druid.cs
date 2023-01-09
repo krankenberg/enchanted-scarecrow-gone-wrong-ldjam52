@@ -1,4 +1,5 @@
 using Godot;
+using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Cutscene;
 
@@ -16,11 +17,32 @@ public partial class Druid : Node2D
     [Export]
     private float _velocity;
 
+    [Export]
+    private AudioStreamPlayer _walkSound;
+
+    [Export]
+    private AudioStreamPlayer _castSound;
+
     private bool _walking;
     private Vector2 _target;
 
+    public override void _Ready()
+    {
+        _sprite.AnimationFinished += OnAnimationFinished;
+    }
+
+    private void OnAnimationFinished()
+    {
+        if (_walking)
+        {
+            _walkSound.PitchScale = Random.Pitch();
+            _walkSound.Play();
+        }
+    }
+
     public void WalkTo(Vector2 target)
     {
+        _castSound.Playing = false;
         _walking = true;
         _target = target;
         _sprite.Animation = WalkingAnimation;
@@ -50,6 +72,7 @@ public partial class Druid : Node2D
 
     public void Cast()
     {
+        _castSound.Playing = true;
         _sprite.Animation = CastingAnimation;
     }
 }

@@ -21,6 +21,12 @@ public partial class LivingCrop : Node2D
     [Export]
     private ShapeCast2D _scareCast;
 
+    [Export]
+    private AudioStreamPlayer _awakenSound;
+
+    [Export]
+    private AudioStreamPlayer _jumpSound;
+
     private bool _walking;
 
     private int _direction;
@@ -31,11 +37,20 @@ public partial class LivingCrop : Node2D
         _sprite.Animation = _awakenAnimationName;
         LivingCropsOnFieldEvent.Emit(true);
 
-        _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.OnAwaken), (uint)ConnectFlags.OneShot);
+        _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.OnAwaken));
+        _awakenSound.PitchScale = Random.Pitch(0.05F);
+        _awakenSound.Play();
     }
 
     private void OnAwaken()
     {
+        _jumpSound.PitchScale = Random.Pitch(0.05F);
+        _jumpSound.Play();
+        if (_walking)
+        {
+            return;
+        }
+        
         _sprite.Animation = _walkingAnimationName;
         _walking = true;
         _direction = GlobalPosition.x > 160 ? 1 : -1;

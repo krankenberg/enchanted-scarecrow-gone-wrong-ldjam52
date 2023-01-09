@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cv1ulkvh1waol"]
+[gd_scene load_steps=11 format=3 uid="uid://cv1ulkvh1waol"]
 
 [ext_resource type="Script" path="res://Game/Scarecrow/Scarecrow.cs" id="1_eictq"]
 [ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="1_o7b2i"]
 [ext_resource type="PackedScene" uid="uid://bcwr8dw8ola6j" path="res://Game/Scarecrow/Spells/barrier.tscn" id="2_ti0na"]
+[ext_resource type="AudioStream" uid="uid://cskltdqc5wfxx" path="res://Game/Sounds/awaken2.wav" id="4_8ds8d"]
 
 [sub_resource type="Gradient" id="Gradient_aa2qh"]
 offsets = PackedFloat32Array(0, 0.217617, 1)
@@ -41,7 +42,7 @@ orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_l2ior")
 
-[node name="Scarecrow" type="Node2D" node_paths=PackedStringArray("_barrierCursorParticles", "_sparkles")]
+[node name="Scarecrow" type="Node2D" node_paths=PackedStringArray("_barrierCursorParticles", "_sparkles", "_awakenSound")]
 texture_filter = 1
 script = ExtResource("1_eictq")
 _barrierScene = ExtResource("2_ti0na")
@@ -49,6 +50,7 @@ _barrierCursorParticles = NodePath("BarrierCursorParticleSystem")
 _sparkles = NodePath("Sparkles")
 _farmerCollisionMask = 32
 _soulReadyCropCollisionMask = 64
+_awakenSound = NodePath("AliveSound")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_o7b2i")
@@ -70,3 +72,7 @@ amount = 64
 process_material = SubResource("ParticleProcessMaterial_87owr")
 preprocess = 0.2
 fixed_fps = 144
+
+[node name="AliveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_8ds8d")
+bus = &"Awaken"

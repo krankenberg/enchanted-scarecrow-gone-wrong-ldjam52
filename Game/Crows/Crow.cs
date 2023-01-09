@@ -25,7 +25,16 @@ public partial class Crow : Node2D
 
 	[Export]
 	private float _cropSpawnProbability;
-	
+
+	[Export]
+	private VisibleOnScreenNotifier2D _visibleOnScreenNotifier;
+
+	[Export]
+	private AudioStreamPlayer _visibleSound;
+
+	[Export]
+	private AudioStreamPlayer _bounceSound;
+
 	private bool _flyingBackUp;
 
 	private Vector2 _startPosition;
@@ -39,7 +48,14 @@ public partial class Crow : Node2D
 	public override void _Ready()
 	{
 		_collisionArea.Connect(Area2D.SignalName.AreaEntered, new Callable(this, MethodName.OnAreaEntered));
+		_visibleOnScreenNotifier.Connect(VisibleOnScreenNotifier2D.SignalName.ScreenEntered, new Callable(this, MethodName.VisibleOnScreen), (uint) ConnectFlags.OneShot);
 		CrowsOnFieldEvent.Emit(true);
+	}
+
+	private void VisibleOnScreen()
+	{
+		_visibleSound.PitchScale = Random.Pitch(0.1F);
+		_visibleSound.Play();
 	}
 
 	private void OnAreaEntered(Area2D area)
@@ -57,6 +73,8 @@ public partial class Crow : Node2D
 			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			FlyBack(_target.GlobalPosition - GlobalPosition, barrier.Normal());
 			barrier.Destroy();
+			_bounceSound.PitchScale = Random.Pitch(0.05F);
+			_bounceSound.Play();
 			if (Random.Generator.Randf() <= _cropSpawnProbability)
 			{
 				CallDeferred(MethodName.SpawnCrop);

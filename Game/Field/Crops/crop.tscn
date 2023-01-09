@@ -1,9 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://chwx6yemtj3h5"]
+[gd_scene load_steps=16 format=3 uid="uid://chwx6yemtj3h5"]
 
 [ext_resource type="Script" path="res://Game/Field/Crops/Crop.cs" id="1_1jqh2"]
 [ext_resource type="Resource" uid="uid://cvhmmxx4lqywg" path="res://Game/Field/Crops/carrot.tres" id="2_7i1h8"]
 [ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="3_uplel"]
 [ext_resource type="SpriteFrames" uid="uid://dbps08s8bixc7" path="res://Game/Field/Crops/crop_animation.tres" id="4_7n60h"]
+[ext_resource type="AudioStream" uid="uid://bpirspmlmluo1" path="res://Game/Sounds/bouncet.wav" id="5_ctlsf"]
+[ext_resource type="AudioStream" uid="uid://c4vwoalj6quoq" path="res://Game/Sounds/crop_landed_safe.wav" id="6_gteqv"]
+[ext_resource type="AudioStream" uid="uid://bscd448p5cuuy" path="res://Game/Sounds/smash.wav" id="7_25e5p"]
+[ext_resource type="AudioStream" uid="uid://bh1kugj6mqgiu" path="res://Game/Sounds/crop_drop.wav" id="8_jihfv"]
+[ext_resource type="AudioStream" uid="uid://spieimfotel5" path="res://Game/Sounds/pick_up.wav" id="9_t8ij6"]
 
 [sub_resource type="Curve" id="Curve_riq0i"]
 _data = [Vector2(0, 0), 0.0, 2.0, 0, 1, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 1, 0]
@@ -37,7 +42,7 @@ size = Vector2(9, 13)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ne2m0"]
 size = Vector2(20, 6)
 
-[node name="Crop" type="Node2D" node_paths=PackedStringArray("_startGrowthTimer", "_growthTimer", "_sprite", "_collisionAreaShape", "_soulReadyCollisionShape", "_soulReadySprite", "_soulParticles")]
+[node name="Crop" type="Node2D" node_paths=PackedStringArray("_startGrowthTimer", "_growthTimer", "_sprite", "_collisionAreaShape", "_soulReadyCollisionShape", "_soulReadySprite", "_soulParticles", "_bounceSound", "_cropInSlotSound", "_smashSound", "_dropSound", "_pickUpSound")]
 texture_filter = 1
 script = ExtResource("1_1jqh2")
 _cropResource = ExtResource("2_7i1h8")
@@ -54,6 +59,11 @@ _bounceCurve = SubResource("Curve_riq0i")
 _soulReadySprite = NodePath("SoulReadySprite")
 _soulParticles = NodePath("SoulReadyParticles")
 _soulsNeeded = 2
+_bounceSound = NodePath("BounceSound")
+_cropInSlotSound = NodePath("CropInSlotSound")
+_smashSound = NodePath("SmashSound")
+_dropSound = NodePath("CropDropSound")
+_pickUpSound = NodePath("CropPickUpSound")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_uplel")
@@ -100,3 +110,23 @@ monitoring = false
 [node name="CollisionShape" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("RectangleShape2D_ne2m0")
 disabled = true
+
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ctlsf")
+bus = &"CropBounce"
+
+[node name="CropInSlotSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_gteqv")
+bus = &"CropInSlot"
+
+[node name="SmashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_25e5p")
+bus = &"CropSmash"
+
+[node name="CropDropSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_jihfv")
+bus = &"CropDrop"
+
+[node name="CropPickUpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_t8ij6")
+bus = &"CropPickUp"
