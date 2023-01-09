@@ -30,10 +30,10 @@ public partial class Crop : Node2D
     private Sprite2D _sprite;
 
     [Export]
-    private Area2D _collisionArea;
+    private CollisionShape2D _collisionAreaShape;
 
     [Export]
-    private Area2D _soulReadyCollisionArea;
+    private CollisionShape2D _soulReadyCollisionShape;
 
     [Export]
     private float _gravity;
@@ -133,7 +133,7 @@ public partial class Crop : Node2D
         _soulParticles.Emitting = true;
         _soulReadySprite.Visible = true;
         _sprite.Visible = false;
-        _soulReadyCollisionArea.Monitorable = true;
+        _soulReadyCollisionShape.Disabled = false;
     }
 
     private void StopWiggling()
@@ -141,13 +141,13 @@ public partial class Crop : Node2D
         _soulParticles.Emitting = false;
         _soulReadySprite.Visible = false;
         _sprite.Visible = true;
-        _soulReadyCollisionArea.Monitorable = false;
+        _soulReadyCollisionShape.Disabled = true;
     }
 
     public void StartGrowing(float startTime)
     {
         _startGrowthTimer.Start(startTime);
-        _collisionArea.Monitorable = true;
+        _collisionAreaShape.Disabled = false;
     }
 
     private void StartGrowingNowReally()
@@ -160,7 +160,7 @@ public partial class Crop : Node2D
         _velocity = 0;
         _falling = true;
         PickedUp = true;
-        _collisionArea.Monitorable = false;
+        _collisionAreaShape.Disabled = true;
         _growthTimer.Stop();
         _startGrowthTimer.Stop();
         var cropDropEvent = new CropDropEvent();
@@ -246,7 +246,7 @@ public partial class Crop : Node2D
         PickedUp = true;
         StopWiggling();
         EmitSignal(SignalName.CropPickedUp, this);
-        _collisionArea.Monitorable = false;
+        _collisionAreaShape.Disabled = true;
         _growthTimer.Stop();
         _startGrowthTimer.Stop();
     }
@@ -285,7 +285,7 @@ public partial class Crop : Node2D
                 spawnLivingCropEvent.Position = GlobalPosition;
                 spawnLivingCropEvent.Emit();
                 PickedUp = true;
-                _collisionArea.Monitorable = false;
+                _collisionAreaShape.Disabled = true;
                 _growthTimer.Stop();
                 _startGrowthTimer.Stop();
                 EmitSignal(SignalName.CropPickedUp, this);

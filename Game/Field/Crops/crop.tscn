@@ -37,15 +37,15 @@ size = Vector2(9, 13)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ne2m0"]
 size = Vector2(20, 6)
 
-[node name="Crop" type="Node2D" node_paths=PackedStringArray("_startGrowthTimer", "_growthTimer", "_sprite", "_collisionArea", "_soulReadyCollisionArea", "_soulReadySprite", "_soulParticles")]
+[node name="Crop" type="Node2D" node_paths=PackedStringArray("_startGrowthTimer", "_growthTimer", "_sprite", "_collisionAreaShape", "_soulReadyCollisionShape", "_soulReadySprite", "_soulParticles")]
 texture_filter = 1
 script = ExtResource("1_1jqh2")
 _cropResource = ExtResource("2_7i1h8")
 _startGrowthTimer = NodePath("StartGrowthTimer")
 _growthTimer = NodePath("GrowthTimer")
 _sprite = NodePath("Sprite")
-_collisionArea = NodePath("CollisionArea")
-_soulReadyCollisionArea = NodePath("SoulReadyCollisionArea")
+_collisionAreaShape = NodePath("CollisionArea/CollisionShape")
+_soulReadyCollisionShape = NodePath("SoulReadyCollisionArea/CollisionShape")
 _gravity = 100.0
 _maxBounceDistance = 25.0
 _bounceVelocity = 30.0
@@ -86,17 +86,17 @@ wait_time = 3.0
 collision_layer = 64
 collision_mask = 0
 monitoring = false
-monitorable = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="SoulReadyCollisionArea"]
 position = Vector2(-0.5, -6.5)
 shape = SubResource("RectangleShape2D_204ql")
+disabled = true
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 0
 monitoring = false
-monitorable = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("RectangleShape2D_ne2m0")
+disabled = true
