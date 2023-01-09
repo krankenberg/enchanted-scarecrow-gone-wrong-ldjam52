@@ -134,6 +134,7 @@ public partial class Tutorial : Node2D
         if (crowDistanceToCrop < _crowDistanceToCropForHint)
         {
             _crow.Pause();
+            SetTutorialPause(true);
             doWithCrowMovementVector.Invoke(crowMovementVector);
         }
     }
@@ -145,6 +146,7 @@ public partial class Tutorial : Node2D
             _stage = nextStage;
             _mouseCursor.StopLoop();
             _crow.Unpause();
+            SetTutorialPause(false);
             var crowCollidedWithBarrierCallable = new Callable(this, MethodName.CrowCollidedWithBarrier);
             if (_crow.IsConnected(Crow.SignalName.CrowCollidedWithBarrier, crowCollidedWithBarrierCallable))
             {
@@ -181,4 +183,11 @@ public partial class Tutorial : Node2D
         _stage = Stage.BarrierTutorialEnded;
         BarrierTutorialDoneEvent.Emit();
     }
+
+    private void SetTutorialPause(bool pause)
+    {
+        GetTree().Paused = pause;
+        PhysicsServer2D.SetActive(true);
+    }
+    
 }

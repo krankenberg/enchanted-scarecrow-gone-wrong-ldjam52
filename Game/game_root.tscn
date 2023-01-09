@@ -21,31 +21,34 @@ offset_right = 320.0
 offset_bottom = 180.0
 mouse_filter = 2
 
-[node name="Background" parent="." instance=ExtResource("1_dkqgp")]
+[node name="Pausable" type="Node2D" parent="."]
 
-[node name="Midground" parent="." instance=ExtResource("3_rrfgk")]
+[node name="Background" parent="Pausable" instance=ExtResource("1_dkqgp")]
 
-[node name="Foreground" type="Node2D" parent="."]
+[node name="Midground" parent="Pausable" instance=ExtResource("3_rrfgk")]
+
+[node name="Foreground" type="Node2D" parent="Pausable"]
 z_index = 200
 
-[node name="MinimumBarrierHeightMarker" type="Marker2D" parent="Foreground"]
+[node name="MinimumBarrierHeightMarker" type="Marker2D" parent="Pausable/Foreground"]
 position = Vector2(160, 157)
 
-[node name="FarmerSpawner" parent="Foreground" instance=ExtResource("7_sgyef")]
+[node name="FarmerSpawner" parent="Pausable/Foreground" instance=ExtResource("7_sgyef")]
 position = Vector2(335, 164)
 
-[node name="FarmerSpawner2" parent="Foreground" instance=ExtResource("7_sgyef")]
+[node name="FarmerSpawner2" parent="Pausable/Foreground" instance=ExtResource("7_sgyef")]
 position = Vector2(-15, 164)
 
-[node name="LivingCropSpawner" type="Node2D" parent="Foreground"]
+[node name="LivingCropSpawner" type="Node2D" parent="Pausable/Foreground"]
 script = ExtResource("5_4x7fh")
 _livingCropScene = ExtResource("6_jn0vk")
 
-[node name="Scarecrow" parent="Foreground" node_paths=PackedStringArray("_minimumBarrierHeightMarker") instance=ExtResource("2_on6s6")]
+[node name="Scarecrow" parent="Pausable/Foreground" node_paths=PackedStringArray("_minimumBarrierHeightMarker") instance=ExtResource("2_on6s6")]
+process_mode = 3
 position = Vector2(160, 163)
 _minimumBarrierHeightMarker = NodePath("../MinimumBarrierHeightMarker")
 
-[node name="CrowSpawner" type="Node2D" parent="Foreground"]
+[node name="CrowSpawner" type="Node2D" parent="Pausable/Foreground"]
 position = Vector2(160, -11)
 script = ExtResource("3_fjekh")
 _crowScene = ExtResource("4_xrtw1")
@@ -55,6 +58,7 @@ _spawnXOffsetMin = 160.0
 _spawnXOffsetMax = 200.0
 
 [node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("_mouseCursor")]
+process_mode = 3
 z_index = 300
 script = ExtResource("10_84qat")
 _crowDistanceToCropForHint = 100.0
