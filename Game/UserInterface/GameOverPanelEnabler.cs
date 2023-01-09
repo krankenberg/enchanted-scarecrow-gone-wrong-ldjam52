@@ -13,10 +13,16 @@ public partial class GameOverPanelEnabler : Node
 
     private Score _score;
 
+    private int _livingCropsOnField;
+    private int _cropsOnField;
+    private int _crowsOnField;
+
     public override void _Ready()
     {
         _score = new Score();
-        GameOverEvent.Listen(_ => GameOver());
+        CropsOnFieldEvent.Listen(OnCropsOnFieldEvent);
+        CrowsOnFieldEvent.Listen(OnCrowsOnFieldEvent);
+        LivingCropsOnFieldEvent.Listen(OnLivingCropsOnFieldEvent);
         SoulHarvestedEvent.Listen(_ => _score.SoulsCollected++);
         UseSoulsEvent.Listen(useSoulsEvent => _score.SoulsSpent += useSoulsEvent.Amount);
         CrowEscapedEvent.Listen(_ => _score.CrowsEscaped++);
@@ -25,8 +31,35 @@ public partial class GameOverPanelEnabler : Node
         CropEscapedEvent.Listen(_ => _score.CropsEscaped++);
     }
 
+    private void OnLivingCropsOnFieldEvent(LivingCropsOnFieldEvent obj)
+    {
+        _livingCropsOnField += obj.LivingCropsAvailable ? 1 : -1;
+        CheckGameOver();
+    }
+
+    private void OnCrowsOnFieldEvent(CrowsOnFieldEvent obj)
+    {
+        _crowsOnField += obj.CrowsAvailable ? 1 : -1;
+        CheckGameOver();
+    }
+
+    private void OnCropsOnFieldEvent(CropsOnFieldEvent cropsOnFieldEvent)
+    {
+        _cropsOnField += cropsOnFieldEvent.CropsAvailable ? 1 : -1;
+        CheckGameOver();
+    }
+
+    private void CheckGameOver()
+    {
+        if (_crowsOnField <= 0 && _cropsOnField <= 0 && _livingCropsOnField <= 0)
+        {
+            GameOver();
+        }
+    }
+
     private void GameOver()
     {
+        GameOverEvent.Emit();
         var gameOverPanel = _gameOverPanelScene.Instantiate<GameOverPanel>();
         AddSibling(gameOverPanel);
         gameOverPanel.UpdateScore(_score.Copy());

@@ -1,13 +1,14 @@
 using System;
 using ldjam52.Game.Events;
+using ldjam52.Game.Field;
 
 namespace ldjam52.Game.UserInterface;
 
 public class GameOverEvent : IEvent
 {
-    public void Emit()
+    public static void Emit()
     {
-        EventBus.EmitEvent(this);
+        EventBus.EmitEvent(new GameOverEvent());
     }
 
     public static void Listen(Action<GameOverEvent> eventHandler)

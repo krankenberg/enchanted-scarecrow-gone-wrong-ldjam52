@@ -29,6 +29,7 @@ public partial class LivingCrop : Node2D
     {
         _sprite.FlipH = Random.Generator.Randf() > 0.5F;
         _sprite.Animation = _awakenAnimationName;
+        LivingCropsOnFieldEvent.Emit(true);
 
         _sprite.Connect(AnimatedSprite2D.SignalName.AnimationFinished, new Callable(this, MethodName.OnAwaken), (uint)ConnectFlags.OneShot);
     }
@@ -65,6 +66,7 @@ public partial class LivingCrop : Node2D
         if (GlobalPosition.x is < -10 or > 330)
         {
             CropEscapedEvent.Emit();
+            LivingCropsOnFieldEvent.Emit(false);
             QueueFree();
         }
     }

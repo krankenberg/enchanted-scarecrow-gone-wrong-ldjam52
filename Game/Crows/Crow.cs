@@ -39,6 +39,7 @@ public partial class Crow : Node2D
 	public override void _Ready()
 	{
 		_collisionArea.Connect(Area2D.SignalName.AreaEntered, new Callable(this, MethodName.OnAreaEntered));
+		CrowsOnFieldEvent.Emit(true);
 	}
 
 	private void OnAreaEntered(Area2D area)
@@ -111,6 +112,7 @@ public partial class Crow : Node2D
 				{
 					CrowEscapedEvent.Emit();
 				}
+				CrowsOnFieldEvent.Emit(false);
 				QueueFree();
 				return;
 			}

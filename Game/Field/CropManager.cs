@@ -59,6 +59,7 @@ public partial class CropManager : Node2D
         
         crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
         _crops.Add(crop);
+        CropsOnFieldEvent.Emit(true);
         crop.StartGrowing();
         
         spawnTutorialCropEvent.Callback.Invoke(crop);
@@ -106,6 +107,7 @@ public partial class CropManager : Node2D
             OccupyRandomCropSlot(crop);
             crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
             _crops.Add(crop);
+            CropsOnFieldEvent.Emit(true);
             crop.StartGrowing();
         }
     }
@@ -144,7 +146,11 @@ public partial class CropManager : Node2D
         _freeCropSlots.RemoveAt(closestSlot);
         _occupiedCropSlots[crop] = position;
         crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
-        crop.BounceToSlot(position, () => _crops.Add(crop));
+        crop.BounceToSlot(position, () =>
+        {
+            _crops.Add(crop);
+            CropsOnFieldEvent.Emit(true);
+        });
     }
 
     private int GetClosestSlot(Vector2 cropPosition, out float lowestDistance)
@@ -169,11 +175,7 @@ public partial class CropManager : Node2D
         _crops.Remove(crop);
         _occupiedCropSlots.Remove(crop, out var freedSlot);
         _freeCropSlots.Add(freedSlot);
-
-        if (_crops.Count == 0 && _active)
-        {
-            new GameOverEvent().Emit();
-        }
+        CropsOnFieldEvent.Emit(false);
     }
 
     private void OnRequestCropEvent(RequestCropEvent requestCropEvent)
