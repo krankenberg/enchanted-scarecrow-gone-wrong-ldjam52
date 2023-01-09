@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=28 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
 [ext_resource type="PackedScene" uid="uid://ew14at3sglny" path="res://Game/UserInterface/ui.tscn" id="1_ydlmt"]
 [ext_resource type="PackedScene" uid="uid://cv1ulkvh1waol" path="res://Game/Scarecrow/scarecrow.tscn" id="2_on6s6"]
+[ext_resource type="Script" path="res://Game/VolumeControl.cs" id="2_uownq"]
 [ext_resource type="Script" path="res://Game/Crows/CrowSpawner.cs" id="3_fjekh"]
 [ext_resource type="PackedScene" uid="uid://4psrnbqwwpka" path="res://Game/midground.tscn" id="3_rrfgk"]
 [ext_resource type="PackedScene" uid="uid://b16j15c7ixs17" path="res://Game/Crows/crow.tscn" id="4_xrtw1"]
@@ -94,6 +95,10 @@ z_index = 1000
 offset_right = 320.0
 offset_bottom = 180.0
 mouse_filter = 2
+
+[node name="VolumeControl" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("2_uownq")
 
 [node name="Pausable" type="Node2D" parent="."]
 
