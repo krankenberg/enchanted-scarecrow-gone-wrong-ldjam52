@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cv1ulkvh1waol"]
+[gd_scene load_steps=10 format=3 uid="uid://cv1ulkvh1waol"]
 
 [ext_resource type="Script" path="res://Game/Scarecrow/Scarecrow.cs" id="1_eictq"]
 [ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="1_o7b2i"]
@@ -22,11 +22,31 @@ radial_accel_min = 15.0
 radial_accel_max = 15.0
 color_ramp = SubResource("GradientTexture1D_mnpef")
 
-[node name="Scarecrow" type="Node2D" node_paths=PackedStringArray("_barrierCursorParticles")]
+[sub_resource type="Gradient" id="Gradient_2r3ih"]
+offsets = PackedFloat32Array(0, 0.217617, 1)
+colors = PackedColorArray(0.176471, 0.239216, 0.447059, 1, 0.176471, 0.239216, 0.447059, 0.823529, 0.176471, 0.239216, 0.447059, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_l2ior"]
+gradient = SubResource("Gradient_2r3ih")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_87owr"]
+emission_shape = 3
+emission_box_extents = Vector3(4, 4, 1)
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color_ramp = SubResource("GradientTexture1D_l2ior")
+
+[node name="Scarecrow" type="Node2D" node_paths=PackedStringArray("_barrierCursorParticles", "_sparkles")]
 texture_filter = 1
 script = ExtResource("1_eictq")
 _barrierScene = ExtResource("2_ti0na")
 _barrierCursorParticles = NodePath("BarrierCursorParticleSystem")
+_sparkles = NodePath("Sparkles")
 _farmerCollisionMask = 32
 _soulReadyCropCollisionMask = 64
 
@@ -39,5 +59,14 @@ offset = Vector2(-12, -24)
 position = Vector2(-1, -37)
 amount = 64
 process_material = SubResource("ParticleProcessMaterial_ck35p")
+preprocess = 0.2
+fixed_fps = 144
+
+[node name="Sparkles" type="GPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(0, -15)
+emitting = false
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_87owr")
 preprocess = 0.2
 fixed_fps = 144

@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using ldjam52.Game.Crows;
+using ldjam52.Game.Cutscene;
 using ldjam52.Game.Farmers;
 using ldjam52.Game.Field;
 using ldjam52.Game.Field.Crops;
@@ -19,6 +20,8 @@ public partial class Tutorial : Node2D
 
     private enum Stage
     {
+        WaitingForCutScene,
+        
         WaitingForCropSpawn,
         WaitingForCrowSpawn,
         WaitingForCrowDistance,
@@ -75,19 +78,16 @@ public partial class Tutorial : Node2D
     public override void _Ready()
     {
         FarmerSpawnedEvent.Listen(OnFarmerSpawnedEvent);
+        CutsceneEndedEvent.Listen(OnCutsceneEnded);
 
-        _stage = Stage.WaitingForCropSpawn;
-        SpawnTutorialCropEvent.Emit(crop =>
-        {
-            _crop = crop;
-            _stage = Stage.WaitingForCrowSpawn;
-        });
+        _stage = Stage.WaitingForCutScene;
     }
 
     public override void _Process(double delta)
     {
         switch (_stage)
         {
+            case Stage.WaitingForCutScene:
             case Stage.BarrierTutorialEnded:
             case Stage.Ended:
                 break;
@@ -185,6 +185,16 @@ public partial class Tutorial : Node2D
             case Stage.WaitingForCropAwaken:
                 break;
         }
+    }
+
+    private void OnCutsceneEnded(CutsceneEndedEvent cutsceneEndedEvent)
+    {
+        _stage = Stage.WaitingForCropSpawn;
+        SpawnTutorialCropEvent.Emit(crop =>
+        {
+            _crop = crop;
+            _stage = Stage.WaitingForCrowSpawn;
+        });
     }
 
     private void SpawnCrowWhenCropIsReady()

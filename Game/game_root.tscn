@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=27 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
 [ext_resource type="PackedScene" uid="uid://ew14at3sglny" path="res://Game/UserInterface/ui.tscn" id="1_ydlmt"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://Game/Field/Crops/LivingCropSpawner.cs" id="5_4x7fh"]
 [ext_resource type="PackedScene" uid="uid://c15ryl4px1qnt" path="res://Game/Field/Crops/living_crop.tscn" id="6_jn0vk"]
 [ext_resource type="PackedScene" uid="uid://lp276f5antrm" path="res://Game/Farmers/farmer_spawner.tscn" id="7_sgyef"]
+[ext_resource type="PackedScene" uid="uid://ilvxv61ehg5h" path="res://Game/Cutscene/druid.tscn" id="10_5ox3w"]
 [ext_resource type="Script" path="res://Game/Tutorial/Tutorial.cs" id="10_84qat"]
+[ext_resource type="Script" path="res://Game/Cutscene/CutScene.cs" id="10_akegw"]
 [ext_resource type="PackedScene" uid="uid://dn0px3ji7r3m8" path="res://Game/Tutorial/mouse_cursor.tscn" id="11_qnoxi"]
 
 [sub_resource type="Curve" id="Curve_ifuun"]
@@ -21,6 +23,68 @@ point_count = 3
 [sub_resource type="Curve" id="Curve_xmqyn"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_usk0n"]
+offsets = PackedFloat32Array(0, 0.737113, 1)
+colors = PackedColorArray(0.753042, 0.482474, 0.64997, 1, 0.661502, 0.767265, 0.249906, 1, 0.65098, 0.8, 0.203922, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7iu86"]
+gradient = SubResource("Gradient_usk0n")
+
+[sub_resource type="Curve" id="Curve_ps7en"]
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3jkvj"]
+curve = SubResource("Curve_ps7en")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uqt2a"]
+particle_flag_disable_z = true
+direction = Vector3(1, 0.2, 0)
+spread = 16.5
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_curve = SubResource("CurveTexture_3jkvj")
+color_ramp = SubResource("GradientTexture1D_7iu86")
+
+[sub_resource type="Gradient" id="Gradient_hv34q"]
+offsets = PackedFloat32Array(0, 0.737113, 1)
+colors = PackedColorArray(0.753042, 0.482474, 0.64997, 1, 0.661502, 0.767265, 0.249906, 1, 0.65098, 0.8, 0.203922, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r0xlw"]
+gradient = SubResource("Gradient_hv34q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yy8c5"]
+emission_shape = 1
+emission_sphere_radius = 10.0
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 1.0
+orbit_velocity_max = 2.0
+color_ramp = SubResource("GradientTexture1D_r0xlw")
+
+[sub_resource type="Gradient" id="Gradient_aa2qh"]
+offsets = PackedFloat32Array(0, 0.217617, 1)
+colors = PackedColorArray(0.176471, 0.239216, 0.447059, 1, 0.176471, 0.239216, 0.447059, 0.823529, 0.176471, 0.239216, 0.447059, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dfgew"]
+gradient = SubResource("Gradient_aa2qh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hiq7p"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 12.0
+gravity = Vector3(0, 60, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 100.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color_ramp = SubResource("GradientTexture1D_dfgew")
 
 [node name="GameRoot" type="Node2D"]
 texture_filter = 1
@@ -66,6 +130,67 @@ _spawnTimeCurve = SubResource("Curve_ifuun")
 _spawnTimeVarianceCurve = SubResource("Curve_xmqyn")
 _spawnXOffsetMin = 160.0
 _spawnXOffsetMax = 200.0
+
+[node name="CutScene" type="Node2D" parent="." node_paths=PackedStringArray("_druid", "_castPosition", "_halfEndPosition", "_endPosition", "_awakenParticles", "_firstTimer", "_secondTimer", "_thirdTimer", "_castParticles1", "_castParticles2")]
+z_index = 200
+script = ExtResource("10_akegw")
+_druid = NodePath("Druid")
+_castPosition = NodePath("CastPosition")
+_halfEndPosition = NodePath("HalfEndPosition")
+_endPosition = NodePath("EndPosition")
+_awakenParticles = NodePath("HalfEndPosition/AWAKENParticles")
+_firstTimer = NodePath("CastPosition/FirstTimer")
+_secondTimer = NodePath("CastPosition/SecondTimer")
+_thirdTimer = NodePath("CastPosition/ThirdTimer")
+_castParticles1 = NodePath("CastPosition/CastParticles")
+_castParticles2 = NodePath("CastPosition/CastParticlesUp")
+
+[node name="Druid" parent="CutScene" instance=ExtResource("10_5ox3w")]
+position = Vector2(-8, 164)
+
+[node name="CastPosition" type="Marker2D" parent="CutScene"]
+position = Vector2(125, 164)
+
+[node name="FirstTimer" type="Timer" parent="CutScene/CastPosition"]
+wait_time = 2.0
+one_shot = true
+
+[node name="SecondTimer" type="Timer" parent="CutScene/CastPosition"]
+wait_time = 6.0
+one_shot = true
+
+[node name="ThirdTimer" type="Timer" parent="CutScene/CastPosition"]
+wait_time = 2.0
+one_shot = true
+
+[node name="CastParticles" type="GPUParticles2D" parent="CutScene/CastPosition"]
+position = Vector2(9, -19)
+emitting = false
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_uqt2a")
+lifetime = 2.0
+
+[node name="CastParticlesUp" type="GPUParticles2D" parent="CutScene/CastPosition"]
+position = Vector2(9, -19)
+emitting = false
+amount = 24
+process_material = SubResource("ParticleProcessMaterial_yy8c5")
+lifetime = 2.0
+
+[node name="HalfEndPosition" type="Marker2D" parent="CutScene"]
+position = Vector2(69, 164)
+
+[node name="AWAKENParticles" type="GPUParticles2D" parent="CutScene/HalfEndPosition"]
+position = Vector2(91, -12)
+emitting = false
+amount = 72
+process_material = SubResource("ParticleProcessMaterial_hiq7p")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.5
+
+[node name="EndPosition" type="Marker2D" parent="CutScene"]
+position = Vector2(-15, 164)
 
 [node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("_mouseCursor")]
 process_mode = 3

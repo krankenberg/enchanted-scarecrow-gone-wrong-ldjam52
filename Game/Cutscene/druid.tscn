@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=3 uid="uid://ilvxv61ehg5h"]
+
+[ext_resource type="Texture2D" uid="uid://botcul51bb48d" path="res://Game/Cutscene/druid.png" id="1_iaj5q"]
+[ext_resource type="Script" path="res://Game/Cutscene/Druid.cs" id="1_lucyh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j6522"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmovx"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gyocm"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biwf3"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rferp"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82pd7"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4sjmx"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fojdu"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vttkq"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dm2uy"]
+atlas = ExtResource("1_iaj5q")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mx3px"]
+animations = [{
+"frames": [SubResource("AtlasTexture_j6522"), SubResource("AtlasTexture_bmovx"), SubResource("AtlasTexture_gyocm"), SubResource("AtlasTexture_biwf3"), SubResource("AtlasTexture_rferp")],
+"loop": true,
+"name": &"casting",
+"speed": 10.0
+}, {
+"frames": [SubResource("AtlasTexture_82pd7"), SubResource("AtlasTexture_4sjmx"), SubResource("AtlasTexture_fojdu"), SubResource("AtlasTexture_vttkq"), SubResource("AtlasTexture_dm2uy")],
+"loop": true,
+"name": &"walking",
+"speed": 8.0
+}]
+
+[node name="Druid" type="Node2D" node_paths=PackedStringArray("_sprite")]
+texture_filter = 1
+script = ExtResource("1_lucyh")
+_sprite = NodePath("Sprite")
+_velocity = 10.0
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+frames = SubResource("SpriteFrames_mx3px")
+animation = &"walking"
+playing = true
+centered = false
+offset = Vector2(-16, -28)

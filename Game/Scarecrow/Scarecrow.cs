@@ -1,4 +1,5 @@
 using Godot;
+using ldjam52.Game.Cutscene;
 using ldjam52.Game.Farmers;
 using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Input;
@@ -22,6 +23,9 @@ public partial class Scarecrow : Node2D
     [Export] 
     private GPUParticles2D _barrierCursorParticles;
 
+    [Export]
+    private GPUParticles2D _sparkles;
+
     [Export(PropertyHint.Layers2dPhysics)]
     private uint _farmerCollisionMask;
 
@@ -42,12 +46,19 @@ public partial class Scarecrow : Node2D
 
     private bool _barrierTutorialDone;
 
+    private bool _cutsceneDone;
+
     public override void _Ready()
     {
         BarrierTutorialDoneEvent.Listen(OnBarrierTutorialDoneEvent);
         _maxBarrierY = _minimumBarrierHeightMarker.GlobalPosition.y;
         _barrierCursorParticles.Emitting = false;
         GameOverEvent.Listen(_ => _gameOver = true);
+        CutsceneEndedEvent.Listen(_ =>
+        {
+            _cutsceneDone = true;
+            _sparkles.Emitting = true;
+        });
     }
 
     private void OnBarrierTutorialDoneEvent(BarrierTutorialDoneEvent _)
@@ -57,6 +68,11 @@ public partial class Scarecrow : Node2D
 
     public override void _Process(double delta)
     {
+        if (!_cutsceneDone)
+        {
+            return;
+        }
+        
         var mousePosition = GetGlobalMousePosition();
         _barrierCursorParticles.GlobalPosition = mousePosition;
         if (_currentBarrier != null)
@@ -89,7 +105,7 @@ public partial class Scarecrow : Node2D
 
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        if (_gameOver)
+        if (_gameOver || !_cutsceneDone)
         {
             return;
         }
