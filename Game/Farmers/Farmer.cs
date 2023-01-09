@@ -182,7 +182,7 @@ public partial class Farmer : Node2D
             var shapecastHit = hits[i];
             var collidedArea = shapecastHit.Collider.As<Area2D>();
             var crop = (Crop)collidedArea.Owner;
-            if (!crop.PickedUp)
+            if (!crop.PickedUp && crop.FullyGrown)
             {
                 var distanceToCrop = (crop.GlobalPosition - GlobalPosition).Length();
                 if (distanceToCrop < lowestDistance)
