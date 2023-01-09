@@ -32,6 +32,7 @@ public partial class MouseCursor : Node2D
     private Stage _loopStage;
     private float _loopProgress;
     private Color _lineColor;
+    private bool _singleClick;
 
     public override void _Ready()
     {
@@ -52,9 +53,16 @@ public partial class MouseCursor : Node2D
     {
         Loop(from, to, color, LeftButton);
     }
+    
+    public void LoopLeftClickNoLine(Vector2 from, Vector2 to)
+    {
+        Loop(from, to, Colors.White, LeftButton);
+        _singleClick = true;
+    }
 
     private void Loop(Vector2 from, Vector2 to, Color color, int button)
     {
+        _singleClick = false;
         _sprite.GlobalPosition = from;
         _loopButton = button;
         _loopFrom = from;
@@ -89,7 +97,7 @@ public partial class MouseCursor : Node2D
         }
         else if (_loopStage == Stage.Moving)
         {
-            PressButton(_loopButton);
+            PressButton(_singleClick ? NoButton : _loopButton);
             var movementDelta = (float) delta * _velocity;
             _sprite.GlobalPosition = _sprite.GlobalPosition.MoveToward(_loopTo, movementDelta);
             if (movementDelta >= _sprite.GlobalPosition.DistanceTo(_loopTo))
@@ -99,7 +107,7 @@ public partial class MouseCursor : Node2D
         }
         else if (_loopStage == Stage.WaitingAtEnd)
         {
-            PressButton(NoButton);
+            PressButton(_singleClick ? _loopButton : NoButton);
             _sprite.GlobalPosition = _loopTo;
             WaitUntilNextStage(delta);
         }
@@ -128,7 +136,7 @@ public partial class MouseCursor : Node2D
 
     public override void _Draw()
     {
-        if (!_looping)
+        if (!_looping || _singleClick)
         {
             return;
         }

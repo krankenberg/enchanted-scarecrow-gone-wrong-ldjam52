@@ -15,6 +15,7 @@ public partial class Crop : Node2D
     public bool FullyGrown => _growthStage == _cropResource.GrowthStageCount - 1;
     public bool HalfGrown => _growthStage >= 2;
     public float MaxBounceDistance => _maxBounceDistance;
+    public int SoulsNeeded => _soulsNeeded;
 
     [Export]
     private CropResource _cropResource;

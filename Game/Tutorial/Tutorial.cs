@@ -2,7 +2,10 @@ using System;
 using Godot;
 using ldjam52.Game.Crows;
 using ldjam52.Game.Farmers;
+using ldjam52.Game.Field;
 using ldjam52.Game.Field.Crops;
+using ldjam52.Game.Scarecrow.Spells;
+using ldjam52.Game.UserInterface;
 using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Tutorial;
@@ -12,6 +15,7 @@ public partial class Tutorial : Node2D
     private static readonly Color BarrierColor = new("#2d3d72");
     private const int BarrierHintDistance = 20;
     private const int SoulHintDistance = 80;
+    private const float CropCheckTime = 5;
 
     private enum Stage
     {
@@ -38,6 +42,9 @@ public partial class Tutorial : Node2D
         WaitingForSecondSoulCut,
 
         WaitingForCropSoulReady,
+        WaitingForCropAwaken,
+
+        Ended,
     }
 
     [Export]
@@ -63,6 +70,8 @@ public partial class Tutorial : Node2D
     private bool _firstSoulCut;
     private bool _secondSoulCut;
 
+    private float _timePassed;
+
     public override void _Ready()
     {
         FarmerSpawnedEvent.Listen(OnFarmerSpawnedEvent);
@@ -80,6 +89,7 @@ public partial class Tutorial : Node2D
         switch (_stage)
         {
             case Stage.BarrierTutorialEnded:
+            case Stage.Ended:
                 break;
             case Stage.WaitingForCropSpawn:
                 break;
@@ -167,6 +177,12 @@ public partial class Tutorial : Node2D
                 break;
             case Stage.WaitingForSecondSoulCut:
                 ContinueWhenSoulCut(_secondSoulCut, Stage.WaitingForCropSoulReady);
+                break;
+
+            case Stage.WaitingForCropSoulReady:
+                ShowAwakenCropHintWhenCropSoulReady(delta);
+                break;
+            case Stage.WaitingForCropAwaken:
                 break;
         }
     }
@@ -336,6 +352,49 @@ public partial class Tutorial : Node2D
             SetTutorialPause(false);
             _stage = nextStage;
         }
+    }
+
+    private void ShowAwakenCropHintWhenCropSoulReady(double delta)
+    {
+        _timePassed += (float)delta;
+        if (_timePassed > CropCheckTime)
+        {
+            _timePassed = 0;
+            var requestSoulCountEvent = new RequestSoulCountEvent();
+            requestSoulCountEvent.Callback = soulCount =>
+            {
+                var requestFullyGrownCropEvent = new RequestFullyGrownCropEvent();
+                requestFullyGrownCropEvent.Callback = crop =>
+                {
+                    if (soulCount >= crop.SoulsNeeded)
+                    {
+                        ShowAwakenCropHint(crop);
+                    }
+                };
+                requestFullyGrownCropEvent.Emit();
+            };
+            requestSoulCountEvent.Emit();
+        }
+    }
+
+    private void ShowAwakenCropHint(Crop crop)
+    {
+        SetTutorialPause(true);
+        UseSoulsEvent.Listen(OnUseSoulsEvent);
+        _mouseCursor.LoopLeftClickNoLine(crop.GlobalPosition + new Vector2(0, -20), crop.GlobalPosition + new Vector2(0, -3));
+        _stage = Stage.WaitingForCropAwaken;
+    }
+
+    private void OnUseSoulsEvent(UseSoulsEvent obj)
+    {
+        if (_stage == Stage.Ended)
+        {
+            return;
+        }
+        
+        SetTutorialPause(false);
+        _mouseCursor.StopLoop();
+        _stage = Stage.Ended;
     }
 
     private void SetTutorialPause(bool pause)
