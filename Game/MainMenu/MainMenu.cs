@@ -6,8 +6,8 @@ namespace ldjam52.Game.MainMenu;
 
 public partial class MainMenu : Node2D
 {
-    [Export]
-    private PackedScene _gameRootScene;
+    [Export(PropertyHint.File)]
+    private string _gameRootScenePath;
 
     [Export]
     private TextureButton _startButton;
@@ -24,7 +24,7 @@ public partial class MainMenu : Node2D
     private void Start()
     {
         EventBus.Clear();
-        GetTree().ChangeSceneToPacked(_gameRootScene);
+        GetTree().ChangeSceneToFile(_gameRootScenePath);
     }
 
     private void Exit()

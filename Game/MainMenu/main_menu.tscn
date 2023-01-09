@@ -1,28 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://dlbu4djo6furw"]
+[gd_scene load_steps=9 format=3 uid="uid://dlbu4djo6furw"]
 
 [ext_resource type="Script" path="res://Game/MainMenu/MainMenu.cs" id="1_0a70a"]
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_e7fy3"]
 [ext_resource type="PackedScene" uid="uid://4psrnbqwwpka" path="res://Game/midground.tscn" id="2_g78rf"]
-[ext_resource type="PackedScene" uid="uid://dre51xu8o7h3" path="res://Game/game_root.tscn" id="2_ic513"]
 [ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="3_c6hxy"]
 [ext_resource type="Texture2D" uid="uid://c00eujycv4q1p" path="res://Game/Scarecrow/scarecrow_sprite.png" id="4_rrogc"]
 [ext_resource type="Theme" uid="uid://eb5r46bxjdwp" path="res://Game/UserInterface/theme.tres" id="5_rebq8"]
 [ext_resource type="Texture2D" uid="uid://bhddwokmevhba" path="res://Game/MainMenu/play_button.png" id="6_821im"]
 [ext_resource type="Texture2D" uid="uid://3usg4x5sr5n4" path="res://Game/MainMenu/exit_button.png" id="7_7u0u7"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5pyg"]
-bg_color = Color(0.447059, 0.352941, 0.317647, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.368627, 0.27451, 0.27451, 1)
-anti_aliasing = false
-
 [node name="MainMenu" type="Node2D" node_paths=PackedStringArray("_startButton", "_exitButton")]
 texture_filter = 1
 script = ExtResource("1_0a70a")
-_gameRootScene = ExtResource("2_ic513")
+_gameRootScenePath = "res://Game/game_root.tscn"
 _startButton = NodePath("Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/StartMargin/StartButton")
 _exitButton = NodePath("Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ExitMargin/ExitButton")
 
@@ -161,7 +151,6 @@ grow_vertical = 2
 [node name="PanelContainer" type="PanelContainer" parent="Menu/CenterContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_g5pyg")
 
 [node name="MarginContainer" type="MarginContainer" parent="Menu/CenterContainer/PanelContainer"]
 layout_mode = 2

@@ -84,7 +84,30 @@ namespace ldjam52.Game.Events
 
         private void DeleteEventHandler(IEventHandler eventHandler)
         {
+            if (!_eventHandler.ContainsKey(eventHandler.GetEventType()))
+            {
+                GD.Print("Event Handler not present (during cleaning?)");
+                return;
+            }
+
             _eventHandler[eventHandler.GetEventType()].Remove(eventHandler);
+        }
+
+        private void InternalClear()
+        {
+            foreach (var (_, eventHandlers) in _eventHandler)
+            {
+                foreach (var eventHandler in eventHandlers)
+                {
+                    _eventHandlersToBeDeleted.Push(eventHandler);
+                }
+            }
+
+            while (_eventHandlersToBeDeleted.Count > 0)
+            {
+                var eventHandler = _eventHandlersToBeDeleted.Pop();
+                DeleteEventHandler(eventHandler);
+            }
         }
 
         public static void EmitEvent(IEvent evt)
@@ -104,6 +127,7 @@ namespace ldjam52.Game.Events
 
         public static void Clear()
         {
+            Instance.InternalClear();
             _instance = null;
         }
     }

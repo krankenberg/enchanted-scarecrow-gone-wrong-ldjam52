@@ -1,7 +1,10 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://eb5r46bxjdwp"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://eb5r46bxjdwp"]
 
 [ext_resource type="FontFile" uid="uid://c0adfb5cg81t1" path="res://Game/UserInterface/Fonts/octavius.ttf" id="1_1b7ul"]
+[ext_resource type="StyleBox" uid="uid://cfourdmc7e7ih" path="res://Game/UserInterface/panel_style.tres" id="1_xnxd3"]
 
 [resource]
 default_font = ExtResource("1_1b7ul")
 Label/colors/font_color = Color(0.803922, 0.823529, 0.854902, 1)
+Panel/styles/panel = ExtResource("1_xnxd3")
+PanelContainer/styles/panel = ExtResource("1_xnxd3")
