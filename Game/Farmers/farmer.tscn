@@ -9,7 +9,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qykwp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_psm77"]
-size = Vector2(13, 21)
+size = Vector2(17, 22.5)
 
 [sub_resource type="Gradient" id="Gradient_8ksos"]
 offsets = PackedFloat32Array(0, 0.528497, 1)
@@ -68,7 +68,7 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(0.5, -10.5)
+position = Vector2(0, -11.75)
 shape = SubResource("RectangleShape2D_psm77")
 
 [node name="SoulParticles" type="GPUParticles2D" parent="."]
