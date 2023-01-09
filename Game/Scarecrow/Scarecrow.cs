@@ -18,7 +18,7 @@ public partial class Scarecrow : Node2D
     [Export]
     private Node2D _minimumBarrierHeightMarker;
 
-    [Export]
+    [Export] // TODO strange rendering bug noticed on this commit 
     private GPUParticles2D _barrierCursorParticles;
 
     [Export(PropertyHint.Layers2dPhysics)]
