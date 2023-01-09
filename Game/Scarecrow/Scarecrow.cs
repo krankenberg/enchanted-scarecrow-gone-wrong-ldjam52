@@ -94,24 +94,30 @@ public partial class Scarecrow : Node2D
             return;
         }
 
-        if (inputEvent.IsActionPressed(InputConstants.Interact))
+        if (_currentBarrier == null)
         {
-            HandleInteractStart();
+            if (inputEvent.IsActionPressed(InputConstants.Interact))
+            {
+                HandleInteractStart();
+            }
+
+            if (inputEvent.IsActionReleased(InputConstants.Interact))
+            {
+                HandleInteractEnd();
+            }
         }
 
-        if (inputEvent.IsActionReleased(InputConstants.Interact))
+        if (_currentFarmer == null && _soulCutEvent == null)
         {
-            HandleInteractEnd();
-        }
+            if (inputEvent.IsActionPressed(InputConstants.Shield))
+            {
+                HandleShieldStart();
+            }
 
-        if (inputEvent.IsActionPressed(InputConstants.Shield))
-        {
-            HandleShieldStart();
-        }
-
-        if (inputEvent.IsActionReleased(InputConstants.Shield))
-        {
-            HandleShieldEnd();
+            if (inputEvent.IsActionReleased(InputConstants.Shield))
+            {
+                HandleShieldEnd();
+            }
         }
     }
 
