@@ -52,6 +52,7 @@ public partial class Crow : Node2D
 		if (owner is Barrier barrier)
 		{
 			EmitSignal(SignalName.CrowCollidedWithBarrier);
+			CrowBlockedEvent.Emit();
 			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			FlyBack(_target.GlobalPosition - GlobalPosition, barrier.Normal());
 			barrier.Destroy();
@@ -106,6 +107,10 @@ public partial class Crow : Node2D
 		{
 			if (_flyingBackUp)
 			{
+				if (_slot.GetChildCount() > 0)
+				{
+					CrowEscapedEvent.Emit();
+				}
 				QueueFree();
 				return;
 			}

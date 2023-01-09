@@ -64,6 +64,7 @@ public partial class LivingCrop : Node2D
 
         if (GlobalPosition.x is < -10 or > 330)
         {
+            CropEscapedEvent.Emit();
             QueueFree();
         }
     }

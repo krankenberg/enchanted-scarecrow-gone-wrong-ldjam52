@@ -68,6 +68,8 @@ public partial class Farmer : Node2D
     private bool _scaring;
     private bool _scared;
 
+    private bool _hasCrop;
+
     public override void _Ready()
     {
         _soulCutEventHandler = SoulCutEvent.Listen(OnSoulCutEvent);
@@ -227,6 +229,10 @@ public partial class Farmer : Node2D
         {
             if (_goingBack)
             {
+                if (_hasCrop)
+                {
+                    FarmerEscapedEvent.Emit();
+                }
                 QueueFree();
                 return;
             }
@@ -236,6 +242,7 @@ public partial class Farmer : Node2D
                 _target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
                 _target.PickUp();
                 _target.GetParent().RemoveChild(_target);
+                _hasCrop = true;
             }
 
             GoBack();
