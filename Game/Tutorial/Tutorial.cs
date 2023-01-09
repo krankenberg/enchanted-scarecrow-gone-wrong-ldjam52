@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using ldjam52.Game.Crows;
+using ldjam52.Game.Farmers;
 using ldjam52.Game.Field.Crops;
 using ldjam52.Game.Utils;
 
@@ -10,6 +11,7 @@ public partial class Tutorial : Node2D
 {
     private static readonly Color BarrierColor = new("#2d3d72");
     private const int BarrierHintDistance = 20;
+    private const int SoulHintDistance = 80;
 
     private enum Stage
     {
@@ -17,17 +19,32 @@ public partial class Tutorial : Node2D
         WaitingForCrowSpawn,
         WaitingForCrowDistance,
         WaitingForBarrier,
-        
+
         WaitingForSecondCrowSpawn,
         WaitingForSecondCrowDistance,
         WaitingForSecondBarrier,
-        
+
         EndBarrierTutorial,
         BarrierTutorialEnded,
+
+        WaitingForFarmerGettingClose,
+        WaitingForSoulPullingOut,
+        WaitingForSoulCut,
+
+        WaitingForSecondFarmerSpawning,
+
+        WaitingForSecondFarmerGettingClose,
+        WaitingForSecondSoulPullingOut,
+        WaitingForSecondSoulCut,
+
+        WaitingForCropSoulReady,
     }
 
     [Export]
     private float _crowDistanceToCropForHint;
+
+    [Export]
+    private float _farmerDistanceToCropForHint;
 
     [Export]
     private MouseCursor _mouseCursor;
@@ -38,12 +55,18 @@ public partial class Tutorial : Node2D
     private Stage _stage;
 
     private bool _crowFendedOffBeforeTutorial;
-    
+
     private Crop _crop;
     private Crow _crow;
+    private Farmer _firstFarmer;
+    private Farmer _secondFarmer;
+    private bool _firstSoulCut;
+    private bool _secondSoulCut;
 
     public override void _Ready()
     {
+        FarmerSpawnedEvent.Listen(OnFarmerSpawnedEvent);
+
         _stage = Stage.WaitingForCropSpawn;
         SpawnTutorialCropEvent.Emit(crop =>
         {
@@ -69,6 +92,7 @@ public partial class Tutorial : Node2D
                     _stage = Stage.WaitingForBarrier;
                     break;
                 }
+
                 ShowBarrierTutorialWhenCrowIsCloseEnough(Stage.WaitingForBarrier);
                 break;
             case Stage.WaitingForBarrier:
@@ -82,6 +106,7 @@ public partial class Tutorial : Node2D
                     _stage = Stage.WaitingForSecondBarrier;
                     break;
                 }
+
                 ShowBarrierTutorialWhenCrowIsCloseEnough(Stage.WaitingForSecondBarrier);
                 break;
             case Stage.WaitingForSecondBarrier:
@@ -89,6 +114,59 @@ public partial class Tutorial : Node2D
                 break;
             case Stage.EndBarrierTutorial:
                 EndBarrierTutorial();
+                break;
+
+            case Stage.WaitingForFarmerGettingClose:
+                if (_firstSoulCut)
+                {
+                    _stage = Stage.WaitingForSoulCut;
+                    break;
+                }
+
+                ShowSoulPullHintWhenFarmerIsCloseEnough(_firstFarmer, Stage.WaitingForSoulPullingOut);
+                break;
+            case Stage.WaitingForSoulPullingOut:
+                if (_firstSoulCut)
+                {
+                    _stage = Stage.WaitingForSoulCut;
+                    break;
+                }
+
+                ShowSoulCutHintWhenSoulPulledOut(_firstFarmer, Stage.WaitingForSoulCut);
+                break;
+            case Stage.WaitingForSoulCut:
+                ContinueWhenSoulCut(_firstSoulCut, Stage.WaitingForSecondFarmerSpawning);
+                break;
+
+            case Stage.WaitingForSecondFarmerSpawning:
+                if (_secondSoulCut)
+                {
+                    _stage = Stage.WaitingForSecondSoulCut;
+                    break;
+                }
+
+                WaitForSecondFarmerSpawn();
+                break;
+            case Stage.WaitingForSecondFarmerGettingClose:
+                if (_secondSoulCut)
+                {
+                    _stage = Stage.WaitingForSecondSoulCut;
+                    break;
+                }
+
+                ShowSoulPullHintWhenFarmerIsCloseEnough(_secondFarmer, Stage.WaitingForSecondSoulPullingOut);
+                break;
+            case Stage.WaitingForSecondSoulPullingOut:
+                if (_secondSoulCut)
+                {
+                    _stage = Stage.WaitingForSecondSoulCut;
+                    break;
+                }
+
+                ShowSoulCutHintWhenSoulPulledOut(_secondFarmer, Stage.WaitingForSecondSoulCut);
+                break;
+            case Stage.WaitingForSecondSoulCut:
+                ContinueWhenSoulCut(_secondSoulCut, Stage.WaitingForCropSoulReady);
                 break;
         }
     }
@@ -101,7 +179,7 @@ public partial class Tutorial : Node2D
             {
                 _crowFendedOffBeforeTutorial = false;
                 _crow = crow;
-                _crow.Connect(Crow.SignalName.CrowCollidedWithBarrier, new Callable(this, MethodName.CrowCollidedWithBarrier), (uint) ConnectFlags.OneShot);
+                _crow.Connect(Crow.SignalName.CrowCollidedWithBarrier, new Callable(this, MethodName.CrowCollidedWithBarrier), (uint)ConnectFlags.OneShot);
                 _stage = Stage.WaitingForCrowDistance;
             });
         }
@@ -159,7 +237,7 @@ public partial class Tutorial : Node2D
                 {
                     _crowFendedOffBeforeTutorial = false;
                     _crow = crow;
-                    _crow.Connect(Crow.SignalName.CrowCollidedWithBarrier, crowCollidedWithBarrierCallable, (uint) ConnectFlags.OneShot);
+                    _crow.Connect(Crow.SignalName.CrowCollidedWithBarrier, crowCollidedWithBarrierCallable, (uint)ConnectFlags.OneShot);
                     _stage = Stage.WaitingForSecondCrowDistance;
                 });
             }
@@ -184,10 +262,85 @@ public partial class Tutorial : Node2D
         BarrierTutorialDoneEvent.Emit();
     }
 
+    private void OnFarmerSpawnedEvent(FarmerSpawnedEvent farmerSpawnedEvent)
+    {
+        if (_firstFarmer == null)
+        {
+            _firstFarmer = farmerSpawnedEvent.Farmer;
+            _firstFarmer.Connect(Farmer.SignalName.SoulWasCut, new Callable(this, MethodName.FirstSoulCut), (uint)ConnectFlags.OneShot);
+            _stage = Stage.WaitingForFarmerGettingClose;
+        }
+        else if (_secondFarmer == null)
+        {
+            _secondFarmer = farmerSpawnedEvent.Farmer;
+            _secondFarmer.Connect(Farmer.SignalName.SoulWasCut, new Callable(this, MethodName.SecondSoulCut), (uint)ConnectFlags.OneShot);
+        }
+    }
+
+    private void FirstSoulCut()
+    {
+        _firstSoulCut = true;
+    }
+
+    private void SecondSoulCut()
+    {
+        _secondSoulCut = true;
+    }
+
+    private void WaitForSecondFarmerSpawn()
+    {
+        if (_secondFarmer != null)
+        {
+            _stage = Stage.WaitingForSecondFarmerGettingClose;
+        }
+    }
+
+    private void ShowSoulPullHintWhenFarmerIsCloseEnough(Farmer farmer, Stage nextStage)
+    {
+        if (farmer.DistanceToTarget < _farmerDistanceToCropForHint)
+        {
+            var hintStart = farmer.GlobalPosition + new Vector2(0, -6);
+            var hintDirection = (new Vector2(160, 0) - hintStart).Normalized();
+            var hintEnd = hintStart + hintDirection * SoulHintDistance;
+
+            _mouseCursor.LoopLeftClick(hintStart, hintEnd, Colors.White);
+
+            SetTutorialPause(true);
+            _stage = nextStage;
+        }
+    }
+
+    private void ShowSoulCutHintWhenSoulPulledOut(Farmer farmer, Stage nextStage)
+    {
+        if (farmer.SoulOutDistance() > SoulHintDistance - 20)
+        {
+            _mouseCursor.StopLoop();
+            var cutLine = farmer.GetCutLine();
+            var cutPosition = cutLine[0];
+            var cutDirection = cutLine[1];
+
+            var hintHalfLength = 20;
+            var positionA = cutPosition - cutDirection * hintHalfLength;
+            var positionB = cutPosition + cutDirection * hintHalfLength;
+            var aHigherThanB = positionA.y < positionB.y;
+            _mouseCursor.LoopLeftClick(aHigherThanB ? positionA : positionB, aHigherThanB ? positionB : positionA, Scarecrow.Scarecrow.CutColor);
+            _stage = nextStage;
+        }
+    }
+
+    private void ContinueWhenSoulCut(bool isSoulCut, Stage nextStage)
+    {
+        if (isSoulCut)
+        {
+            _mouseCursor.StopLoop();
+            SetTutorialPause(false);
+            _stage = nextStage;
+        }
+    }
+
     private void SetTutorialPause(bool pause)
     {
         GetTree().Paused = pause;
         PhysicsServer2D.SetActive(true);
     }
-    
 }

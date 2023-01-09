@@ -62,6 +62,7 @@ process_mode = 3
 z_index = 300
 script = ExtResource("10_84qat")
 _crowDistanceToCropForHint = 100.0
+_farmerDistanceToCropForHint = 50.0
 _mouseCursor = NodePath("MouseCursor")
 _barrierCollisionMask = 4
 

@@ -45,8 +45,18 @@ public partial class MouseCursor : Node2D
 
     public void LoopRightClick(Vector2 from, Vector2 to, Color color)
     {
+        Loop(from, to, color, RightButton);
+    }
+    
+    public void LoopLeftClick(Vector2 from, Vector2 to, Color color)
+    {
+        Loop(from, to, color, LeftButton);
+    }
+
+    private void Loop(Vector2 from, Vector2 to, Color color, int button)
+    {
         _sprite.GlobalPosition = from;
-        _loopButton = RightButton;
+        _loopButton = button;
         _loopFrom = from;
         _loopTo = to;
         _looping = true;

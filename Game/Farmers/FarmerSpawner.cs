@@ -58,6 +58,7 @@ public partial class FarmerSpawner : Node2D
             AddSibling(farmer);
             farmer.GlobalPosition = GlobalPosition;
             farmer.Start();
+            FarmerSpawnedEvent.Emit(farmer);
         };
         requestFullyGrownCropEvent.Emit();
         RestartSpawnTimer();

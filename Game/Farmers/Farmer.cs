@@ -13,6 +13,11 @@ public partial class Farmer : Node2D
     private static readonly StringName SoulingAnimation = new("souling");
     private static readonly StringName WalkingAnimation = new("walking");
 
+    [Signal]
+    public delegate void SoulWasCutEventHandler();
+
+    public float DistanceToTarget => _target == null ? float.MaxValue : GlobalPosition.DistanceTo(_target.GlobalPosition);
+
     [Export]
     private float _speedMin;
 
@@ -88,11 +93,35 @@ public partial class Farmer : Node2D
             );
             if (intersection.Obj is Vector2 intersectionPoint)
             {
+                EmitSignal(SignalName.SoulWasCut);
                 var soulHarvestedEvent = new SoulHarvestedEvent();
                 soulHarvestedEvent.Emit();
                 QueueFree();
             }
         }
+    }
+
+    public float SoulOutDistance()
+    {
+        if (!_soulOut || !_pullingSoulBack)
+        {
+            return 0;
+        }
+
+        return _soulVector.Length();
+    }
+
+    public Vector2[] GetCutLine()
+    {
+        var soulStart = _pulledSoulLine.GlobalPosition;
+        var cutPosition = soulStart + _soulVector * 0.5F;
+        var cutDirection = _soulVector.Orthogonal().Normalized();
+
+        return new Vector2[]
+        {
+            cutPosition,
+            cutDirection,
+        };
     }
 
     private void OnMouseEntered()

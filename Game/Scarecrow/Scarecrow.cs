@@ -10,7 +10,7 @@ namespace ldjam52.Game.Scarecrow;
 
 public partial class Scarecrow : Node2D
 {
-    private static readonly Color CutColor = new("#b63c35");
+    public static readonly Color CutColor = new("#b63c35");
 
     [Export]
     private PackedScene _barrierScene;
