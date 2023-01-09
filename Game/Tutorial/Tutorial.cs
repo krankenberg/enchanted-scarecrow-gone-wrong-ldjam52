@@ -313,9 +313,10 @@ public partial class Tutorial : Node2D
 
     private void ShowSoulPullHintWhenFarmerIsCloseEnough(Farmer farmer, Stage nextStage)
     {
-        if (farmer.DistanceToTarget < _farmerDistanceToCropForHint)
+        var farmerPosition = farmer.GlobalPosition;
+        if (farmerPosition.x is > 64 and < 256 || farmer.DistanceToTarget < _farmerDistanceToCropForHint)
         {
-            var hintStart = farmer.GlobalPosition + new Vector2(0, -6);
+            var hintStart = farmerPosition + new Vector2(0, -6);
             var hintDirection = (new Vector2(160, 0) - hintStart).Normalized();
             var hintEnd = hintStart + hintDirection * SoulHintDistance;
 
@@ -391,7 +392,7 @@ public partial class Tutorial : Node2D
         {
             return;
         }
-        
+
         SetTutorialPause(false);
         _mouseCursor.StopLoop();
         _stage = Stage.Ended;
