@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn0px3ji7r3m8"]
+
+[ext_resource type="Texture2D" uid="uid://ifw6ngie0thh" path="res://Game/Tutorial/mouse_cursor.png" id="1_dth4u"]
+[ext_resource type="Script" path="res://Game/Tutorial/MouseCursor.cs" id="1_paak3"]
+
+[node name="MouseCursor" type="Node2D" node_paths=PackedStringArray("_sprite")]
+texture_filter = 1
+script = ExtResource("1_paak3")
+_sprite = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_dth4u")
+centered = false
+hframes = 3

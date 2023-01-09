@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using ldjam52.Game.Field.Crops;
+using ldjam52.Game.Tutorial;
 using ldjam52.Game.UserInterface;
 using ldjam52.Game.Utils;
 
@@ -19,6 +20,8 @@ public partial class CropManager : Node2D
 
     private List<Crop> _crops;
 
+    private bool _active;
+
     public override void _Ready()
     {
         RequestCropEvent.Listen(OnRequestCropEvent);
@@ -26,6 +29,12 @@ public partial class CropManager : Node2D
         CropDropEvent.Listen(OnCropDroppedEvent);
         CropLandedEvent.Listen(OnCropLandedEvent);
         FallingCropSpawnEvent.Listen(OnFallingCropSpawnEvent);
+        BarrierTutorialDoneEvent.Listen(_ =>
+        {
+            _active = true;
+            CallDeferred(MethodName.SpawnCrops);
+        });
+        SpawnTutorialCropEvent.Listen(OnSpawnTutorialCrop);
         _freeCropSlots = new List<Vector2>();
         _occupiedCropSlots = new Dictionary<Crop, Vector2>();
         for (var i = 0; i < GetChildCount(); i++)
@@ -34,7 +43,25 @@ public partial class CropManager : Node2D
         }
 
         _crops = new List<Crop>();
-        CallDeferred(MethodName.SpawnCrops);
+    }
+
+    private void OnSpawnTutorialCrop(SpawnTutorialCropEvent spawnTutorialCropEvent)
+    {
+        var closestSlot = GetClosestSlot(new Vector2(160, 100), out _);
+        
+        var crop = _cropScene.Instantiate<Crop>();
+        AddSibling(crop);
+
+        var position = _freeCropSlots[closestSlot];
+        _freeCropSlots.RemoveAt(closestSlot);
+        _occupiedCropSlots[crop] = position;
+        crop.GlobalPosition = position;
+        
+        crop.Connect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnCropPickedUp));
+        _crops.Add(crop);
+        crop.StartGrowing();
+        
+        spawnTutorialCropEvent.Callback.Invoke(crop);
     }
 
     private void OnFallingCropSpawnEvent(FallingCropSpawnEvent fallingCropSpawnEvent)
@@ -104,17 +131,8 @@ public partial class CropManager : Node2D
     private void OnCropLandedEvent(CropLandedEvent cropLandedEvent)
     {
         var crop = cropLandedEvent.Crop;
-        var closestSlot = -1;
-        var lowestDistance = float.MaxValue;
-        for (var i = 0; i < _freeCropSlots.Count; i++)
-        {
-            var distance = crop.GlobalPosition.DistanceTo(_freeCropSlots[i]);
-            if (distance < lowestDistance)
-            {
-                closestSlot = i;
-                lowestDistance = distance;
-            }
-        }
+        var cropPosition = crop.GlobalPosition;
+        var closestSlot = GetClosestSlot(cropPosition, out var lowestDistance);
 
         if (closestSlot == -1 || lowestDistance > crop.MaxBounceDistance)
         {
@@ -129,13 +147,30 @@ public partial class CropManager : Node2D
         crop.BounceToSlot(position, () => _crops.Add(crop));
     }
 
+    private int GetClosestSlot(Vector2 cropPosition, out float lowestDistance)
+    {
+        var closestSlot = -1;
+        lowestDistance = float.MaxValue;
+        for (var i = 0; i < _freeCropSlots.Count; i++)
+        {
+            var distance = cropPosition.DistanceTo(_freeCropSlots[i]);
+            if (distance < lowestDistance)
+            {
+                closestSlot = i;
+                lowestDistance = distance;
+            }
+        }
+
+        return closestSlot;
+    }
+
     private void OnCropPickedUp(Crop crop)
     {
         _crops.Remove(crop);
         _occupiedCropSlots.Remove(crop, out var freedSlot);
         _freeCropSlots.Add(freedSlot);
 
-        if (_crops.Count == 0)
+        if (_crops.Count == 0 && _active)
         {
             new GameOverEvent().Emit();
         }

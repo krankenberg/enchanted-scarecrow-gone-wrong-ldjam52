@@ -8,6 +8,8 @@ namespace ldjam52.Game.Crows;
 
 public partial class Crow : Node2D
 {
+	[Signal]
+	public delegate void CrowCollidedWithBarrierEventHandler();
 
 	[Export]
 	private float _speed;
@@ -32,6 +34,8 @@ public partial class Crow : Node2D
 	
 	private Vector2 _targetPosition;
 
+	private bool _pausedForTutorial;
+
 	public override void _Ready()
 	{
 		_collisionArea.Connect(Area2D.SignalName.AreaEntered, new Callable(this, MethodName.OnAreaEntered));
@@ -39,7 +43,7 @@ public partial class Crow : Node2D
 
 	private void OnAreaEntered(Area2D area)
 	{
-		if (_flyingBackUp)
+		if (_pausedForTutorial || _flyingBackUp)
 		{
 			return;
 		}
@@ -47,6 +51,7 @@ public partial class Crow : Node2D
 		var owner = area.Owner;
 		if (owner is Barrier barrier)
 		{
+			EmitSignal(SignalName.CrowCollidedWithBarrier);
 			_target.Disconnect(Crop.SignalName.CropPickedUp, new Callable(this, MethodName.OnTargetPickedUp));
 			FlyBack(_target.GlobalPosition - GlobalPosition, barrier.Normal());
 			barrier.Destroy();
@@ -88,7 +93,7 @@ public partial class Crow : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (_target == null)
+		if (_pausedForTutorial || _target == null)
 		{
 			return;
 		}
@@ -135,5 +140,17 @@ public partial class Crow : Node2D
 		
 		var intersection = Geometry2D.LineIntersectsLine(GlobalPosition, directionBackUp, _startPosition, Vector2.Right);
 		_targetPosition = intersection.AsVector2();
+	}
+
+	public void Pause()
+	{
+		_pausedForTutorial = true;
+		_sprite.SpeedScale = 0;
+	}
+
+	public void Unpause()
+	{
+		_pausedForTutorial = false;
+		_sprite.SpeedScale = 1;
 	}
 }

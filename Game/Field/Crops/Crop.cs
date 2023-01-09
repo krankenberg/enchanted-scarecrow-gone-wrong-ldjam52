@@ -13,6 +13,7 @@ public partial class Crop : Node2D
 
     public bool PickedUp { private set; get; }
     public bool FullyGrown => _growthStage == _cropResource.GrowthStageCount - 1;
+    public bool HalfGrown => _growthStage >= 2;
     public float MaxBounceDistance => _maxBounceDistance;
 
     [Export]

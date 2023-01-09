@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dre51xu8o7h3"]
+[gd_scene load_steps=12 format=3 uid="uid://dre51xu8o7h3"]
 
 [ext_resource type="PackedScene" uid="uid://7sqck0io85en" path="res://Game/Background/background.tscn" id="1_dkqgp"]
 [ext_resource type="PackedScene" uid="uid://ew14at3sglny" path="res://Game/UserInterface/ui.tscn" id="1_ydlmt"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://Game/Field/Crops/LivingCropSpawner.cs" id="5_4x7fh"]
 [ext_resource type="PackedScene" uid="uid://c15ryl4px1qnt" path="res://Game/Field/Crops/living_crop.tscn" id="6_jn0vk"]
 [ext_resource type="PackedScene" uid="uid://lp276f5antrm" path="res://Game/Farmers/farmer_spawner.tscn" id="7_sgyef"]
+[ext_resource type="Script" path="res://Game/Tutorial/Tutorial.cs" id="10_84qat"]
+[ext_resource type="PackedScene" uid="uid://dn0px3ji7r3m8" path="res://Game/Tutorial/mouse_cursor.tscn" id="11_qnoxi"]
 
 [node name="GameRoot" type="Node2D"]
 texture_filter = 1
@@ -51,6 +53,17 @@ _spawnTimeMin = 1.0
 _spawnTimeMax = 2.0
 _spawnXOffsetMin = 160.0
 _spawnXOffsetMax = 200.0
+
+[node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("_mouseCursor")]
+z_index = 300
+script = ExtResource("10_84qat")
+_crowDistanceToCropForHint = 100.0
+_mouseCursor = NodePath("MouseCursor")
+_barrierCollisionMask = 4
+
+[node name="MouseCursor" parent="Tutorial" instance=ExtResource("11_qnoxi")]
+_velocity = 30.0
+_waitTime = 1.25
 
 [node name="Camera" type="Camera2D" parent="."]
 anchor_mode = 0

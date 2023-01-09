@@ -1,6 +1,8 @@
+using System;
 using Godot;
 using ldjam52.Game.Field;
-using ldjam52.Game.Utils;
+using ldjam52.Game.Tutorial;
+using Random = ldjam52.Game.Utils.Random;
 
 namespace ldjam52.Game.Crows;
 
@@ -23,22 +25,40 @@ public partial class CrowSpawner : Node2D
 
     private Timer _spawnTimer;
 
+    private bool _active;
+
     public override void _Ready()
     {
         _spawnTimer = new Timer();
         AddChild(_spawnTimer);
 
-        _spawnTimer.Timeout += SpawnCrow;
+        _spawnTimer.Timeout += () => SpawnCrow();
         _spawnTimer.OneShot = true;
         RestartSpawnTimer();
+
+        BarrierTutorialDoneEvent.Listen(_ =>
+        {
+            _active = true;
+            RestartSpawnTimer();
+        });
+        
+        SpawnTutorialCrowEvent.Listen(OnSpawnTutorialCrowEvent);
+    }
+
+    private void OnSpawnTutorialCrowEvent(SpawnTutorialCrowEvent spawnTutorialCrowEvent)
+    {
+        SpawnCrow(spawnTutorialCrowEvent.Callback);
     }
 
     private void RestartSpawnTimer()
     {
-        _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+        if (_active)
+        {
+            _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+        }
     }
 
-    private void SpawnCrow()
+    private void SpawnCrow(Action<Crow> callback = null)
     {
         var requestCropEvent = new RequestCropEvent();
         requestCropEvent.Callback = crop =>
@@ -49,6 +69,8 @@ public partial class CrowSpawner : Node2D
             GetParent().AddChild(crow);
             crow.GlobalPosition = spawnPosition;
             crow.GrabCrop(spawnPosition, crop);
+
+            callback?.Invoke(crow);
         };
         requestCropEvent.Emit();
 

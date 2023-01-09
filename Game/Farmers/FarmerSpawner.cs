@@ -1,5 +1,6 @@
 using Godot;
 using ldjam52.Game.Field;
+using ldjam52.Game.Tutorial;
 using ldjam52.Game.Utils;
 
 namespace ldjam52.Game.Farmers;
@@ -17,6 +18,8 @@ public partial class FarmerSpawner : Node2D
     
     private Timer _spawnTimer;
 
+    private bool _active;
+
     public override void _Ready()
     {
         _spawnTimer = new Timer();
@@ -25,11 +28,20 @@ public partial class FarmerSpawner : Node2D
         _spawnTimer.Timeout += SpawnFarmer;
         _spawnTimer.OneShot = true;
         RestartSpawnTimer();
+
+        BarrierTutorialDoneEvent.Listen(_ =>
+        {
+            _active = true;
+            RestartSpawnTimer();
+        });
     }
 
     private void RestartSpawnTimer()
     {
-        _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+        if (_active)
+        {
+            _spawnTimer.Start(Random.Generator.RandfRange(_spawnTimeMin, _spawnTimeMax));
+        }
     }
 
     private void SpawnFarmer()
