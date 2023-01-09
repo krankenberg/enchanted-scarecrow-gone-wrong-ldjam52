@@ -164,7 +164,8 @@ layout_mode = 2
 
 [node name="GameTitle" type="Label" parent="Menu/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Game Title here"
+text = "Enchanted Scarecrow
+Gone Wrong"
 horizontal_alignment = 1
 vertical_alignment = 1
 
