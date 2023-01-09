@@ -101,5 +101,10 @@ namespace ldjam52.Game.Events
         {
             Instance.InternalUnregister(ref eventHandler);
         }
+
+        public static void Clear()
+        {
+            _instance = null;
+        }
     }
 }
