@@ -271,8 +271,11 @@ public partial class Crop : Node2D
         _collisionAreaShape.Disabled = true;
         _growthTimer.Stop();
         _startGrowthTimer.Stop();
+        RemoveChild(_pickUpSound);
+        AddSibling(_pickUpSound);
         _pickUpSound.PitchScale = Random.Pitch();
         _pickUpSound.Play();
+        _pickUpSound.Finished += _pickUpSound.QueueFree;
     }
 
     public void Smash()

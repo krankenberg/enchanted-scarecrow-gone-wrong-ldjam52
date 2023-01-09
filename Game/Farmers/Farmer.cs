@@ -63,6 +63,12 @@ public partial class Farmer : Node2D
     [Export]
     private AudioStreamPlayer _soulCutOffSound;
 
+    [Export]
+    private Sprite2D _cropSpriteRight;
+
+    [Export]
+    private Sprite2D _cropSpriteLeft;
+
     private float _speed;
     private Crop _target;
 
@@ -87,6 +93,9 @@ public partial class Farmer : Node2D
         _speed = Random.Generator.RandfRange(_speedMin, _speedMax);
         _collisionArea.MouseEntered += OnMouseEntered;
         _collisionArea.MouseExited += OnMouseExited;
+
+        _cropSpriteLeft.Visible = false;
+        _cropSpriteRight.Visible = false;
     }
 
     public override void _ExitTree()
@@ -238,6 +247,16 @@ public partial class Farmer : Node2D
         var xMotion = (float)delta * _speed;
         var xDifferenceToTarget = _targetPosition.x - GlobalPosition.x;
         _sprite.FlipH = xDifferenceToTarget < 0;
+        if (_hasCrop)
+        {
+            _cropSpriteLeft.Visible = _sprite.FlipH;
+            _cropSpriteRight.Visible = !_sprite.FlipH;
+        }
+        else
+        {
+            _cropSpriteLeft.Visible = false;
+            _cropSpriteRight.Visible = false;
+        }
         if (Mathf.Abs(xDifferenceToTarget) > xMotion)
         {
             GlobalPosition += new Vector2(Mathf.Sign(xDifferenceToTarget) * xMotion, 0);

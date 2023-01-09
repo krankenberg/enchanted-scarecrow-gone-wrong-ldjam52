@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://8iv6ny7v4nyh"]
+[gd_scene load_steps=13 format=3 uid="uid://8iv6ny7v4nyh"]
 
 [ext_resource type="Script" path="res://Game/Farmers/Farmer.cs" id="1_72k08"]
 [ext_resource type="SpriteFrames" uid="uid://cj7mmvsnyd6o5" path="res://Game/Farmers/farmer_animation.tres" id="2_pojhb"]
 [ext_resource type="AudioStream" uid="uid://dqfe00dte8jb5" path="res://Game/Sounds/soul_cut_off.wav" id="3_k2omt"]
+[ext_resource type="Texture2D" uid="uid://bhevkwadhsqdk" path="res://Game/Field/Crops/carrot.png" id="3_wi3tx"]
 [ext_resource type="AudioStream" uid="uid://bh2g8yvnkotqd" path="res://Game/Sounds/soul_out.wav" id="4_khsdu"]
 [ext_resource type="AudioStream" uid="uid://dtoqa1o5e8vhn" path="res://Game/Sounds/farmer_scare.wav" id="5_6qign"]
 
@@ -37,7 +38,7 @@ attractor_interaction_enabled = false
 _data = [Vector2(0, 0.245455), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="Farmer" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea", "_soulParticles", "_pulledSoulLine", "_scaredSound", "_soulPullOutSound", "_soulCutOffSound")]
+[node name="Farmer" type="Node2D" node_paths=PackedStringArray("_sprite", "_collisionArea", "_soulParticles", "_pulledSoulLine", "_scaredSound", "_soulPullOutSound", "_soulCutOffSound", "_cropSpriteRight", "_cropSpriteLeft")]
 texture_filter = 1
 script = ExtResource("1_72k08")
 _speedMin = 15.0
@@ -54,6 +55,8 @@ _pulledSoulMinLength = 3.0
 _scaredSound = NodePath("ScareSound")
 _soulPullOutSound = NodePath("SoulOutSound")
 _soulCutOffSound = NodePath("SoulCutSound")
+_cropSpriteRight = NodePath("CropSpriteRight")
+_cropSpriteLeft = NodePath("CropSpriteLeft")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 frames = ExtResource("2_pojhb")
@@ -61,6 +64,29 @@ animation = &"walking"
 playing = true
 centered = false
 offset = Vector2(-16, -28)
+
+[node name="CropSpriteRight" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(14, -21)
+rotation = 1.5708
+texture = ExtResource("3_wi3tx")
+centered = false
+offset = Vector2(0, -12)
+hframes = 5
+frame = 4
+
+[node name="CropSpriteLeft" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+position = Vector2(-14, -21)
+rotation = 1.5708
+texture = ExtResource("3_wi3tx")
+centered = false
+offset = Vector2(0, -12)
+flip_v = true
+hframes = 5
+frame = 4
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 32
@@ -79,6 +105,7 @@ process_material = SubResource("ParticleProcessMaterial_gchav")
 lifetime = 2.0
 
 [node name="SoulLine" type="Line2D" parent="."]
+visible = false
 position = Vector2(0, -9)
 points = PackedVector2Array(0, 0, 65, -34)
 width_curve = SubResource("Curve_g5i1b")
