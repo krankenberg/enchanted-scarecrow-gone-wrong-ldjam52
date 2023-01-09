@@ -27,12 +27,17 @@ public partial class Scarecrow : Node2D
     [Export(PropertyHint.Layers2dPhysics)]
     private uint _soulReadyCropCollisionMask;
 
+    [Export]
+    private int _maxBarrierCount = 3;
+
     private Barrier _currentBarrier;
     private Farmer _currentFarmer;
     private SoulCutEvent _soulCutEvent;
 
     private bool _gameOver;
     private float _maxBarrierY;
+
+    private int _barrierCount;
 
     public override void _Ready()
     {
@@ -59,7 +64,7 @@ public partial class Scarecrow : Node2D
         }
         else
         {
-            _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY;
+            _barrierCursorParticles.Emitting = mousePosition.y < _maxBarrierY && _barrierCount < _maxBarrierCount;
             if (_currentFarmer != null)
             {
                 _currentFarmer.ContinuePullingSoul(mousePosition);
@@ -103,7 +108,7 @@ public partial class Scarecrow : Node2D
 
     private void HandleShieldStart()
     {
-        if (_currentBarrier == null)
+        if (_currentBarrier == null && _barrierCount < _maxBarrierCount)
         {
             var mousePosition = GetGlobalMousePosition();
             if (mousePosition.y > _maxBarrierY)
@@ -113,9 +118,16 @@ public partial class Scarecrow : Node2D
 
             _currentBarrier = _barrierScene.Instantiate<Barrier>();
             GetParent().AddChild(_currentBarrier);
+            _currentBarrier.Connect(Node.SignalName.TreeExited, new Callable(this, MethodName.OnBarrierDestroyed), (uint)ConnectFlags.OneShot);
+            _barrierCount++;
 
             _currentBarrier.Begin(_maxBarrierY, mousePosition);
         }
+    }
+
+    private void OnBarrierDestroyed()
+    {
+        _barrierCount--;
     }
 
     private void HandleShieldEnd()
