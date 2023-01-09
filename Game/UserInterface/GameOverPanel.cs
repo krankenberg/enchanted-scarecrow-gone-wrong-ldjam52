@@ -24,16 +24,16 @@ public class Score
         return copy;
     }
 
-    public int SoulsCollectedBase => 100;
+    public int SoulsCollectedBase => 25;
     public int SoulsCollectedSum => SoulsCollectedBase * SoulsCollected;
 
     public int CropsEscapedBase => 100;
     public int CropsEscapedSum => CropsEscapedBase * CropsEscaped;
 
-    public int CrowsBlockedBase => 100;
+    public int CrowsBlockedBase => 25;
     public int CrowsBlockedSum => CrowsBlockedBase * CrowsBlocked;
 
-    public int CrowsEscapedBase => -100;
+    public int CrowsEscapedBase => -75;
     public int CrowsEscapedSum => CrowsEscapedBase * CrowsEscaped;
 
     public int FarmersEscapedBase => -100;
